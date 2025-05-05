@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{web_data.name}} - Buy Coin{% endblock %}
+
+{% block page_content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="background: #000; color: #fff;">
+    <center>
+        <h1>Buy Coins</h1>
+        <hr>
+    </center>
+    {% if g.web_data.payment_details%}
+    <center>
+        <div style="padding: 30px;border: 3px solid powderblue;max-width: 50%">{{g.web_data.payment_details_html|safe}}</div>
+        <i><strong><b class="material-icons">info</b> Note:</strong> Transfer the exact {{selected_package.naira_amount}} for the {{selected_package.name}} package you want to buy using the payment details above and make sure to upload your payment receipt on the form below to avoid error on your purchase.</i>
+    </center>
+    <br>
+    <br>
+    {% if current_user.can(Permission.MODERATE_COMMENTS) %}
+    <div class="fxg-app__single-tracking" style="padding: 50px;">
+        <!-- Payment Form -->
+        <h3 style="font-size: 19px;font-family: Times;background: #c0c0c0;padding: 20px;color: #666666;">Payment Form</h3>
+        <div class="fxg-app__history-form" style="background: #c0c0c0; padding: 40px;border-radius: 15px;">
+            <form method="POST" action="{{ request.url }}" enctype="multipart/form-data">
+              {{ form.hidden_tag() }}
+              {% for field in form %}
+              {% if not field.name in ['submit', 'csrf_token']%}
+              <div class="fxg-field">
+                <div style="margin-bottom: 15px;">
+                  {{ field(class="fxg-field__input-text", style="width: 100%;") }}
+                  <span class="fxg-field__placeholder fxg-field__floating-placeholder" aria-hidden="true">
+                    {{ field.label }}
+                  </span>
+                  {% if field.errors %}
+                  <span class="text-danger">
+                    {{ field.errors[0] }}
+                  </span>
+                  {% endif %}
+                </div>
+              </div>
+              {%endif%}
+              {% endfor %}
+              <!-- Submit Button -->
+              <button type="submit" class="fxg-featured-button fxg-link fxg-link--rounded_button fxg-feature-image fxg-feature-image-default" style="">
+                {{ form.submit.label.text }}
+              </button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    {%else%}
+    <center>
+        <br>
+        <p><i class="material-icons">info</i> Payment details not available for now, please try again sooner!!</p>
+        <br>
+    </center>
+</div>
+{%endif%}
+{%endblock%}

@@ -1,0 +1,7 @@
+Dear Admin,
+{{ user.name.split(' ')[0] }} just registered on {{web_data.name}}!
+To confirm his/her account please click on the link bellow:
+{{ url_for('main.profile', username=user.username, _external=True) }}
+Sincerely,
+The {{web_data.name}} Team.
+Note: replies to this email address are not monitored.

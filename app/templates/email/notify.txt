@@ -1,0 +1,6 @@
+{{mail_body}}
+
+Sincerely,
+The {{web_data.name}} Team.
+
+Note: replies to this email address are not monitored.

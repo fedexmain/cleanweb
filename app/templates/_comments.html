@@ -1,0 +1,112 @@
+{% for comment in comments %}
+<div class="single-blog-post mb-50 wow fadeInUp" data-wow-delay="300ms"  style="padding: 10px;overflow-wrap: break-word;">
+    <div>
+        <a class="post-title" href="{{ url_for('.profile', username=comment.author.username) }}">
+            <div class="" style="width: 50px; height: 50px;  float: left;" >
+                <img src="{{comment.author.gravatar()}}" alt="{{ comment.author.username}} picture" style="border-radius: 50%; border: 3px solid #a5afb7; height: 100%; width: 100%">
+            </div>
+            <span style="font-family: Times; font-size: 16px; font-weight: bolder; padding-left: 20px; color: #fff">
+            {{comment.author.name|capitalize()  }}
+            </span>
+        </a>
+    </div>
+
+    <div class="" style="font-size: 18px; padding-left: 80px;">
+        {% if comment.disabled %}
+        <p><i>This comment has been disabled by a moderator.</i></p>
+        {% endif %}
+        {% if moderate or not comment.disabled %}
+            {% if comment.body_html %}
+                {{ comment.body_html | safe }}
+            {% else %}
+                {{ comment.body }}
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% if moderate %}
+        <br>
+        {% if comment.disabled %}
+        <a class="btn btn-default btn-xs" href="{{ url_for('.moderate_enable',
+        id=comment.id, page=page) }}">Enable</a>
+        {% else %}
+        <a class="btn btn-danger btn-xs" href="{{ url_for('.moderate_disable', id=comment.id, page=page) }}">Disable</a>
+        {% endif %}
+    {% endif %}
+    <style type="text/css">
+        .comment.post-footer{
+            color: #fff;
+            padding: 10px;
+            padding-bottom: 0px;
+        }
+        .comment.post-footer a{
+            color: #fff;
+        }
+        .comment.post-footer span{
+            color: #fff;
+            font-size: 15px;
+        }
+        .comment.post-footer .dropdown-content{
+            padding-left: 0px;
+            background: #c0c0c0;
+        }
+    </style>
+    <hr>
+    <div class="comment post-footer" style="padding-left: 50px; color: #000" align="left">
+        {%if current_user.is_authenticated%}
+        <a href="{{url_for('.like_comment', comment_id=comment.id)}}">
+            <span class="material-icons" title="like">thumb_up</span>{{comment.likes.count()}}
+        </a>
+        &nbsp;
+        <a href="#">
+            <span class="material-icons" title="dislike">thumb_down</span>0
+        </a>
+        &nbsp;
+        {%endif%}
+        <a href="#comments">
+            <span class="">
+                <span class="material-icons" title="Reply">reply</span>
+            </span>
+        </a>
+        &nbsp;
+        <span class="dropdown">
+          <span class="dropdown-trigger material-icons">share</span>
+          <div class="dropdown-content">
+            <!-- Dropdown content goes here -->
+            <ul>
+                <li>
+                    <a href="#">Share to Whatsapp</a>
+                </li>
+                <hr>
+                <li>
+                    <a href="#">Share to facebook</a>
+                </li>
+                <hr>
+                <li>
+            </ul>
+          </div>
+        </span>
+
+        &nbsp;
+        <span class="dropdown">
+          <span class="dropdown-trigger material-icons">more</span>
+          <div class="dropdown-content">
+            <!-- Dropdown content goes here -->
+            <ul>
+                <li>
+                    <a href="#">Delete</a>
+                </li>
+                <hr>
+                <li>
+                    <a href="#">Repost</a>
+                </li>
+                <hr>
+                <li>
+                    <a href="#">Hide</a>
+                </li>
+            </ul>
+          </div>
+        </span>
+    </div>
+</div>
+{%endfor%}

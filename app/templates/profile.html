@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block title %}Profile| {{ super()}}{% endblock %}
+
+{% block page_content %}
+	<style type="text/css">
+		.fa-star{
+			color: #c0c0c0;
+			font-size: 20px;
+		}
+		.fa-star.checked{
+			color: #fd7e14;
+		}
+		body{
+			overflow-wrap: break-word;
+		}
+	</style>
+
+    <section class="site-section" style="background: {{web_data.themes.first}};" id="pricing-section">
+		<div class="container">
+			<div class="" data-aos="fade-up" data-aos-delay="">
+				{%set profile_pix = fedex_pix or url_for('static', filename=user.gravatar().replace('/static/',''), _external=True)%}
+				
+				<div class="" style="width: 300px; height: 300px; border-radius: 100px; border: 4px solid #fd7e14; opacity: 1; position: relative; bottom: -2px; -webkit-transform: translateX(-50%); transform: translateX(-50%); left: 50%; z-index: 30;background: url({{profile_pix}});">
+			    </div>
+
+				<h2 style="font-weight: bolder;font-family: lucida-caligraphy;color: #fff;" class="section-title mb-3">{{user.name if not user.can(Permission.MODERATE_COMMENTS) or current_user.can(Permission.MODERATE_COMMENTS) or current_user==user else current_user.celebrity.name}}</h2>
+
+				{%if user.can(Permission.VEND_COUPONS)%}
+				<div data-aos="fade-up" data-aos-delay="">
+					<br>
+					<a href="" style="font-size: 22px; color: green;">
+						${{ '%.1f'|format(user.coin or 0) }}
+					</a>
+					<br>
+					<br>
+					{%if current_user.is_administrator() and current_user==user %}
+					<a href="{{url_for('.load_coin', _external=True)}}"><button class="btn btn-secondary" style="background: green">Load Coin</button></a>
+					<br>
+					{%endif%}
+					{%if current_user.can(Permission.MODERATE_COMMENTS) and current_user==user %}
+					<a href="{{url_for('.coin_packages', _external=True)}}"><button class="btn btn-secondary" style="background: green">Recharge</button></a>
+					<br>
+					{%endif%}
+					<br>
+				</div>
+				{%else%}
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					<a href="" style="font-size: 22px; color: yellow;">${{ '%.1f'|format(user.fake_coin or 0) }}</a>
+				</div>
+				{%endif%}
+
+				<div class="" data-aos="fade-up" data-aos-delay="">
+					{%if (current_user != user and current_user.can(Permission.MODERATE_COMMENTS) and current_user==user.referral) or current_user.is_administrator()%}
+					<a class="btn btn-secondary" href="{{url_for('.send_msg', username=user.username, page=-1, _external=True)+'#typing-alert-'+str(user.id)}}">Message</a>
+					{%endif%}
+
+					{%if current_user.is_administrator()%}
+					<a class="btn btn-primary" href="{{url_for('.admin_edit_profile', id=user.id, _external=True)}}">[ADMIN]Edit</a>
+
+					{%elif current_user.can(Permission.MODERATE_COMMENTS) and (current_user==user or current_user==user.referral)%}
+					<a href="{{url_for('.mod_edit_profile', username=user.username, _external=True)}}"><button class="btn btn-secondary">[MOD]Edit</button></a>
+
+					{%elif current_user==user%}
+					<a href="{{url_for('.edit_profile', username=user.username, _external=True)}}"><button class="btn btn-secondary">Edit</button></a>
+
+					{%endif%}
+					
+					{%if current_user.is_administrator()%}
+					<a href="{{url_for('auth.automatic_authentication', token=user.token, next_url=request.url, _external=True)}}"><button class="btn btn-primary">Auto</button></a>
+					{%endif%}
+				</div>
+			</div>
+
+			<div class="row mb-5" style="color: #fff;">
+				<br>
+				{%if current_user == user or current_user.can(Permission.MODERATE_COMMENTS)%}
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					Username: <a href="">{{user.username if not user.can(Permission.MODERATE_COMMENTS) or current_user.can(Permission.MODERATE_COMMENTS) or current_user==user else current_user.celebrity.username}}</a>
+				</div>
+
+				{%if current_user.can(Permission.MODERATE_COMMENTS)%}
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					Referred Users: <a href="">{{user.referring_count}}</a>
+				</div>
+
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					Referral: <a href="">{{referral.username}}</a>
+				</div>
+				{%endif%}
+
+
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					Task Accomplished: <a href="">{{user.task_count}}</a>
+				</div>
+
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					Joined since <a href="">{{ moment(user.member_since).format('L') }}</a>
+				</div>
+
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					Mobile Numbler: <a href="tel://{{user.mobile_number}}">{{user.mobile_number}}</a>
+				</div>
+
+				<div class="col-md-6 mb-4 mb-lg-0 col-lg-4" data-aos="fade-up" data-aos-delay="">
+					<i class="material-icons">email</i>
+					Email : <a href="mailto://{{user.email}}">{{user.email}}</a>
+					<br>
+					<br>
+					<br>
+				</div>
+				{%endif%}
+			</div>
+		</div>
+		<br>
+		{%if (user.can(Permission.MODERATE_COMMENTS) and current_user==user) or current_user.is_administrator() %}
+		<div>
+			<h3 style="font-size: 29px; font-weight: bolder;">All Trackings</h3>
+			<hr>
+			{%for trk in user.tracking_list%}
+			<a href="{{url_for('auth.fedex_tracking_result', tracking_number=trk.tracking_number, _external=True)}}">
+				<div class="btn btn-secondary" style=""> 
+					<p>{{trk.tracking_number}}</p>
+					<p>{{trk.address}}</p>
+				</div>
+			</a>
+			{%endfor%}
+		</div>
+		{%endif%}
+
+		{%if user.is_administrator() and current_user==user %}
+		<div class="container text-center" align="center">
+			<hr style="background: {{web_data.themes.second}};">
+			<p class="text-center">
+				<h4 align="center" style="color: #fff">Recharge Codes</h4>
+			</p>
+			<hr style="background: {{web_data.themes.second}};">
+			{%if not user.coin_rechargers.all()%}
+			<i class="icon-warning">
+				No Vending Coin Codes to display!
+			</i>
+			{%else%}
+			<div class="row">
+				{%for coin in user.coin_rechargers.all()%}
+				<label class="col-md-4 btn-secondary" style="font-size: 15px; border: 2px dashed {{web_data.themes.first}};border-radius: 15px; padding: 10px;width: 30%;">
+					<span style="color: {{web_data.themes.first}};">${{'%.1f'|format(coin.amount)}}</span>
+					<br>
+					<br>
+					<label class="">{{coin.code}}</label>
+					<br>
+					<br/> 
+					{{moment(coin.timestamp).fromNow()}}
+				</label>
+				{%endfor%}
+			</div>
+			{%endif%}
+			<br>
+			{%if current_user.is_administrator()%}
+			<br>
+			<a href="{{url_for('.make_coin', _external=True)}}"><button class="btn btn-secondary">Generate</button></a>
+			{%endif%}
+		</div>
+		<hr style="background: {{web_data.themes.second}};">
+		{%endif%}
+		<br>
+
+		<br>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+{%endblock%}

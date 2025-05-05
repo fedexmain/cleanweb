@@ -1,0 +1,2473 @@
+{% import "bootstrap/wtf.html" as wtf %}
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <script type="text/javascript" nonce="x69iNI73O3cSlDUu2MIua9IN" src="/static/tools_usps_com/usps.js"></script>
+  <script src="/static/tools_usps_com/go/scripts/libs/jquery.min.js"></script>
+  <script src="/static/tools_usps_com/go/js/modules/usps/metrics/metrics-all.js"></script>
+  <script type="text/javascript">
+   var dataLayer = window.dataLayer = window.dataLayer || [];
+	var strutsDL = {"name":"application.trackinginput","section":"track","loginStatus":"Not Logged In"};
+    dataLayer.push(strutsDL);
+  </script>
+  <script src="https://www.googleoptimize.com/optimize.js?id=GTM-T35N9RL">
+  </script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Alternative Mobile Page reference For Webcrawlers -->
+  <link href="https://m.usps.com/m/TrackConfirmAction" media="handheld" rel="alternate"/>
+  <link href="https://m.usps.com/m/TrackConfirmAction" media="only screen and (max-width: 640px)" rel="alternate"/>
+  <!-- End Mobile  reference For Webcrawlers -->
+  <title>
+   USPS.com® - USPS Tracking®
+  </title>
+  <link href="/static/tools_usps_com/go/css/footer.css" rel="stylesheet"/>
+  <link href="/static/tools_usps_com/go/css/libs/bootstrap.min.css" rel="stylesheet"/>
+  <link href="/static/tools_usps_com/go/css/main.css" rel="stylesheet"/>
+  <link href="/static/tools_usps_com/go/styles/ConditionalChatLink.css" media="all" rel="stylesheet" type="text/css">
+   <link href="/static/tools_usps_com/go/css/tracking-cross-sell.css" rel="stylesheet"/>
+  </link>
+  {{ moment.locale(auto_detect=True)}}
+ </head>
+ <body class="tracking_reskin">
+  <div class="landing_container tracking_reskin" id="tracking_page_wrapper">
+   <!-- GLOBAL HEADER  -->
+   <link href="/static/tools_usps_com/global-elements/header/css/megamenu-v4.css" rel="stylesheet" type="text/css"/>
+   <style>
+    body{min-width:0!important;}
+
+/* Eliminate Utility Bar */
+
+	#utility-bar, .util {
+
+		display: none;
+
+	}
+
+/* Change for Update prior to reskin */
+
+ul, ol {
+
+ list-style-type: disc;
+
+ list-style:disc;
+
+}
+
+.empty-search ul {
+
+    list-style: none;
+
+    list-style-type:none;
+
+ 
+
+}
+
+[class^="icon-"]:before, [class*=" icon-"]:before {
+
+    background-position:50%;
+
+}
+
+
+
+li.usps-logo {
+
+    background-color: #FFFFFF !important;
+
+}
+
+/* Specific non-responsive limit*/
+
+body {
+
+	overflow-x:hidden;
+
+}
+
+
+
+
+
+/* Tracking fix */
+
+#track-confirm {
+
+    height: 100%;
+
+}
+
+@media only screen and (min-width: 959px){
+
+	.menu ol li ol li:first-of-type {
+
+		padding-top: 0 !important;
+
+
+
+	}
+
+	.global-navigation, #utility-header {
+
+		max-width: 100% !important;
+
+	}
+
+	.menu-wrap {
+
+		max-width: 100% !important;
+
+	}
+
+	
+
+	html, body {
+
+		max-width: 100%;
+
+		overflow-x: -moz-scrollbars-vertical;
+
+	}
+
+}
+
+.product_tracking_header .product_info td {
+
+   vertical-align: top;
+
+}
+
+
+
+.product_tracking_details .tracking_history_container div.more_rows a {
+
+	font-size: 14px;
+
+}
+
+
+
+.panel-actions-content {
+
+    font-size: 14px;
+
+}
+
+
+
+div#shortcuts-menu-wrapper a {
+
+    font-weight: normal;
+
+}
+
+
+
+input#global-header--search-track {
+
+    background: transparent;
+
+    border: 0;
+
+    color: #202020;
+
+    display: inline-block;
+
+    font-family: "HelveticaNeueW02-55Roma","Helvetica Neue",Helvetica,Arial,sans-serif;
+
+    font-size: 13px;
+
+    font-size: 1.3rem;
+
+    height: 40px;
+
+    height: 4rem;
+
+    line-height: 20px;
+
+    line-height: 2rem;
+
+    outline: 0;
+
+    margin: 0;
+
+    padding: 10px 0;
+
+    -webkit-appearance: none;
+
+    width: 83%;
+
+}
+
+
+
+.easy-autocomplete-container ul li, .easy-autocomplete-container ul .eac-category {
+
+    margin-top: 0px;
+
+}
+
+
+
+.empty-search li {
+
+	margin-top:0px;
+
+}
+
+body {
+
+    font-size: 14px;
+
+}
+
+
+
+.hint .speech_bubble {
+
+	bottom: calc(100% + 10px) !important;
+
+}
+
+
+
+.error-handler li {
+
+    display: none;
+
+}
+
+@media only screen and (max-width: 958px) {
+
+	.quick--search .input--field {
+
+		height: 44px!important;
+
+		border: 0!important;
+
+		margin-top:3px!important;
+
+	}
+
+}
+
+
+
+form#trackPackage .tracking-btn.disabled {
+
+    opacity: 1;
+
+    cursor: pointer;
+
+    filter: alpha(opacity=100);
+
+}
+
+.mobile-quicktools .quicktools-full .shortcut.sc-pobox {
+
+    border-left: 0px !important;
+
+}
+
+		@media only screen and (max-width:958px){
+
+			.alert-bar{}
+
+			.menu.active .menu--tier-one-link span:first-of-type {		
+
+				width: 80%;		
+
+				display: block;		
+
+				left: 0;		
+
+				position: absolute;		
+
+				padding-left: 22px;		
+
+				height: 80px;		
+
+				top: 0;		
+
+				padding-top: 28px;		
+
+				box-sizing: border-box;		
+
+			}
+
+			.menu.active .menu--tier-one li {
+
+				border-top: 1px solid #333366;
+
+				padding-top: 0 !important;
+
+				padding-bottom:  0 !important;
+
+			}
+
+
+
+			.menu.active .menu--tier-one li.ge_parent ol li {
+
+				padding-top:0 !important;
+
+				padding-bottom:0 !important;
+
+
+
+			}
+
+
+
+			a.menu--tier-one-link.menu--item {		
+
+				padding-top: 28px !important;		
+
+				display: block;		
+
+				padding-bottom: 27px !important;		
+
+			}
+
+
+
+			.menu ol li ol li a {
+
+				line-height: 20px !important;
+
+				margin-top: 0px !important;
+
+				padding: 20px 22px !important;
+
+			}
+
+			.menu.active ol li.touchscreen-only {
+
+					display: none !important;
+
+				}
+
+		}
+
+#utility-header a#link-myusps:before {
+
+    background-image: url('/static/tools_usps_com/global-elements/header/images/utility-header/mailman.svg') !important;
+
+}
+
+.global--navigation input.global-header--search-track {
+
+	border: 0;
+
+	width: 80%;
+
+	display: inline-block;
+
+	vertical-align: bottom;
+
+	padding-left: 18px;
+
+	height: 31px;
+
+	background: #FFFFFF;
+
+}
+
+.global--navigation .nav-search input.global-header--search-track {
+
+	height:25px;
+
+}
+
+@media print{.global--navigation{display:none!important;}.nav-utility{display:none!important};.global-footer--wrap{display:none!important;}#global-footer--wrap{display:none!important;}.global-footer {display:none!important;}}
+
+
+
+/*  alert code  */
+
+  /* */
+
+       
+
+@media (min-width: 958px){.global--navigation~.g-alert, .g-alert~.g-alert, .g-alert {
+
+margin-bottom: 0;
+
+    margin-top: 0;
+
+	}
+
+ div#g-navigation {
+
+ margin-bottom: 0;
+
+}
+
+}
+
+.hidden-galert {
+
+   position: absolute;
+
+    left: -10000px;
+
+    top: auto;
+
+    width: 1px;
+
+    height: 1px;
+
+    overflow: hidden;
+
+}
+
+
+
+@media (max-width: 958px) {
+
+	.g-alert p br { 
+
+		display:none;
+
+		}
+
+
+
+	.g-alert p {
+
+		line-height:18px;
+
+	}	
+
+}
+
+
+
+@media (min-width: 958px) {
+
+	.g-alert p {
+
+		padding: 0px 5px;
+
+	}
+
+}
+
+/*
+
+  */
+
+ 
+
+/* adding the Print Customs Forms image */
+
+@media only screen and (min-width: 959px) {
+
+.global--navigation nav .tool-international-forms a:before, .global--navigation nav .tool-international-forms a:hover:before, .global--navigation nav .tool-international-forms a:focus:before {
+
+    background: https://www.usps.com/assets/images/home/printcustomsforms.svg;
+
+}
+
+}
+
+
+
+/* end adding the Print Customs Forms image */ 
+
+ 
+
+ /* Business Search Bar Spacing */
+
+form.search.global-header--search.business-bottom {margin-top: 25px!important;}
+
+/* Ending Business Search Bar Spacing */
+   </style>
+   <script>
+    var appID = "UspsTools";
+   </script>
+   <script>
+    var urlOverride="manage";
+   </script>
+   <div class="nav-utility" id="nav-utility">
+    <div class="utility-links" id="utility-header">
+     <a class="hidden-skip" href="https://www.usps.com/globals/site-index.htm" tabindex="-1">
+      Go to USPS.com Site Index.
+     </a>
+     <a class="hidden-skip keyboard" href="#endnav" id="skiptomain" tabindex="0">
+      Skip to Main Content
+     </a>
+     <a class="hidden-skip" href="#skipallnav" id="skiputil" name="skiputil" tabindex="-1">
+      Skip All Utility Navigation
+     </a>
+     <div class="lang-select">
+      <a href="#" id="link-lang">
+       <span class="visuallyhidden">
+        Current language:
+       </span>
+       English
+      </a>
+      <ul class="lang-list">
+       <li class="lang-option">
+        <a class="multi-lang-link" href="javascript:OneLink('en');" tabindex="-1">
+         English
+        </a>
+       </li>
+       <li class="lang-option">
+        <a class="multi-lang-link" href="javascript:OneLink('es');" tabindex="-1">
+         Español
+        </a>
+       </li>
+       <li class="lang-option last">
+        <a class="chinese" href="javascript:OneLink('zh');" tabindex="-1">
+         <span class="visuallyhidden">
+          Chinese
+         </span>
+        </a>
+       </li>
+      </ul>
+     </div>
+     <a href="https://tools.usps.com/locations/" id="link-locator">
+      Locations
+     </a>
+     <a href="https://www.usps.com/help/contact-us.htm" id="link-customer">
+      Support
+     </a>
+     <a href="https://informeddelivery.usps.com" id="link-myusps">
+      Informed Delivery
+     </a>
+     <a class="link-reg" href="https://reg.usps.com/entreg/LoginAction_input?app=Phoenix&amp;appURL=/" id="login-register-header">
+      Register / Sign In
+     </a>
+     <div id="link-cart" style="display: inline-block;">
+     </div>
+    </div>
+   </div>
+   <div class="global--navigation" id="g-navigation">
+    <a class="hidden-skip" href="#endnav" id="skipallnav" name="skipallnav" tabindex="-1">
+     Skip all category navigation links
+    </a>
+    <div class="nav-full">
+     <a class="global-logo" href="https://www.usps.com/">
+      <img alt="Image of USPS.com logo." aria-label="Image of USPS.com logo." src="https://www.usps.com/global-elements/header/images/utility-header/logo-sb.svg"/>
+     </a>
+     <div class="mobile-header">
+      <a class="mobile-hamburger" href="#">
+       <img alt="hamburger menu Icon" src="https://www.usps.com/assets/images/home/hamburger.svg"/>
+      </a>
+      <a class="mobile-logo" href="https://www.usps.com/">
+       <img alt="USPS mobile logo" src="https://www.usps.com/assets/images/home/logo_mobile.svg"/>
+      </a>
+      <a class="mobile-search" href="#">
+       <img alt="Search Icon" src="https://www.usps.com/assets/images/home/search.svg"/>
+      </a>
+     </div>
+     <nav>
+      <div class="mobile-log-state">
+       <div class="mobile-utility" id="msign">
+        <div class="mobile-sign">
+         <a href="https://reg.usps.com/entreg/LoginAction_input?app=Phoenix&amp;appURL=">
+          Sign In
+         </a>
+        </div>
+       </div>
+      </div>
+      <ul class="nav-list" role="menubar">
+       <li class="qt-nav menuheader">
+        <a class="hidden-skip" href="#navmailship" id="navquicktools" name="navquicktools" tabindex="-1">
+         Skip Quick Tools Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="nav-first-element menuitem" href="#" role="menuitem" tabindex="0">
+         Quick Tools
+        </a>
+        <div class="">
+         <ul aria-hidden="true" role="menu">
+          <li>
+           <a href="https://tools.usps.com/go/TrackConfirmAction_input" role="menuitem" tabindex="-1">
+            <img alt="Tracking Icon" src="https://www.usps.com/assets/images/home/tracking.svg"/>
+            <p>
+             Track a Package
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://informeddelivery.usps.com/" role="menuitem" tabindex="-1">
+            <img alt="Informed Delivery Icon" src="https://www.usps.com/global-elements/header/images/utility-header/mailman.svg"/>
+            <p>
+             Informed Delivery
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://tools.usps.com/locations/" role="menuitem" tabindex="-1">
+            <img alt="Post Office Locator Icon" src="https://www.usps.com/assets/images/home/location.svg"/>
+            <p>
+             Find USPS Locations
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://store.usps.com/store/stamps" role="menuitem" tabindex="-1">
+            <img alt="Stamps Icon" src="https://www.usps.com/assets/images/home/stamps.svg"/>
+            <p>
+             Buy Stamps
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://tools.usps.com/schedule-pickup-steps.htm" role="menuitem" tabindex="-1">
+            <img alt="Schedule a Pickup Icon" src="https://www.usps.com/assets/images/home/schedule_pickup.svg"/>
+            <p>
+             Schedule a Pickup
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://postcalc.usps.com/" role="menuitem" tabindex="-1">
+            <img alt="Calculate a Price Icon" src="https://www.usps.com/assets/images/home/calculate_price.svg"/>
+            <p>
+             Calculate a Price
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://tools.usps.com/zip-code-lookup.htm" role="menuitem" tabindex="-1">
+            <img alt="Zip Code™ Lookup Icon" src="https://www.usps.com/assets/images/home/find_zip.svg"/>
+            <p>
+             Look Up a
+             <br/>
+             ZIP Code
+             <sup>
+              ™
+             </sup>
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://holdmail.usps.com/holdmail/" role="menuitem" tabindex="-1">
+            <img alt="Holdmail Icon" src="https://www.usps.com/assets/images/home/holdmail.svg"/>
+            <p>
+             Hold Mail
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://moversguide.usps.com/?referral=MG82" role="menuitem" tabindex="-1">
+            <img alt="Change of Address Icon" src="https://www.usps.com/assets/images/home/change_address.svg"/>
+            <p>
+             Change My Address
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/manage/po-boxes.htm" role="menuitem" tabindex="-1">
+            <img alt="Post Office Boxes Icon" src="https://www.usps.com/assets/images/home/po_box.svg"/>
+            <p>
+             Rent/Renew a
+             <br/>
+             PO Box
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://store.usps.com/store/results/free-shipping-supplies/shipping-supplies/_/N-alnx4jZ7d0v8v" role="menuitem" tabindex="-1">
+            <img alt="Shipping Supplies Icon" src="https://www.usps.com/assets/images/home/free_boxes.svg"/>
+            <p>
+             Free Boxes
+            </p>
+           </a>
+          </li>
+          <li>
+           <a href="https://cns.usps.com/" role="menuitem" tabindex="-1">
+            <img alt="Click-N-Ship Icon" src="https://www.usps.com/assets/images/home/featured_clicknship.svg"/>
+            <p>
+             Click-N-Ship
+            </p>
+           </a>
+          </li>
+         </ul>
+        </div>
+       </li>
+       <li class="menuheader">
+        <a class="hidden-skip" href="#navtrackmanage" id="navmailship" name="navmailship" tabindex="-1">
+         Skip Send Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="https://www.usps.com/ship/" id="mail-ship-width" role="menuitem" tabindex="0">
+         Send
+        </a>
+        <div class="repos">
+         <ul aria-hidden="true" class="tools" role="menu">
+          <h3>
+           Tools
+          </h3>
+          <li class="tool-cns">
+           <a href="https://cns.usps.com/" role="menuitem" tabindex="-1">
+            Click-N-Ship
+           </a>
+          </li>
+          <li class="tool-stamps">
+           <a href="https://store.usps.com/store/" role="menuitem" tabindex="-1">
+            Stamps &amp; Supplies
+           </a>
+          </li>
+          <li class="tool-zip">
+           <a href="https://tools.usps.com/zip-code-lookup.htm" role="menuitem" tabindex="-1">
+            Look Up a ZIP Code
+            <sup>
+             ™
+            </sup>
+           </a>
+          </li>
+          <li class="tool-calc">
+           <a href="https://postcalc.usps.com/" role="menuitem" tabindex="-1">
+            Calculate a Price
+           </a>
+          </li>
+          <li class="tool-pick">
+           <a href="https://tools.usps.com/schedule-pickup-steps.htm" role="menuitem" tabindex="-1">
+            Schedule a Pickup
+           </a>
+          </li>
+          <li class="tool-find">
+           <a href="https://tools.usps.com/locations/" role="menuitem" tabindex="-1">
+            Find USPS Locations
+           </a>
+          </li>
+          <li class="tool-track">
+           <a href="https://tools.usps.com/go/TrackConfirmAction_input" role="menuitem" tabindex="-1">
+            Tracking
+           </a>
+          </li>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3>
+           Learn About
+          </h3>
+          <li>
+           <a href="https://www.usps.com/ship/" role="menuitem" tabindex="-1">
+            Sending
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/ship/letters.htm" role="menuitem" tabindex="-1">
+             Sending Mail
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/packages.htm" role="menuitem" tabindex="-1">
+             Sending Packages
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/insurance-extra-services.htm" role="menuitem" tabindex="-1">
+             Insurance &amp; Extra Services
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/shipping-restrictions.htm" role="menuitem" tabindex="-1">
+             Shipping Restrictions
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/ship/online-shipping.htm" role="menuitem" tabindex="-1">
+            Online Shipping
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.uspssmartpackagelockers.com/package-shippers" role="menuitem" tabindex="-1">
+             Ship to USPS Smart Locker
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/label-broker.htm" role="menuitem" tabindex="-1">
+             Label Broker
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/ship/custom-mail.htm" role="menuitem" tabindex="-1">
+            Custom Mail, Cards, &amp; Envelopes
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/business/prices.htm" role="menuitem" tabindex="-1">
+            Postage Prices
+           </a>
+          </li>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3 class="desktop-only">
+          </h3>
+          <li>
+           <a href="https://www.usps.com/ship/mail-shipping-services.htm" role="menuitem" tabindex="-1">
+            Mail &amp; Shipping Services
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/ship/priority-mail-express.htm" role="menuitem" tabindex="-1">
+             Priority Mail Express
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/priority-mail.htm" role="menuitem" tabindex="-1">
+             Priority Mail
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/ground-advantage.htm" role="menuitem" tabindex="-1">
+             USPS Ground Advantage
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/first-class-mail.htm" role="menuitem" tabindex="-1">
+             First-Class Mail
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/ship/apo-fpo-dpo.htm" role="menuitem" tabindex="-1">
+             Military &amp; Diplomatic Mail
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/manage/package-intercept.htm" role="menuitem" tabindex="-1">
+            Redirecting a Package
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/shop/money-orders.htm" role="menuitem" tabindex="-1">
+            Money Orders
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/help/claims.htm" role="menuitem" tabindex="-1">
+            Filing a Claim
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/help/refunds.htm" role="menuitem" tabindex="-1">
+            Requesting a Refund
+           </a>
+          </li>
+          <div class="desktop-only mailship-addition">
+           <a href="https://www.usps.com/ship/go-now.htm" role="menuitem" tabindex="-1">
+            <img alt="Mail and Ship image with call to action." src="https://www.usps.com/ship/go-now.png"/>
+           </a>
+          </div>
+         </ul>
+         <form action="https://www.usps.com/search" class="search global-header--search" method="get" tabindex="-1">
+          <span aria-hidden="false" class="input--wrap" tabindex="-1">
+           <label class="visuallyhidden" for="global-header--search-track-mail-ship" tabindex="-1">
+            Search USPS.com
+           </label>
+           <input autocomplete="off" class="search--track-input input--field q global-header--search-track" id="global-header--search-track-mail-ship" maxlength="256" name="q" placeholder="Search or Enter a Tracking Number" tabindex="-1" type="text"/>
+           <div class="autocorrect">
+            <ul>
+            </ul>
+           </div>
+           <input class="input--search search--submit" tabindex="-1" type="submit" value="Search"/>
+          </span>
+         </form>
+        </div>
+       </li>
+       <li class="menuheader">
+        <a class="hidden-skip" href="#navpostalstore" id="navtrackmanage" name="navtrackmanage" tabindex="-1">
+         Skip Receive Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="https://www.usps.com/manage/" role="menuitem" tabindex="0">
+         Receive
+        </a>
+        <div>
+         <ul aria-hidden="true" class="tools" role="menu">
+          <h3>
+           Tools
+          </h3>
+          <li class="tool-track">
+           <a href="https://tools.usps.com/go/TrackConfirmAction_input" role="menuitem" tabindex="-1">
+            Tracking
+           </a>
+          </li>
+          <li class="tool-informed">
+           <a href="https://informeddelivery.usps.com" role="menuitem" tabindex="-1">
+            Informed Delivery
+           </a>
+          </li>
+          <li class="tool-intercept">
+           <a href="https://retail-pi.usps.com/retailpi/actions/index.action" role="menuitem" tabindex="-1">
+            Intercept a Package
+           </a>
+          </li>
+          <li class="tool-redelivery">
+           <a href="https://tools.usps.com/redelivery.htm" role="menuitem" tabindex="-1">
+            Schedule a Redelivery
+           </a>
+          </li>
+          <li class="tool-hold">
+           <a href="https://holdmail.usps.com/holdmail/" role="menuitem" tabindex="-1">
+            Hold Mail
+           </a>
+          </li>
+          <li class="tool-change">
+           <a href="https://moversguide.usps.com/?referral=MG80" role="menuitem" tabindex="-1">
+            Change of Address
+           </a>
+          </li>
+          <li class="tool-pobol">
+           <a href="https://www.usps.com/manage/po-boxes.htm" role="menuitem" tabindex="-1">
+            Rent or Renew PO Box
+           </a>
+          </li>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3>
+           Learn About
+          </h3>
+          <li>
+           <a href="https://www.usps.com/manage/" role="menuitem" tabindex="-1">
+            Managing Mail
+           </a>
+          </li>
+          <li>
+           <a href="https://informeddelivery.usps.com/" role="menuitem" tabindex="-1">
+            Informed Delivery
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/manage/forward.htm" role="menuitem" tabindex="-1">
+            Forwarding Mail
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/manage/package-intercept.htm" role="menuitem" tabindex="-1">
+            Redirecting a Package
+           </a>
+          </li>
+          <li>
+           <a href="https://www.uspssmartpackagelockers.com/package-recipients" role="menuitem" tabindex="-1">
+            USPS Smart Lockers
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/manage/po-boxes.htm" role="menuitem" tabindex="-1">
+            PO Boxes
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/manage/mailboxes.htm" role="menuitem" tabindex="-1">
+            Mailbox Guidelines
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/manage/mail-for-deceased.htm" role="menuitem" tabindex="-1">
+            Mail for the Deceased
+           </a>
+          </li>
+          <div class="desktop-only manage-addition">
+           <a href="https://www.usps.com/manage/go-now.htm" role="menuitem" tabindex="-1">
+            <img alt="Manage image with call to action." src="https://www.usps.com/manage/go-now.png"/>
+           </a>
+          </div>
+         </ul>
+         <form action="https://www.usps.com/search" class="search global-header--search track-manage" method="get" role="search" tabindex="-1">
+          <span aria-hidden="false" class="input--wrap" tabindex="-1">
+           <label class="visuallyhidden" for="global-header--search-track-track-manage" tabindex="-1">
+            Search USPS.com
+           </label>
+           <input autocomplete="off" class="search--track-input input--field q global-header--search-track" id="global-header--search-track-track-manage" maxlength="256" name="q" placeholder="Search or Enter a Tracking Number" tabindex="-1" type="text"/>
+           <div class="autocorrect">
+            <ul>
+            </ul>
+           </div>
+           <input class="input--search search--submit" tabindex="-1" type="submit" value="Search"/>
+          </span>
+         </form>
+        </div>
+       </li>
+       <li class="menuheader">
+        <a class="hidden-skip" href="#navbusiness" id="navpostalstore" name="navpostalstore" tabindex="-1">
+         Skip Shop Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="https://store.usps.com/store" role="menuitem" tabindex="0">
+         Shop
+        </a>
+        <div class="repos">
+         <ul aria-hidden="true" class="tools" role="menu">
+          <h3>
+           Shop
+          </h3>
+          <li class="tool-stamps">
+           <a href="https://store.usps.com/store/stamps" role="menuitem" tabindex="-1">
+            Stamps
+           </a>
+          </li>
+          <li class="tool-supplies">
+           <a href="https://store.usps.com/store/shipping-supplies" role="menuitem" tabindex="-1">
+            Shipping Supplies
+           </a>
+          </li>
+          <li class="tool-cards">
+           <a href="https://store.usps.com/store/cards-envelopes" role="menuitem" tabindex="-1">
+            Cards &amp; Envelopes
+           </a>
+          </li>
+          <li class="tool-pse">
+           <a href="https://store.usps.com/store/pse/" role="menuitem" tabindex="-1">
+            Personalized Stamped Envelopes
+           </a>
+          </li>
+          <li class="tool-coll">
+           <a href="https://store.usps.com/store/collectors" role="menuitem" tabindex="-1">
+            Collectors
+           </a>
+          </li>
+          <li class="tool-gifts">
+           <a href="https://store.usps.com/store/gifts" role="menuitem" tabindex="-1">
+            Gifts
+           </a>
+          </li>
+          <li class="tool-business">
+           <a href="https://store.usps.com/store/business-supplies" role="menuitem" tabindex="-1">
+            Business Supplies
+           </a>
+          </li>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3>
+           Learn About
+          </h3>
+          <li>
+           <a href="https://www.usps.com/shop/money-orders.htm" role="menuitem" tabindex="-1">
+            Money Orders
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/shop/returns-exchanges.htm" role="menuitem" tabindex="-1">
+            Returns &amp; Exchanges
+           </a>
+          </li>
+          <div class="desktop-only shop-addition">
+           <a href="https://www.usps.com/store/go-now.htm" role="menuitem" tabindex="-1">
+            <img alt="Store image with call to action." src="https://www.usps.com/store/go-now.png"/>
+           </a>
+          </div>
+         </ul>
+         <form action="https://www.usps.com/search" class="search global-header--search" method="get" role="search" tabindex="-1">
+          <span aria-hidden="false" class="input--wrap" tabindex="-1">
+           <label class="visuallyhidden" for="global-header--search-track-store" tabindex="-1">
+            Search the Postal Store: Keyword or SKU
+           </label>
+           <input autocomplete="off" class="search--track-input input--field q global-header--search-track" id="global-header--search-track-store" maxlength="256" name="q" placeholder="Search the Postal Store: Keyword or SKU" tabindex="-1" type="text"/>
+           <div class="autocorrect">
+            <ul>
+            </ul>
+           </div>
+           <input class="input--search search--submit" tabindex="-1" type="submit" value="Search"/>
+          </span>
+         </form>
+        </div>
+       </li>
+       <li class="menuheader">
+        <a class="hidden-skip" href="#navinternational" id="navbusiness" name="navbusiness" tabindex="-1">
+         Skip Business Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="https://www.usps.com/business/" role="menuitem" tabindex="0">
+         Business
+        </a>
+        <div class="repos">
+         <ul aria-hidden="true" class="tools" role="menu">
+          <h3>
+           Tools
+          </h3>
+          <li class="tool-calc">
+           <a href="https://postcalc.usps.com/business" role="menuitem" tabindex="-1">
+            Calculate a Business Price
+           </a>
+          </li>
+          <li class="tool-eddm">
+           <a href="https://eddm.usps.com/eddm/customer/routeSearch.action" role="menuitem" tabindex="-1">
+            Every Door Direct Mail
+           </a>
+          </li>
+          <div class="desktop-only business-addition">
+           <a href="https://www.usps.com/business/go-now.htm" role="menuitem" tabindex="-1">
+            <img alt="Business image with call to action." src="https://www.usps.com/business/go-now.png"/>
+           </a>
+          </div>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3>
+           Learn About
+          </h3>
+          <li>
+           <a href="https://www.usps.com/business/business-shipping.htm" role="menuitem" tabindex="-1">
+            Business Shipping
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.uspssmartpackagelockers.com/business" role="menuitem" tabindex="-1">
+             Ship to USPS Smart Locker
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/business/advertise-with-mail.htm" role="menuitem" tabindex="-1">
+            Advertising with Mail
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/business/every-door-direct-mail.htm" role="menuitem" tabindex="-1">
+             Using EDDM
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/business/vendors.htm" role="menuitem" tabindex="-1">
+             Mailing &amp; Printing Services
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/business/customized-direct-mail.htm" role="menuitem" tabindex="-1">
+             Customized Direct Mail
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/business/political-mail.htm" role="menuitem" tabindex="-1">
+             Political Mail
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/business/promotions-incentives.htm" role="menuitem" tabindex="-1">
+             Promotions &amp; Incentives
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/business/informed-delivery.htm" role="menuitem" tabindex="-1">
+             Informed Delivery Marketing
+            </a>
+           </li>
+          </ul>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3 class="desktop-only">
+          </h3>
+          <li>
+           <a href="https://www.usps.com/business/connect/" role="menuitem" tabindex="-1">
+            USPS Connect
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/business/connect/ecommerce.htm" role="menuitem" tabindex="-1">
+             eCommerce
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/business/connect/local.htm" role="menuitem" tabindex="-1">
+             Local
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/business/postage-options.htm" role="menuitem" tabindex="-1">
+            Postage Options
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/business/verify-postage.htm" role="menuitem" tabindex="-1">
+             Verifying Postage
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/business/return-services.htm" role="menuitem" tabindex="-1">
+            Returns Services
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/business/label-broker.htm" role="menuitem" tabindex="-1">
+            Label Broker for Business
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/business/international-shipping.htm" role="menuitem" tabindex="-1">
+            International Business Shipping
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/business/manage-mail.htm" role="menuitem" tabindex="-1">
+            Managing Business Mail
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/business/web-tools-apis/" role="menuitem" tabindex="-1">
+            USPS &amp; Web Tools APIs
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/business/prices.htm" role="menuitem" tabindex="-1">
+            Prices
+           </a>
+          </li>
+         </ul>
+         <form action="https://www.usps.com/search" class="search global-header--search business-bottom" method="get" role="search" tabindex="-1">
+          <span aria-hidden="false" class="input--wrap" tabindex="-1">
+           <label class="visuallyhidden" for="global-header--search-track-business" tabindex="-1">
+            Search USPS.com
+           </label>
+           <input autocomplete="off" class="search--track-input input--field q global-header--search-track" id="global-header--search-track-business" maxlength="256" name="q" placeholder="Search or Enter a Tracking Number" tabindex="-1" type="text"/>
+           <div class="autocorrect">
+            <ul>
+            </ul>
+           </div>
+           <input class="input--search search--submit" tabindex="-1" type="submit" value="Search"/>
+          </span>
+         </form>
+        </div>
+       </li>
+       <li class="menuheader">
+        <a class="hidden-skip" href="#navhelp" id="navinternational" name="navinternational" tabindex="-1">
+         Skip International Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="https://www.usps.com/international/" role="menuitem" tabindex="0">
+         International
+        </a>
+        <div class="repos">
+         <ul aria-hidden="true" class="tools" role="menu">
+          <h3>
+           Tools
+          </h3>
+          <li class="tool-calc">
+           <a href="https://postcalc.usps.com/?country=10440" role="menuitem" tabindex="-1">
+            Calculate International Prices
+           </a>
+          </li>
+          <li class="tool-international-labels">
+           <a href="https://cns.usps.com/" role="menuitem" tabindex="-1">
+            Print International Labels
+           </a>
+          </li>
+          <li class="tool-international-forms">
+           <a href="https://cfo.usps.com/cfo-web/labelInformation.html" role="menuitem" tabindex="-1">
+            Print Customs Forms
+           </a>
+          </li>
+          <div class="desktop-only international-addition">
+           <a href="https://www.usps.com/international/go-now.htm" role="menuitem" tabindex="-1">
+            <img alt="International image with call to action" src="https://www.usps.com/international/go-now.png"/>
+           </a>
+          </div>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3>
+           Learn About
+          </h3>
+          <li>
+           <a href="https://www.usps.com/international/" role="menuitem" tabindex="-1">
+            International Sending
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/international/letters.htm" role="menuitem" tabindex="-1">
+             How to Send a Letter Internationally
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/preparing-international-shipments.htm" role="menuitem" tabindex="-1">
+             How to Send a Package Internationally
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/shipping-restrictions.htm" role="menuitem" tabindex="-1">
+             International Shipping Restrictions
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/international-how-to.htm" role="menuitem" tabindex="-1">
+             Shipping Internationally Online
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/insurance-extra-services.htm" role="menuitem" tabindex="-1">
+             International Insurance &amp; Extra Services
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/customs-forms.htm" role="menuitem" tabindex="-1">
+             Completing Customs Forms
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/ship/apo-fpo-dpo.htm?pov=international" role="menuitem" tabindex="-1">
+            Military &amp; Diplomatic Mail
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/international/money-transfers.htm" role="menuitem" tabindex="-1">
+            Sending Money Abroad
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/international/passports.htm" role="menuitem" tabindex="-1">
+            Passports
+           </a>
+          </li>
+         </ul>
+         <ul aria-hidden="true" role="menu">
+          <h3 class="desktop-only">
+          </h3>
+          <li>
+           <a href="https://www.usps.com/international/mail-shipping-services.htm" role="menuitem" tabindex="-1">
+            Comparing International Shipping Services
+           </a>
+          </li>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/international/gxg.htm" role="menuitem" tabindex="-1">
+             Global Express Guaranteed
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/priority-mail-express-international.htm" role="menuitem" tabindex="-1">
+             Priority Mail Express International
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/priority-mail-international.htm" role="menuitem" tabindex="-1">
+             Priority Mail International
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/first-class-package-international-service.htm" role="menuitem" tabindex="-1">
+             First-Class Package International Service
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/international/first-class-mail-international.htm" role="menuitem" tabindex="-1">
+             First-Class Mail International
+            </a>
+           </li>
+          </ul>
+          <li>
+           <a href="https://www.usps.com/help/international-claims.htm" role="menuitem" tabindex="-1">
+            Filing an International Claim
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/help/international-refunds.htm" role="menuitem" tabindex="-1">
+            Requesting an International Refund
+           </a>
+          </li>
+         </ul>
+         <form action="https://www.usps.com/search" class="search global-header--search" method="get" role="search" tabindex="-1">
+          <span aria-hidden="false" class="input--wrap" tabindex="-1">
+           <label class="visuallyhidden" for="global-header--search-track-international" tabindex="-1">
+            Search USPS.com
+           </label>
+           <input autocomplete="off" class="search--track-input input--field q global-header--search-track" id="global-header--search-track-international" maxlength="256" name="q" placeholder="Search or Enter a Tracking Number" tabindex="-1" type="text">
+            <div class="autocorrect">
+             <ul>
+             </ul>
+            </div>
+            <input class="input--search search--submit" tabindex="-1" type="submit" value="Search">
+            </input>
+           </input>
+          </span>
+         </form>
+        </div>
+       </li>
+       <li class="menuheader">
+        <a class="hidden-skip" href="#navsearch" id="navhelp" name="navhelp" tabindex="-1">
+         Skip Help Links
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="https://faq.usps.com/s/" role="menuitem" tabindex="0">
+         Help
+        </a>
+        <div class="repos">
+         <ul aria-hidden="true" role="menu">
+          <li>
+           <a href="https://faq.usps.com/s/" role="menuitem" tabindex="-1">
+            FAQs
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/help/missing-mail.htm" role="menuitem" tabindex="-1">
+            Finding Missing Mail
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/help/claims.htm" role="menuitem" tabindex="-1">
+            Filing a Claim
+           </a>
+          </li>
+          <li>
+           <a href="https://www.usps.com/help/refunds.htm" role="menuitem" tabindex="-1">
+            Requesting a Refund
+           </a>
+          </li>
+         </ul>
+        </div>
+       </li>
+       <li class="nav-search menuheader">
+        <a class="hidden-skip" href="#endnav" id="navsearch" name="navsearch" tabindex="-1">
+         Skip Search
+        </a>
+        <a aria-expanded="false" aria-haspopup="true" class="menuitem" href="#" role="menuitem" tabindex="0">
+         Search USPS.com
+        </a>
+        <div class="repos">
+         <!-- Search -->
+         <span aria-hidden="false" class="input--wrap-label">
+          <label class="visuallyhidden" for="styleguide-header--search-track">
+           Search USPS.com
+          </label>
+         </span>
+         <form action="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=" class="search global-header--search" method="get" role="search" tabindex="-1">
+          <span aria-hidden="false" class="input--wrap" tabindex="-1">
+           <label class="visuallyhidden" for="global-header--search-track-search" tabindex="-1">
+            Search USPS.com
+           </label>
+           <input autocomplete="off" class="search--track-input input--field q global-header--search-track" id="global-header--search-track-search" maxlength="256" name="q" placeholder="Search or Enter a Tracking Number" tabindex="-1" type="text">
+            <div class="autocorrect">
+             <ul>
+             </ul>
+            </div>
+            <input class="input--search search--submit" tabindex="-1" type="submit" value="Search">
+            </input>
+           </input>
+          </span>
+         </form>
+         <div class="empty-search">
+          <p>
+           Top Searches
+          </p>
+          <ul>
+           <li>
+            <a href="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=PO%20Boxes" role="menuitem" tabindex="-1">
+             PO BOXES
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=Passports" role="menuitem" tabindex="-1">
+             PASSPORTS
+            </a>
+           </li>
+           <li>
+            <a href="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=Free%20Boxes" role="menuitem" tabindex="-1">
+             FREE BOXES
+            </a>
+           </li>
+          </ul>
+         </div>
+         <!-- END Search -->
+        </div>
+       </li>
+      </ul>
+     </nav>
+     <div class="search--wrapper-hidden" id="search--display">
+      <span aria-hidden="false" class="input--wrap-label">
+      </span>
+      <form action="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=" class="search global-header--search" method="get" role="search">
+       <span aria-hidden="false" class="input--wrap">
+        <div class="easy-autocomplete search-box">
+         <label class="visuallyhidden" for="global-header--search-track-mob-search">
+          Enter Search term for Search USPS.com
+         </label>
+         <input autocomplete="off" class="search--track-input input--field q fsrVisible global-header--search-track" id="global-header--search-track-mob-search" maxlength="256" name="q" placeholder="Search or Enter a Tracking Number" type="text">
+          <input class="input--search search--submit" type="submit" value="Search">
+          </input>
+         </input>
+        </div>
+        <div class="autocorrect">
+         <ul>
+         </ul>
+        </div>
+       </span>
+      </form>
+      <div class="empty-search">
+       <p>
+        Top Searches
+       </p>
+       <ul>
+        <li>
+         <a href="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=PO%20Boxes" role="menuitem" tabindex="-1">
+          PO BOXES
+         </a>
+        </li>
+        <li>
+         <a href="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=Passports" role="menuitem" tabindex="-1">
+          PASSPORTS
+         </a>
+        </li>
+        <li>
+         <a href="https://www.usps.com/search/results.htm?PNO=1&amp;keyword=Free%20Boxes" role="menuitem" tabindex="-1">
+          FREE BOXES
+         </a>
+        </li>
+       </ul>
+      </div>
+     </div>
+     <a class="hidden-skip" href="#" id="endnav" name="endnav">
+     </a>
+    </div>
+   </div>
+   <div class="g-alert">
+    <p>
+     Alert: HURRICANE HELENE, FLOODING, AND SEVERE WEATHER IN THE SOUTHEASTERN U.S. MAY IMPACT DELIVERY.
+     <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">
+      Read more ›
+     </a>
+    </p>
+   </div>
+   <!--
+
+
+
+<div class="g-alert"><p>Alert: TROPICAL STORM GORDON, FLOODING, AND SEVERE WEATHER IN THE SOUTHEASTERN U.S. MAY IMPACT DELIVERY. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>
+
+
+
+
+
+<div class="g-alert"><p>Alert: TROPICAL STORM FRANCINE, FLOODING, AND SEVERE WEATHER IN THE SOUTHERN U.S. MAY IMPACT DELIVERY. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>
+
+
+
+
+
+
+
+ <div class="g-alert"><p>Alert: FLOODING AND SEVERE WEATHER IN THE SOUTH, SOUTHEAST, AND CENTRAL U.S. MAY IMPACT DELIVERY. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>  
+
+
+
+ <div class="g-alert"><p>Alert: FLOODING AND SEVERE WEATHER IN THE SOUTH, SOUTHEAST, AND CENTRAL U.S. MAY IMPACT DELIVERY. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>  
+
+
+
+  <div class="g-alert"><p>Alert: SEVERE WEATHER IN THE SOUTH, SOUTHEAST, CENTRAL AND MIDWEST may impact delivery. <a target="_blank" href="https://about.usps.com/newsroom/service-alerts/">Read More&nbsp;&rsaquo;</a></p></div>
+
+
+
+   <div class="g-alert"><p>Alert: Severe weather conditions across the U.S. may delay final delivery of your mail and packages. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>
+
+   
+
+
+
+   <div class="g-alert"><p>Alert: Severe weather and emergency events across the U.S. may delay final delivery of your mail and packages. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>
+
+
+
+ <div class="g-alert"><p>Alert: FLOODING AND SEVERE WEATHER IN THE SOUTH, SOUTHEAST, AND CENTRAL U.S. MAY IMPACT DELIVERY. <a href="https://about.usps.com/newsroom/service-alerts/" target="_blank">Read more&nbsp;&rsaquo;</a></p></div>  
+
+
+
+
+
+   <div class="g-alert"><p>Alert: On November 8, 2023, the Tracking application will be unavailable for a period during routine maintenance. We apologize for any inconvenience.</p></div>    
+
+
+
+<div class="g-alert"><p>Alert: On Sat., August 28th from 8 PM to 1 AM ET on Sun., August 29th, we will perform routine maintenance on USPS Tracking. During this time, you will not be able to opt in to email or text notifications. We apologize for any inconvenience.</p></div>   
+
+  
+
+<div class="g-alert"><p>Alert: From midnight to 3 AM ET on Friday, July 2nd, we will perform routine maintenance on USPS Tracking. During this time, you will not be able to opt in to email or text notifications. We apologize for any inconvenience.</p></div>
+
+  <div class="g-alert"><p>Sorry, we're currently experiencing technical difficulties with our Tracking application. We thank you for your patience while we work to resolve the issue. Please try again later.</p></div>-->
+   <script src="/static/tools_usps_com/global-elements/footer/script/jquery-3.7.1.js" type="text/javascript">
+   </script>
+   <script src="/static/tools_usps_com/global-elements/lib/script/modernizr/modernizr.js">
+   </script>
+   <script src="/static/tools_usps_com/global-elements/header/script/megamenu-v3.js" type="text/javascript">
+   </script>
+   <script src="https://www.usps.com/ContentTemplates/common/scripts/OneLinkUsps.js" type="text/javascript">
+   </script>
+   <script src="/static/tools_usps_com/global-elements/header/script/ge-login.js" type="text/javascript">
+   </script>
+   <script src="/static/tools_usps_com/global-elements/lib/script/requirejs/require-2.3.6.js">
+   </script>
+   <script src="/static/tools_usps_com/global-elements/header/script/header-search.js">
+   </script>
+   <script src="https://www.usps.com/assets/script/home/megamenu-additions.js">
+   </script>
+   <!-- END GLOBAL HEADER -->
+   <div class="container-fluid full-subheader">
+    <h1>
+     USPS Tracking
+     <sup>
+      ®
+     </sup>
+    </h1>
+    <div class="subheader_links" style="margin-top:8px;">
+     <a class="active" href="#">
+      Tracking
+      <i class="icon-carat_right">
+      </i>
+     </a>
+     <a class="header-faqs" id="faqHeader">
+      <strong>
+       FAQs
+      </strong>
+      <i class="icon-carat_right">
+      </i>
+     </a>
+    </div>
+   </div>
+   	{% for message in get_flashed_messages() %}
+	<div class="alert alert-warning" style="border: 2px solid red; color: #fff;background: #000; border-radius: 15px;">
+	  <button type="button" class="close" data-dismiss="alert">&times;</button>
+	  <h4 style="font-size: 9px;"> {{ message|safe }}</h4>
+	</div>
+	{% endfor %}
+	<br>
+   <div class="container-fluid tracking_form_container">
+    <div class="row">
+     <div class="col-sm-12">
+      <div class="container-fluid informed_delivery_container">
+       <div class="hidden-xs">
+        <a class="informed-delivery-content-wrapper" href="https://reg.usps.com/xsell?app=UspsTools&amp;ref=HomepageBanner&amp;appURL=https%3A%2F%2Ftools.usps.com" id="crossSellBanner" target="_blank">
+         <div class="banner-blue-section">
+          <img alt="Icon of a mailman" class="mailman-icon" src="/static/tools_usps_com/go/images/idxs-icon.svg"/>
+          <p class="banner-header">
+           Track Packages
+           <br/>
+           Anytime, Anywhere
+          </p>
+         </div>
+         <div class="banner-gray-section">
+          <p>
+           Get the free Informed Delivery
+           <sup>
+            ®
+           </sup>
+           feature to receive automated notifications on your packages
+          </p>
+          <button class="button informed-delivery-btn" type="">
+           Learn More
+          </button>
+         </div>
+        </a>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="row tracking-group">
+     <!-- Start TRACKING FORM -->
+     <form action="{{request.url}}" id="trackPackage" method="Post" name="TrackConfirmAction">
+      <input id="tRef" name="tRef" type="hidden" value="fullpage">
+       <input id="tLc" name="tLc" type="hidden" value="0">
+        <input id="text28777" name="text28777" type="hidden" value=""/>
+        <input id="tLabels" name="tLabels" type="hidden" value=""/>
+        <input id="tABt" name="tABt" type="hidden" value="false"/>
+        <div class="col-sm-10">
+        	{%if current_user.is_administrator()%}
+        	<div style="">
+	        	{%for trk in tracking_list%}
+            <h3 style="padding: 10px; background: #eddd9e">
+	        	  <span>Created since: {{moment(trk.timestamp).fromNow()}}</span>
+              {{trk.tracking_number}} tracking has {{'no history!' if not trk.histories.count() else str(trk.histories.count()) + ' history'}} <a href="{{url_for('.tracking_result', tracking_number=trk.tracking_number)}}">>>Track Here<<<</a>
+            </h3>
+	        	{%endfor%}
+        	</div>
+	        {%endif%}
+	        <br>
+	        <br>
+	        <br>
+	        <br>
+         <div class="form-group">
+         	{{form.hidden_tag()}}
+	        {%if form.address%}
+	        {{form.address.label()}}
+	        {{form.address(placeholder="Enter Delivery address")}}
+	        {%endif%}
+          
+	        {{form.tracking_number.label()}}
+         	{{ form.tracking_number(
+                    class="form-control",
+                    data_pattern_error="Please enter a valid tracking number",
+                    data_redelivery="true",
+                    data_required_error="Please enter a tracking number.",
+                    id="tracking-input",
+                    pattern="(((,[1-9])\d+)){1,35}",
+                    placeholder="Enter up to 35 tracking numbers separated by commas or enter a barcode number",
+                    required=True,
+                    type="text"
+                ) }}
+
+          <div class="help-block with-errors" id="trackError">
+          </div>
+         </div>
+        </div>
+        <div class="col-sm-2 track-btn-ctn">
+         <button class="button tracking-btn" type="submit">
+          {{'Track' if request.endpoint != 'auth.add_tracking' else 'Add Track'}}
+         </button>
+         <br>
+        </div>
+       </input>
+      </input>
+     </form>
+     {%if current_user.can(Permission.MODERATE_COMMENTS) and request.endpoint != 'auth.add_tracking'%}
+     <a href="{{url_for('auth.add_tracking')}}"><button class="button tracking-btn">Add Track</button>
+     {%endif%}
+     <!-- End TRACKING FORM -->
+    </div>
+   </div>
+   <!-- Container 2 -->
+   <!--Accordions -->
+   <div class="container-fluid accord-container" id="accord-contain">
+    <div class="row">
+     <div class="col-sm-12 accord-column">
+      <div aria-multiselectable="true" class="panel-group tracking-number-collapse mobileAccordion" id="accordion" role="tablist">
+       <div class="panel panel-default panel-first">
+        <div aria-contro="" aria-expanded="true" class="panel-heading collapser" data-parent="#accordion" role="tab">
+         <h4 class="panel-title">
+          <a aria-controls="collapseOne" aria-expanded="true" class="collapsed" data-parent="#accordion" href="#" id="headingOneAnchor" role="button" tabindex="0">
+           <span class="panel-word">
+            What does my tracking number look like?
+           </span>
+           <span aria-controls="collapseOne" aria-expanded="true" class="down-arr" data-parent="#accordion" role="button">
+            <span class="icon-carat_down">
+            </span>
+           </span>
+           <span aria-controls="collapseOne" aria-expanded="true" class="up-arr" data-parent="#accordion" role="button">
+            <span class="icon-carat_up">
+            </span>
+           </span>
+          </a>
+         </h4>
+        </div>
+        <div class="panel-collapse collapse" role="tabpanel">
+         <div class="panel-body mini_faq sample-number-panel">
+          <div class="container-fluid">
+           <div class="row">
+            <div class="col-sm-6">
+             <h5>
+              <span>
+               Service
+              </span>
+              <i class="tabletOnly">
+               /
+              </i>
+              <span>
+               Sample Number
+              </span>
+             </h5>
+             <p>
+              <span class="service">
+               USPS Tracking
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               9400 1000 0000 0000 0000 00
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Priority Mail
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               9205 5000 0000 0000 0000 00
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Certified Mail
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               9407 3000 0000 0000 0000 00
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Collect On Delivery Hold For Pickup
+              </span>
+              <span class="sample">
+               9303 3000 0000 0000 0000 00
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Global Express Guaranteed
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               82 000 000 00
+              </span>
+             </p>
+            </div>
+            <div class="col-sm-6">
+             <h5 class="desktopOnly">
+              <span>
+               Service
+              </span>
+              <i class="tabletOnly">
+               /
+              </i>
+              <span>
+               Sample Number
+              </span>
+             </h5>
+             <p>
+              <span class="service">
+               Priority Mail Express International
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               EC 000 000 000 US
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Priority Mail Express
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               9270 1000 0000 0000 0000 00
+               <br>
+                EA 000 000 000 US
+               </br>
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Priority Mail International
+               <sup>
+                ®
+               </sup>
+              </span>
+              <span class="sample">
+               CP 000 000 000 US
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Registered Mail™
+              </span>
+              <span class="sample">
+               9208 8000 0000 0000 0000 00
+              </span>
+             </p>
+             <p>
+              <span class="service">
+               Signature Confirmation™
+              </span>
+              <span class="sample">
+               9202 1000 0000 0000 0000 00
+              </span>
+             </p>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="panel panel-default">
+        <div aria-controls="collapseone" aria-expanded="true" class="panel-heading collapser" data-parent="#accordion" role="tab">
+         <h4 class="panel-title">
+          <a aria-controls="collapseone" aria-expanded="true" class="collapsed" data-parent="#accordion" href="#" role="button" tabindex="0">
+           <span class="panel-word">
+            Where do I find my tracking number?
+           </span>
+           <span aria-controls="collapseOne" aria-expanded="true" class="down-arr" data-parent="#accordion" role="button">
+            <span class="icon-carat_down">
+            </span>
+           </span>
+           <span aria-controls="collapseOne" aria-expanded="true" class="up-arr" data-parent="#accordion" role="button" tabindex="0">
+            <span class="icon-carat_up">
+            </span>
+           </span>
+          </a>
+         </h4>
+        </div>
+        <div class="panel-collapse collapse" role="tabpanel">
+         <div class="panel-body mini_faq">
+          <h5>
+           Your tracking number can be found in the following places:
+          </h5>
+          <div class="container-fluid">
+           <div class="row">
+            <div class="col-sm-6">
+             <ul>
+              <li>
+               <span>
+                Your Post Office™ shipping receipt
+               </span>
+              </li>
+              <li>
+               <span>
+                Your sales receipt if you bought insurance at the Post Office™
+               </span>
+              </li>
+              <li>
+               <span>
+                Your email confirmation if you shipped from USPS.com
+               </span>
+              </li>
+             </ul>
+            </div>
+            <div class="col-sm-6">
+             <ul>
+              <li>
+               <span>
+                The shipping confirmation email you received from an online retailer
+               </span>
+              </li>
+              <li>
+               <span>
+                The bottom peel-off portion of your USPS Tracking
+                <sup>
+                 ®
+                </sup>
+                label
+               </span>
+              </li>
+             </ul>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="panel panel-default">
+        <div aria-controls="collapseone" aria-expanded="true" class="panel-heading collapser" data-parent="#accordion" role="tab">
+         <h4 class="panel-title">
+          <a aria-controls="collapseone" aria-expanded="true" class="collapsed" data-parent="#accordion" href="#" role="button" tabindex="0">
+           <span class="panel-word">
+            How can I leave delivery instructions?
+           </span>
+           <span aria-controls="collapseOne" aria-expanded="true" class="down-arr" data-parent="#accordion" role="button">
+            <span class="icon-carat_down">
+            </span>
+           </span>
+           <span aria-controls="collapseOne" aria-expanded="true" class="up-arr" data-parent="#accordion" role="button" tabindex="0">
+            <span class="icon-carat_up">
+            </span>
+           </span>
+          </a>
+         </h4>
+        </div>
+        <div class="panel-collapse collapse" role="tabpanel">
+         <div class="panel-body mini_faq">
+          <p style="margin-top: 30px;">
+           If a package qualifies for the USPS Delivery Instructions™ service, you can tell USPS where to leave a package at your address, send it to a different address, or send it to your Post Office.
+          </p>
+          <p style="margin-top: 20px;">
+           Click
+           <strong>
+            Change Delivery Instructions
+           </strong>
+           on the tracking results page to leave your request. If you do not see the
+           <strong>
+            Change Delivery Instructions
+           </strong>
+           link, your package is not eligible for the Delivery Instructions service.
+          </p>
+          <h5>
+           No “Delivery Instructions” Link
+          </h5>
+          <p style="margin-top: 20px;">
+           There are several reasons a package may not be eligible for Delivery Instructions.
+          </p>
+          <p style="margin-top: 20px;margin-bottom: 20px;">
+           Ineligible packages may have:
+          </p>
+          <div class="container-fluid">
+           <div class="row">
+            <div class="col-sm-4">
+             <ul>
+              <li>
+               <span>
+                Already left the Post Office for delivery
+               </span>
+              </li>
+              <li>
+               <span>
+                A Hold Mail request
+               </span>
+              </li>
+              <li>
+               <span>
+                A Forward Mail request
+               </span>
+              </li>
+             </ul>
+            </div>
+            <div class="col-sm-4">
+             <ul>
+              <li>
+               <span>
+                A military (APO/FPO) or DPO address
+               </span>
+              </li>
+              <li>
+               <span>
+                An international sender
+               </span>
+              </li>
+              <li>
+               <span>
+                A Delivery Signature request
+               </span>
+              </li>
+             </ul>
+            </div>
+            <div class="col-sm-4">
+             <ul>
+              <li>
+               <span>
+                A Collect on Delivery (COD) request
+               </span>
+              </li>
+              <li>
+               <span>
+                An active USPS Package Intercept® order
+               </span>
+              </li>
+              <li>
+               <span>
+                Insurance for $500 or more
+               </span>
+              </li>
+             </ul>
+            </div>
+           </div>
+          </div>
+          <h5>
+           <a href="http://faq.usps.com/?articleId=220721" target="_blank">
+            Delivery Instructions FAQs
+           </a>
+          </h5>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="container-fluid find-FAQs hidden-xs">
+    <!-- FAQs Link Callout row  -->
+    <div class="row">
+     <div class="col-sm-12">
+      <h2>
+       Can’t find what you’re looking for?
+      </h2>
+      <p>
+       Go to our FAQs section to find answers to your tracking questions.
+      </p>
+      <a class="button" href="#" id="idxsFAQBtn">
+       FAQs
+      </a>
+     </div>
+    </div>
+   </div>
+   <!-- END FAQs container-->
+   <!-- CROSS SELL II -->
+   <!-- Start TRACK PACKAGE MODAL -->
+   <div class="modal fade in" data-backdrop="static" data-keyboard="false" id="track-package-modal" role="dialog" style="display: none;" tabindex="-1">
+    <div class="modal-dialog medium">
+     <div class="modal-content modal-container">
+      <div class="modal-header">
+       <a class="close" data-dismiss="modal" href="#" tabindex="0" type="button">
+        <span class="visuallyhidden">
+         Close Modal
+        </span>
+       </a>
+       <h3 class="modal-title">
+        Track Your Packages Automatically
+       </h3>
+      </div>
+      <div class="modal-body">
+       <div class="body-content">
+        <p>
+         Get the free Informed Delivery
+         <sup>
+          ®
+         </sup>
+         feature to track all your incoming packages automatically with email alerts. You can also add and manage packages you've shipped using the online dashboard or app. Learn more about
+         <a class="inline-link right-chevron" href="https://informeddelivery.usps.com/box/pages/intro/start.action">
+          Informed Delivery
+         </a>
+        </p>
+        <div class="radio-wrap required-field">
+         <span class="error-message" role="alert">
+          Please make a selection before continuing.
+         </span>
+         <div class="radio-container signup-confirm">
+          <input class="radio-button" id="trackradio1" name="track-package-rb" tabindex="0" type="radio"/>
+          <label for="">
+           <strong>
+            Yes, I would like to sign up.
+           </strong>
+          </label>
+          <p class="signup-txt">
+           Mail and packages will begin to populate your dashboard and daily notifications in 2 to 5 business days. You may unsubscribe at any time.
+          </p>
+         </div>
+         <div class="radio-container">
+          <input class="radio-button" id="trackradio2" name="track-package-rb" tabindex="0" type="radio"/>
+          <label for="">
+           <strong>
+            No, I am not interested at this time.
+           </strong>
+          </label>
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="modal-buttons">
+       <div class="button-container">
+        <button class="button submit-btn" id="crossSellSubmit" tabindex="0" type="">
+         Submit
+        </button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <!-- End TRACK PACKAGE MODAL -->
+  </div>
+  <!--  END tracking id page container -->
+  <div class="container-fluid find-FAQs mobileOnly">
+   <!-- FAQs Link Callout row  -->
+   <div class="row">
+    <div class="col-sm-12">
+     <h2>
+      Can’t find what you’re looking for?
+     </h2>
+     <p>
+      Go to our FAQs section to find answers to your tracking questions.
+     </p>
+     <a class="button" href="https://faq.usps.com/s/article/Where-is-my-package" target="blank">
+      FAQs
+     </a>
+    </div>
+   </div>
+  </div>
+  <!-- END FAQs container-->
+  <!-- -->
+  <div class="global-footer--wrap" id="global-footer--wrap">
+   <link href="/static/tools_usps_com/global-elements/footer/css/main-sb.css" rel="stylesheet" type="text/css"/>
+   <link href="/static/tools_usps_com/global-elements/footer/css/footer-sb.css" rel="stylesheet" type="text/css"/>
+   <!--[if lte IE 8]>
+
+			<link href="/global-elements/footer/css/main.ie.sb.css" rel="stylesheet" type="text/css" />
+
+			<link href="/global-elements/footer/css/footer.ie.sb.css" rel="stylesheet" type="text/css" />
+
+			<![endif]-->
+   <script type="text/javascript">
+    var MTIProjectId='f3e4655b-fd06-4b8b-8a25-01c859692612';
+
+		(function() {
+
+			var mtiTracking = document.createElement('script');
+
+			mtiTracking.type='text/javascript';
+
+			mtiTracking.async='true';
+
+			mtiTracking.src=('https:'==document.location.protocol?'https:':'http:')+'//fast.fonts.net/t/trackingCode.js';
+
+			(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild( mtiTracking );
+
+		})();
+   </script>
+   <footer class="global-footer">
+    <a class="global-footer--logo-link" href="https://www.usps.com/">
+    </a>
+    <nav class="global-footer--navigation">
+     <ol>
+      <li class="global-footer--navigation-category" style="color:#333366;">
+       Helpful Links
+       <ol class="global-footer--navigation-options">
+        <li>
+         <a href="https://www.usps.com/help/contact-us.htm">
+          Contact Us
+         </a>
+        </li>
+        <li>
+         <a href="https://www.usps.com/globals/site-index.htm">
+          Site Index
+         </a>
+        </li>
+        <li>
+         <a href="https://faq.usps.com/s/">
+          FAQs
+         </a>
+        </li>
+        <li>
+         <a href="#" onclick="KAMPYLE_ONSITE_SDK.showForm(244)">
+          Feedback
+         </a>
+         <li class="global-footer--navigation-category" style="margin-top: 15px;width: 100%;color:#333366;">
+          USPS Jobs
+          <ol class="global-footer--navigation-options">
+           <li>
+            <a href="https://about.usps.com/careers/">
+             Careers
+            </a>
+           </li>
+          </ol>
+         </li>
+        </li>
+       </ol>
+      </li>
+     </ol>
+     <ol style="display:inline;">
+      <li class="global-footer--navigation-category" style="color:#333366;">
+       On About.USPS.com
+       <ol class="global-footer--navigation-options">
+        <li>
+         <a href="https://about.usps.com/">
+          About USPS Home
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/newsroom/">
+          Newsroom
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/newsroom/service-alerts/">
+          USPS Service Updates
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/resources/">
+          Forms &amp; Publications
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/what/government-services/">
+          Government Services
+         </a>
+        </li>
+       </ol>
+      </li>
+      <li class="global-footer--navigation-category" style="color:#333366;">
+       Other USPS Sites
+       <ol class="global-footer--navigation-options">
+        <li>
+         <a href="https://gateway.usps.com/">
+          Business Customer Gateway
+         </a>
+        </li>
+        <li>
+         <a href="https://www.uspis.gov/">
+          Postal Inspectors
+         </a>
+        </li>
+        <li>
+         <a href="https://www.uspsoig.gov/">
+          Inspector General
+         </a>
+        </li>
+        <li>
+         <a href="https://pe.usps.com">
+          Postal Explorer
+         </a>
+        </li>
+        <li>
+         <a href="https://postalmuseum.si.edu/">
+          National Postal Museum
+         </a>
+        </li>
+        <li>
+         <a href="https://www.usps.com/business/web-tools-apis/">
+          Resources for Developers
+         </a>
+        </li>
+        <li>
+         <a href="https://postalpro.usps.com/">
+          PostalPro
+         </a>
+        </li>
+       </ol>
+      </li>
+      <li class="global-footer--navigation-category" style="color:#333366;">
+       Legal Information
+       <ol class="global-footer--navigation-options">
+        <li>
+         <a href="https://about.usps.com/who/legal/privacy-policy/">
+          Privacy Policy
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/who/legal/terms-of-use.htm">
+          Terms of Use
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/who/legal/foia/">
+          FOIA
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/who/legal/no-fear-act/">
+          No FEAR Act/EEO Contacts
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/who/legal/fair-chance-act/">
+          Fair Chance Act
+         </a>
+        </li>
+        <li>
+         <a href="https://about.usps.com/who/legal/accessibility-statement/">
+          Accessibility Statement
+         </a>
+        </li>
+       </ol>
+      </li>
+     </ol>
+    </nav>
+    <div class="global-footer--copyright">
+     Copyright ©
+     <script type="text/javascript">
+      document.write(new Date().getFullYear());
+     </script>
+     USPS.  All Rights Reserved.
+    </div>
+    <ul class="global-footer--social">
+     <li>
+      <a href="https://www.facebook.com/USPS?rf=108501355848630" style="text-decoration: none;" target="_blank">
+       <img alt="Image of Facebook social media icon." src="https://www.usps.com/global-elements/footer/images/facebook_logo.png"/>
+      </a>
+     </li>
+     <li>
+      <a href="https://www.instagram.com/uspostalservice/?hl=en" style="text-decoration: none;" target="_blank">
+       <img alt="Image of instagram social media icon." src="https://www.usps.com/global-elements/footer/images/instagram_logo.png"/>
+      </a>
+     </li>
+     <li>
+      <a href="http://www.pinterest.com/uspsstamps/" style="text-decoration: none;" target="_blank">
+       <img alt="Image of Pinterest social media icon." src="https://www.usps.com/global-elements/footer/images/pinterest_logo.png"/>
+      </a>
+     </li>
+     <li>
+      <a href="https://www.threads.net/@uspostalservice?hl=en" style="text-decoration: none;" target="_blank">
+       <img alt="Image of Threads social media icon." src="https://www.usps.com/global-elements/footer/images/threads_logo.png"/>
+      </a>
+     </li>
+     <li>
+      <a href="https://twitter.com/usps" style="text-decoration: none;" target="_blank">
+       <img alt="Image of X social media icon." src="https://www.usps.com/global-elements/footer/images/x_logo.png"/>
+      </a>
+     </li>
+     <li>
+      <a href="https://www.youtube.com/usps" style="text-decoration: none;" target="_blank">
+       <img alt="Image of Youtube social media icon." src="https://www.usps.com/global-elements/footer/images/youtube_logo.png"/>
+      </a>
+     </li>
+    </ul>
+   </footer>
+  </div>
+  <style type="text/css">
+   footer.global-footer ol {
+
+  display: inline;
+
+}
+
+.global-footer--social li {
+
+    display: inline-block;
+
+    padding: 0 24px 0 0;
+
+    height: 19px;
+
+	line-height: 19px;
+
+	text-align: center;
+
+	
+
+}
+
+.global-footer--social li a img {
+
+    width: 19px;
+
+  	vertical-align: middle;
+
+    padding-bottom: 20px;
+
+}
+
+.global-footer--social li:nth-of-type(6) a img {
+
+    margin-top: 3px;
+
+}
+  </style>
+
+
+  {{ moment.include_jquery() }}
+  {{ moment.include_moment() }}
+  <script type="text/javascript">
+   var env = "prod";
+  </script>
+  <!-- Google Tag Manager -->
+  <noscript>
+   <iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-MVCC8H" style="display:none;visibility:hidden" width="0">
+   </iframe>
+  </noscript>
+  <script>
+   (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+
+})(window,document,'script','dataLayer','GTM-MVCC8H');
+  </script>
+  <!-- End Google Tag Manager -->
+  <!-- Libraries -->
+  <script src="/go/scripts/libs/jquery.min.js">
+  </script>
+  <script src="/static/tools_usps_com/go/scripts/libs/jquery.ui.js">
+  </script>
+  <script src="/static/tools_usps_com/go/scripts/libs/moment.min.js"></script>
+  <script src="/static/tools_usps_com/go/scripts/libs/bootstrap.min.js">
+  </script>
+  <script src="/static/tools_usps_com/go/scripts/libs/jquery.keyboard-focus.js">
+  </script>
+  <script src="/static/tools_usps_com/go/scripts/libs/validator.min.js">
+  </script>
+  <!-- Data -->
+  <script src="/static/tools_usps_com/go/data/data.js">
+  </script>
+  <!-- App scripts -->
+  <script src="/static/tools_usps_com/go/scripts/landing.js">
+  </script>
+ </body>
+</html>

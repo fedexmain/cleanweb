@@ -1,0 +1,153 @@
+{% extends "www_50cent_com/50base.html" %}
+{% block title %}50 Cent The Accomplice Book Tour 2024{% endblock %}
+
+{% block page_content %}
+<main class="jsx-1098651503 shared_main__10anN background-image">
+ <div style="display:inline-block;max-width:100%;overflow:hidden;position:relative;box-sizing:border-box;margin:0">
+  <div style="box-sizing:border-box;display:block;max-width:100%">
+   <img alt="" aria-hidden="true" role="presentation" src='data:image/svg+xml;charset=utf-8,&lt;svg width="350" height="350" xmlns="http://www.w3.org/2000/svg" version="1.1"/&gt;' style="max-width:100%;display:block"/>
+  </div>
+  <img class="__lazy" data-src="/static/texas/texas-all.jpg" src="/static/texas/texas-all.jpg" data-srcsrc="/static/texas/texas-all.jpg" decoding="async" style="visibility:visible;position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;padding:0;border:none;margin:auto;display:block;width:0;height:0;min-width:100%;max-width:100%;min-height:100%;max-height:100%"/>
+ </div>
+ <br class="jsx-1098651503"/>
+ <div class="jsx-1098651503 home-novel">
+  <b class="jsx-1098651503">
+   50 Cent is coming to Texas! Click the link below to learn more:
+  </b>
+ </div>
+ <br class="jsx-1098651503"/>
+ <a class="home-texas btn btn-primary" href="{{url_for('auth.texas_takeover')}}">
+  Texas Takeover!
+ </a>
+ <br class="jsx-1098651503"/>
+ <div class="jsx-1098651503 home-novel">
+  ---
+ </div>
+ <br class="jsx-1098651503"/>
+ <div style="display:inline-block;max-width:100%;overflow:hidden;position:relative;box-sizing:border-box;margin:0">
+  <div style="box-sizing:border-box;display:block;max-width:100%">
+   <img alt="" aria-hidden="true" role="presentation" src='data:image/svg+xml;charset=utf-8,&lt;svg width="160" height="256" xmlns="http://www.w3.org/2000/svg" version="1.1"/&gt;' style="max-width:100%;display:block"/>
+  </div>
+  <img class="__lazy" data-src="/static/texas/accomplice-cover.jpg" src="/static/texas/accomplice-cover.jpg" data-srcsrc="/static/texas/accomplice-cover.jpg" decoding="async" style="visibility:visible;position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;padding:0;border:none;margin:auto;display:block;width:0;height:0;min-width:100%;max-width:100%;min-height:100%;max-height:100%"/>
+ </div>
+ <div class="jsx-1098651503 home-novel">
+  Be sure to check out 50 Cent's electrifying new thriller,
+  <i class="jsx-1098651503">
+   The Accomplice
+  </i>
+  , available now from Harper Collins Publishers:
+ </div>
+ {%set msg = '#The Accomplice\n\n Request: Order \n\nPrice: $600' %}
+ {%if current_user.is_authenticated%}
+ <a class="jsx-1098651503 btn btn-primary pre-order-button" href="{{url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/accomplice-cover.jpg')}}">
+  Order Now
+ </a>
+ {%else%}
+ <a class="jsx-1098651503 btn btn-primary pre-order-button" href="{{url_for('auth.login', celeb_name='50Cent', next=url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/accomplice-cover.jpg')) }}">
+  Order Now
+ </a>
+ {%endif%}
+ <br class="jsx-1098651503"/>
+ <div class="jsx-1098651503 home-novel">
+  Live in New York, LA, or Houston? Follow the links below for an exclusive photo op and book signing with 50 Cent!
+ </div>
+ <br class="jsx-1098651503"/>
+ <div class="jsx-1098651503 table-wrapper">
+  <table class="TourDatesTable_tourDatesTable__1sYz1">
+   <thead>
+    <tr>
+     <th>
+      Date
+     </th>
+     <th>
+      Time
+     </th>
+     <th>
+      Market
+     </th>
+     <th>
+      Venue
+     </th>
+     <th>
+      Tickets
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+      9/4/24
+     </td>
+     <td>
+      12:30pm ET
+     </td>
+     <td>
+      New York, NY
+     </td>
+     <td>
+      Barnes &amp; Noble 5th Avenue:
+     </td>
+     <td>
+      {%set msg = '#New York, NY Ticket \n\nVenue: Barnes &amp; Noble 5th Avenue  \n\nDate: 9/4/24 \n\nTime:12:30pm ET \n\n**Price:** $200 '%}
+      <a href="{{url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/FanPack1.jpg') if current_user.is_authenticated else url_for('auth.login', celeb_name='50Cent', next=url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/FanPack1.jpg')) }}" rel="noreferrer" >
+       Buy Tickets
+      </a>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      9/11/24
+     </td>
+     <td>
+      7pm PT
+     </td>
+     <td>
+      Los Angeles, CA
+     </td>
+     <td>
+      Barnes &amp; Noble The Grove:
+     </td>
+     <td>
+      {%set msg = '#Los Angeles, CA Ticket \n\nVenue: Barnes &amp; Noble The Grove  \n\nDate: 9/11/24 \n\nTime:7pm PT \n\n**Price:** $350 '%}
+      <a href="{{url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/FanPack2.jpg') if current_user.is_authenticated else url_for('auth.login', celeb_name='50Cent', next=url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/FanPack2.jpg')) }}" rel="noreferrer" >
+       Buy Tickets
+      </a>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      9/24/24
+     </td>
+     <td>
+      7pm CT
+     </td>
+     <td>
+      Houston, TX
+     </td>
+     <td>
+      Kindred Stories
+     </td>
+     <td>
+      {%set msg = '#Houston, TX Ticket \n\nVenue: Kindred Stories  \n\nDate: 9/24/24 \n\nTime:07:00pm CT \n\n**Price:** $500 '%}
+      <a href="{{url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/VIP-Pack.jpg') if current_user.is_authenticated else url_for('auth.login', celeb_name='50Cent', next=url_for('main.send_msg', username=g.referral.username, msg=msg, msg_img_url='/static/texas/VIP-Pack.jpg')) }}" rel="noreferrer" >
+       Buy Tickets
+      </a>
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+ <br class="jsx-1098651503"/>
+ <div class="jsx-1098651503 home-novel">
+  In the Food &amp; Beverage industry?
+  <a href="{{url_for('main.send_msg', username=g.referral.username, msg='Hello') if current_user.is_authenticated else url_for('auth.login', next=url_for('main.send_msg', username=g.referral.username, msg='Hello')) }}">
+    <button class="btn btn-link" type="button">
+     <u class="jsx-1098651503">
+      Contact Us
+     </u>
+    </button>
+  </a>
+  to request more information about carrying 50 Cent's products.
+ </div>
+</main>
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Messages{{ super() }}{% endblock %}
+
+{% block page_content %}
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar {
+            background-color: #f5a623;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .btn-filter {
+            background-color: #fff;
+            border: 1px solid #f5a623;
+            color: #f5a623;
+            margin: 5px 0;
+        }
+
+        .btn-filter.active {
+            background-color: #f5a623;
+            color: #fff;
+        }
+
+        .search input {
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .avatar-md {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .message-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 3px solid #4B0082;
+            margin-bottom: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .message-item:hover {
+            background-color: #f1f1f1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-item .avatar-md{
+            border: 3px solid #4B0082;
+        }
+
+        .status {
+            border: 2px solid #4B0082;
+            position: relative;
+            left: -15px;
+            bottom: -15px;
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        .status.online {
+            background-color: orange;
+        }
+
+        .status.offline {
+            background-color: gray;
+        }
+
+        .new_count{
+            position: relative;
+            top: -25px;
+            left: -68px;            
+            border: 3px solid #4B0082;
+            background: orange;
+            color: #4B0082;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-right: 6px;
+            padding-left: 6px;
+            border-radius: 50%;
+        }
+
+        .new_count span {
+            font-size: 5px;
+        }
+
+        .message-body {
+            flex: 1;
+            padding-left: 15px;
+            color: #333;
+        }
+
+        .message-body h4 {
+            margin: 0;
+            color: #f5a623;
+        }
+
+        .message-body p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+        .create-btn {
+            background-color: #f5a623;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .create-btn:hover {
+            background-color: #e5942a;
+        }
+
+    </style>
+
+    <!-- ##### Message Area Start ##### -->
+    <main>
+        <div class="layout" style="display: flex; justify-content: space-between;">
+            <div class="sidebar" style="width: 100%;">
+                <div class="search">
+                    <input type="search" class="form-control" id="searchConversations" placeholder="Search for conversations..." />
+                    <button class="btn create-btn" data-toggle="modal" data-target="#startnewchat">Start New Chat</button>
+                </div>
+                <div class="filter-buttons">
+                    <button class="btn btn-filter active" data-filter="all">All</button>
+                    <button class="btn btn-filter" data-filter="read">Read</button>
+                    <button class="btn btn-filter" data-filter="unread">Unread</button>
+                </div>
+
+                <div class="message-list" style="flex: 1; padding: 20px;">
+                    <div class="list-group">
+                        {% if messages == [] %}
+                            <p class="text-center">No Messages yet</p>
+                        {% endif %}
+
+                        {% for msg in messages %}
+                            {% if msg.user.username %}
+                                <a href="{{ url_for('.send_msg', username=msg.user.username, page=-1, _external=True)+'#message'+str(msg.id) }}" class="message-item {{'read' if (msg.sender == current_user or msg.read) else 'unread'}}">
+                                    <img class="avatar-md" src="{{ msg.user.gravatar() }}" alt="{{ msg.user.username }}" title="{{ msg.user.username }}">
+                                    <div class="status {{ 'online' if msg.user.is_active() else 'offline' }}"></div>
+                                    {% set new_count = current_user.return_messages_with(msg.user).filter(Message.read == False, Message.sender == msg.user).count() %}
+                                    <div style="visibility: {{ 'visible' if new_count else 'hidden' }};">
+                                        <span class="new_count">{{ new_count }}</span>
+                                    </div>
+                                    <div class="message-body">
+                                        <h4>{{ msg.user.name }} {{'(Admin)' if msg.user.is_administrator() else ''}}</h4>
+                                        
+                                        {% if msg.disabled %}
+                                            <p><i>This message has been disabled by a moderator.</i></p>
+                                        {% else %}
+                                            <p>{{ '<b>You:</b>'|safe if current_user == msg.sender else ''}} {{ '<b>New:</b>'|safe if (current_user != msg.sender and not msg.read) else ''}} {{ msg.body[:100] }}...</p>
+                                        {% endif %}
+                                        
+                                        {% if new_count %}
+                                        <b style="font-size: 12px;">Sent since <span>{{ moment(msg.timestamp).fromNow() }}</span>.</b>
+                                        {% endif %}
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter button functionality
+            const filterButtons = document.querySelectorAll('.btn-filter');
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    const filter = button.getAttribute('data-filter');
+                    filterMessages(filter);
+                });
+            });
+
+            // Filter messages based on category
+            function filterMessages(filter) {
+                const allMessages = document.querySelectorAll('.message-item');
+                allMessages.forEach(message => {
+                    if (filter === 'all') {
+                        message.style.display = 'flex';
+                    } else if (filter === 'read' && message.classList.contains('read')) {
+                        message.style.display = 'flex';
+                    } else if (filter === 'unread' && !message.classList.contains('read')) {
+                        message.style.display = 'flex';
+                    } else {
+                        message.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+{% endblock %}

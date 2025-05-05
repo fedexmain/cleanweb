@@ -1,0 +1,502 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+
+    
+    {% block title %} |{{ web_data.name}} {% endblock %}
+
+
+    {% block head %}
+    {{super()}}
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- You can use Open Graph tags to customize link previews.
+    Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="data:image/x-icon;base64,AAABAAIAEBAAAAEAIABoBAAAJgAAACAgAAABACAAqBAAAI4EAAAoAAAAEAAAACAAAAABACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8AxYmmgOjR3ED16/BAsF6F/6hNeP/RobjAunOV/6xWf//FiaaAf7X/gH+y/4B/sv+Aosf/gKDG/4CQvP+AsdD/gIwUTf/UqL2Azpy0wKRGc//Robj/tmqO/5MiWP/t2+OAjBRN/wBr//9Mk//Af7L/gNXl/4ANbf//GXX//+Pu/0CMFE3/pkp2/6JCb/+WKV3/q1R+/5YqXf+RH1X/27bIgIwUTf8Aa///OIj//2yn//+wz//ACmz//xBv///L3/+AjBRN/69bg8DNmrKAu3WX/65agv/kydbAypOt/7Bfhv+MFE3/AGv//0qS/8CIuP+AkLz/gLbT/4Crzf+AoMb/gIwUTf+sVn/AxYmmgP///wD///8A////AP///wD///8AjBRN/wBr//9Fj//Af7L/gP3+/0D///8A////AP///wDFiaaAxYmmgMWJpoD///8A////AP///wD///8A////AMWJpoB/tf+Af7L/gH+y/4D9/v9A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP//AAD//wAA//8AAP//AAD//wAA//8AAGAAAAAAAQAAAAAAAAAAAAAfDwAAHw8AAP//AAD//wAA//8AAP//AAAoAAAAIAAAAEAAAAABACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A373N/8uVr//HjKj/unKU/9qzxf////8A7dvk/8uUrv/JkKv/0aK4/////wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wCMFE3/jBRN/6VIdP////8A////ANmyxP+MFE3/jBRN/5MiV/+MFE3/jBRN/+DA0P+nS3f/jBRN/4wUTf+MFE3/jBRN/4wUTf8Aa///AGv//wBm//8AZv//AGb//wBm//+Luf//AGb//wBm//+Dtf//RY///wBm//8AZv//yN7//4wUTf+MFE3/qlF7/////wD///8AqVB6/4wUTf/LlK7//fv8/9ivwv/Eh6T/tGaL/4wUTf+RHlX/2rTG/926y/+MFE3/jBRN/wBr//8Aa///AGb//wBm//8AZv//AGb//////wBcnf//AGb//wBm//8AZv//AGb//4+8//////8AjBRN/4wUTf+rVH3/////AP78/f+VJlv/jBRN/7Behf+1aI3/unOV/798nP+iQG//jBRN/6NDcf////8A////AIwUTf+MFE3/AGv//wBr//8xg///////AP///wD///8A////APr8//80hf//AGb//wBm//9npP//////AP///wCMFE3/jBRN/6JBb//hwtH/3brL/5UmWv+MFE3/jBRN/4wUTf+MFE3/jBRN/4wUTf+MFE3/njho/////wD///8AjBRN/4wUTf8Aa///AGv//yR8//+/2f//wNn//8rf//////8Avtj//xRy//8AZv//AGb//zSF///p8v//////AIwUTf+MFE3/jBRN/4wUTf+MFE3/jBRN/4wUTf+2ao7/6dPd/61Ygf+MFE3/t2yP/5AcU/+MFE3/uG2R/7lwk/+MFE3/jBRN/wBr//8Aa///AGb//wBm//8AZv//KH7//+jx//8dd///AGb//xVz//8Mbf//AGb//0WP//////8AjBRN/4wUTf+MFE3/jBRN/4wUTf+sVn//nDVm/4wUTf+MFE3/jBRN/6JBb//69vj/w4Si/4wUTf+MFE3/jBRN/4wUTf+MFE3/AGv//wBr//8AZv//AGb//wBm//8lfP//Q47//wBm//8QcP//y+D//6zN//8Faf//AGb//4W2//+MFE3/jBRN/6VIdP////8A////AP///wD06O7/06W7/8yWr//Wqr//+PH1/////wD+/P3/3LjJ/86btP/dusv/jBRN/4wUTf8Aa///AGv//yl///////8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AIwUTf+MFE3/mjFj/////wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wCMFE3/jBRN/wBr//8Aa///F3T//////wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8AjBRN/4wUTf+MFE3/jBRN/4wUTf+MFE3/////AP///wD///8A////AP///wD///8A////AP///wD///8A////AIwUTf+MFE3/AGv//wBr//8AZv//AGb//wBm//8AZv//+vz//////wD///8A////AP///wD///8A////AP///wCMFE3/jBRN/4wUTf+MFE3/jBRN/4wUTf////8A////AP///wD///8A////AP///wD///8A////AP///wD///8AjBRN/4wUTf8Aa///AGv//wBm//8AZv//AGb//wBm///6/P//////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP////////////////////////////////////////////////////////////////wQ//8YAAAAGAAAgRADB4MAAwCBAAAAAQAAAAAcEAf/H/8H/wP/AH8D/wB/////////////////////////////////////////////////"
+    />
+
+    <meta name="og:type" content="website" />
+    <meta name="og:site_name" content="FedEx" />
+    <meta name="og:url" content="{{request.url}}" />
+    <meta name="og:title" content="The New FedEx.com - Tracking, Shipping &amp; Locations" />
+    <meta name="og:description" content="Login to your account or learn more about how to become a better shipper, printing offers, or get inspiration for your small business." />
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- ================================================ -->
+    <!--<link rel="stylesheet" href="/static/academy/style.css">-->
+    <link href="/static/dist/css/swipe.min.css" type="text/css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/static/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/jquery-ui.css">
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/static/css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="/static/css/jquery.fancybox.min.css">
+
+    <link rel="stylesheet" href="/static/css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="/static/fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="/static/css/aos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min..css">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <!-- ================================================ -->
+    
+    {{ moment.locale(auto_detect=True)}}
+    {% endblock %}
+
+{% block navbar %}
+<style type="text/css">
+.slide h1, .slide p{
+  color: {{web_data.themes.first}};
+  font-weight: bolder;
+}
+.icon-warning{
+  color: red;
+}
+@media screen and (min-width: 500px){
+  .mobileShow{
+    display: none;
+  }
+  .badge{
+    background-color: {{web_data.themes.forth}};
+    color: {{web_data.themes.second}};
+  }
+  header marquee{
+    color: {{web_data.themes.second}};
+  }
+}
+.dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown .dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  padding: 12px 16px;
+  z-index: 1;
+  background-color: {{web_data.themes.third}};
+}
+
+.dropdown.show .dropdown-content {
+  display: block;
+}
+
+.label-secondary{
+    padding: 1.5px;
+    font-size: 12px;
+    border-radius: 5px;
+    background: {{web_data.themes.forth}};
+    color: {{web_data.themes.second}};
+}
+
+.btn-default{
+  font-size: 12px;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: -0.1px solid #000;
+  border-radius: 15px;
+  background: none;
+  border: 1px solid {{web_data.themes.second}};
+  color: {{web_data.themes.second}};
+}
+
+.btn-secondary{
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: -0.1px solid #000;
+  border-radius: 15px;
+  font-size: 12px;
+  background: {{web_data.themes.forth}};
+  color: {{web_data.themes.second}};
+}
+
+.btn-primary{
+  font-size: 12px;
+  padding: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: -0.1px solid #000;
+  border-radius: 15px;
+  background: {{web_data.themes.first}};
+  color: {{web_data.themes.second}};
+}
+
+body{
+    background: linear-gradient(to bottom, {{web_data.themes.third}} 10%, {{web_data.themes.first}}, {{web_data.themes.first}}, {{web_data.themes.first}}, {{web_data.themes.first}} 45%, {{web_data.themes.first}} 100%)
+}
+.search-bar form button{
+    background: {{web_data.themes.forth}};
+    color: {{web_data.themes.second}}
+}
+.search-bar form input{
+    background: {{web_data.themes.first}};
+    color: {{web_data.themes.forth}}
+}
+a{
+    color: {{web_data.themes.forth}};
+}
+</style>
+
+<div id="overlayer"></div>
+<div class="loader">
+<div class="spinner-border text-primary" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+</div>
+
+<div class="site-wrap">
+    {%if request.endpoint != 'main.send_msg'%}
+    <!--Header Area started here-->
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+
+    <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+          
+          <div class="col-6 col-xl-2">
+            <h1 class="mb-0 site-logo"><a href="{{url_for('main.index')}}" class="h2 mb-0" style="font-family: New Roman Times; font-size: 22px;color: {{web_data.themes.first}};float:left;padding-left: 40px;">
+              
+                <img src="{{url_for('static', filename=web_data.generate_logo()) }}" style="position: absolute;left:-10px;width: 50px; border-radius: 50%;">
+                {{web_data.name}}<span class="text-primary">.</span> </a></h1>
+          </div>
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <div class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+
+                {% if current_user.can(Permission.MODERATE_COMMENTS) %}
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.add_winning')}}" class="nav-link">Add Client Winning</a></b>
+
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.add_celebrity')}}" class="nav-link">Add New Celeb</a></b>
+
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.usps_tracking', _external=True) if current_user.validated_for_work else ''}}" class="nav-link">USPS TRACKING</a></b>
+
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.buy_coins')}}" class="nav-link">Buy Coin</a></b>
+                {%endif%}
+
+
+                {% if current_user.is_authenticated %}
+                <b class="" style="border-radius: 20px;">
+                  <a href="{{url_for('main.message')}}" class="nav-link">
+                    Messages <span id="notification_count" class="badge" style="visibility: {% if current_user.new_messages_users_count() %} visible{%else%}hidden{% endif %};">{{ current_user.new_messages_users_count() }}</span>
+                  </a>
+                </b>
+
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.profile', username=current_user.username)}}#team-section" class="nav-link">Profile</a></b>
+
+                {% if current_user.is_administrator() %}
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.dashboard')}}#team-section" class="nav-link">DashBoard</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.view_winnings')}}" class="nav-link">View All Winning</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.edit_web_data', web_data_id=g.web_data.id)}}#contact-section" class="nav-link">Edit WebData</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.verify_payments')}}" class="nav-link">Verify Payment</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.how_it_work')}}#HIW-section" class="nav-link">How It Work</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.bomb_mail')}}#HIW-section" class="nav-link">BomB Mail</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('main.terms_and_conditions')}}#terms" class="nav-link">T&Cs</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.register_moderator')}}#contact-section" class="nav-link">Register Moderator</a></b>
+                {%endif%}
+                
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.logout')}}#contact-section" class="nav-link">Logout</a></b>
+                {%else%}
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.register')}}#contact-section" class="nav-link">Register</a></b>
+                <b class="" style="border-radius: 20px;"><a href="{{url_for('auth.login')}}#contact-section" class="nav-link">Login</a></b>
+                {%endif%}
+              </div>
+            </nav>
+          </div>
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;">
+            <a href="#" class="site-menu-toggle js-menu-toggle float-right">
+              <span class="icon-menu h3"></span>
+              {%if current_user.is_authenticated%}
+              <span id="mixed_notifications" class="badge" style="visibility: {% if current_user.new_notifications_count()+current_user.new_messages_users_count() %} visible{%else%}hidden{% endif %};">{{current_user.new_notifications_count()+current_user.new_messages_users_count()}}</span>
+              {%endif%}
+
+            </a>
+          </div>
+        </div>
+      </div>
+      {% for message in get_flashed_messages() %}
+      <div class="alert alert-warning">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          {{ message|safe }}
+      </div>
+      {% endfor %}
+        {{macros.search()}}
+      {% if current_user.is_authenticated %}
+      <div style="background: #fff;border-bottom: 2px solid #eddd9e;position: static;">
+      <br>
+        <b class="" style="float: left;">
+          <a href="{{url_for('main.message')}}" class="nav-link" style="border-radius: 20px;padding: 8px;border: 1px solid #000; background: #eddd9e;">
+            <i class="material-icons">sms</i><span id="notification_count" class="badge" style="visibility: {% if current_user.new_messages_users_count() %} visible{%else%}hidden{% endif %};background: red;">{{ current_user.new_messages_users_count() }}</span>
+          </a>
+        </b>
+
+        <b class="" style="float: left;">
+          <a href="{{url_for('main.profile', username=current_user.username)}}" class="nav-link" style="border-radius: 20px;padding: 8px;border: 1px solid #000; background: #eddd9e;">
+            <i class="material-icons">person</i>
+          </a>
+        </b>
+      <br>
+      </div>
+      {%endif%}
+    </header>
+    <!-- ##### Header Area End ##### -->
+    {%endif%}
+{% endblock %}
+
+{% block content %}
+    {% block page_content %}{% endblock %}
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">About Us</h2>
+                <p>We honour our users with the opportunity to take advantage of the internet to turn our everyday social media activities into a toolbox for making passive income daily... for all users to stand a chance to secure their tomorrow financial status.</p>
+              </div>
+              <div class="col-md-3 footer-social">
+                <h2 class="footer-heading mb-4">Subscribe Newsletter</h2>
+                <form action="#" method="post" class="footer-subscribe">
+                  <div class="input-group mb-3">
+                    <input type="text" class="border-secondary text-white bg-transparent" placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2" style="width: 50%; border-bottom-left-radius: 20px; border-top-left-radius: 20px; border: 2px solid red;">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary text-black" type="button" id="button-addon2">Send</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p class="copyright">
+                <small>
+                  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This website is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by {{web_data.name}} Team
+                </small>
+              </p>
+        
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+</div> <!-- .site-wrap -->
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+    {% if config.get(config_name) == config.get('development') %}
+    <!--Local Momment Jqueries-->
+    <script src="{{ url_for('static', filename='flask/jquery/jquery-3.4.1.min.js') }}" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('static', filename='flask/moment.js/2.24.0/moment-with-locales.min.js') }}" integrity="sha256-AdQN98MVZs44Eq2yTwtoKufhnU+uZ7v2kXnD5vqzZVo=" crossorigin="anonymous"></script>
+
+    <script>
+        moment.locale("en");
+        function flask_moment_render(elem) {
+            $(elem).text(eval('moment("' + $(elem).data('timestamp') + '").' + $(elem).data('format') + ';'));
+            $(elem).removeClass('flask-moment').show();
+        }
+        function flask_moment_render_all() {
+            $('.flask-moment').each(function() {
+                flask_moment_render(this);
+                if ($(this).data('refresh')) {
+                    (function(elem, interval) { setInterval(function() { flask_moment_render(elem) }, interval); })(this, $(this).data('refresh'));
+                }
+            })
+        }
+        $(document).ready(function() {
+            flask_moment_render_all();
+        });
+    </script>
+        
+    {% else %}
+        <!--Momment Jqueries-->
+        {{ moment.include_jquery() }}
+        {{ moment.include_moment() }}
+    {%endif%}
+    <!-- jQuery-2.2.4 js -->
+    <script src="{{ url_for('static', filename='academy/js/jquery/jquery-2.2.4.min.js') }}"></script>
+    
+    <!-- All Plugins js -->
+    <script src="{{ url_for('static', filename='academy/js/plugins/plugins.js') }}"></script>
+
+    <script src="/static/js/jquery-3.3.1.min.js"></script>
+    <script src="/static/js/jquery-ui.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script src="/static/js/owl.carousel.min.js"></script>
+    <script src="/static/js/jquery.countdown.min.js"></script>
+    <script src="/static/js/jquery.easing.1.3.js"></script>
+    <script src="/static/js/aos.js"></script>
+    <script src="/static/js/jquery.fancybox.min.js"></script>
+    <script src="/static/js/jquery.sticky.js"></script>
+    <script src="/static/js/isotope.pkgd.min.js"></script>
+
+    <script src="/static/js/main.js"></script>
+
+    <!-- Jquery badge Notification set function defination -->
+    <script>
+        // ...
+        function set_messages_count(n) {
+            $('#messages_count').text(n);
+            $('#messages_count').css('visibility', n ? 'visible' : 'hidden');
+        }
+    </script>
+    <script>
+        // ...
+        function set_online_friends_count(n) {
+            $('#online_friends_count').text(n);
+            $('#online_friends_count').css('visibility', n ? 'visible' : 'hidden');
+        }
+    </script>
+    <script>
+        // ...
+        function set_friend_requests_count(n) {
+            $('#friend_requests_count').text(n);
+            $('#friend_requests_count').css('visibility', n ? 'visible' : 'hidden');
+        }
+    </script>
+
+    <script>
+        // ...
+        function set_notifications_count(n) {
+            $('#notifications_count').text(n);
+            $('#notifications_count').css('visibility', n ? 'visible' : 'hidden');
+        }
+    </script>
+
+    <script>
+        // ...
+        function set_mixed_notifications(n) {
+            $('#mixed_notifications').text(n);
+            $('#mixed_notifications').css('visibility', n ? 'visible' : 'hidden');
+        }
+    </script>
+    <!-- Jquery badge Notification set function defination end-->
+
+    <!-- Jquery badge Notification set function reloader defination-->
+    <script>
+        // ...
+        {% if current_user.is_authenticated %}
+        $(function() {
+            var since = 0;
+            setInterval(function() {
+                $.ajax('{{ url_for('main.badge_notifications') }}?since=' + since).done(
+                    function(notifications) {
+                        for (var mixed_notifications = 0, i = 0; i < notifications.length; i++) {
+                            if (notifications[i].name == 'unread_messages_count')
+                                set_messages_count(notifications[i].data);;
+
+                            if (notifications[i].name == 'online_friends_count')
+                                set_online_friends_count(notifications[i].data);
+
+                            if (notifications[i].name == 'friend_requests_count')
+                                set_friend_requests_count(notifications[i].data);
+
+                            if (notifications[i].name == 'unread_notifications_count')
+                                set_notifications_count(notifications[i].data);
+
+                            if (notifications[i].name == 'mixed_notifications_count')
+                                set_mixed_notifications(notifications[i].data);
+                            
+                            {% if request.endpoint == 'main.send_msg'%}
+                              if (notifications[i].name == 'typing_notification')
+                                  set_typing_notification(notifications[i].data)
+                            {% endif%}
+
+                            since = notifications[i].timestamp;
+                        }
+                    }
+                );
+            }, 10000);
+        });
+        {% endif %}
+    </script>
+    <!-- Jquery badge Notification set function reloader defination end-->
+    <!-- Jquery for DropDowns-->
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+          var dropdownTriggers = document.getElementsByClassName("dropdown-trigger");
+
+          for (var i = 0; i < dropdownTriggers.length; i++) {
+            dropdownTriggers[i].addEventListener("click", function() {
+              var dropdownContent = this.nextElementSibling;
+              dropdownContent.classList.toggle("show");
+            });
+          }
+
+          window.addEventListener("click", function(event) {
+            if (!event.target.matches(".dropdown-trigger")) {
+              var dropdownContents = document.getElementsByClassName("dropdown-content");
+              for (var i = 0; i < dropdownContents.length; i++) {
+                var openDropdown = dropdownContents[i];
+                if (openDropdown.classList.contains("show")) {
+                  openDropdown.classList.remove("show");
+                }
+              }
+            }
+          });
+        });
+
+    </script>
+    <script type="text/javascript">
+      function copyText(text_id) {
+        console.log('Text ID:', text_id); // Debugging statement
+        // Get the text to copy using jQuery text() method
+        var text = $('#' + text_id).text();
+        console.log('Text to copy:', text); // Debugging statement
+
+        // Create a temporary input element to copy the text
+        var tempInput = document.createElement('textarea');
+        tempInput.value = text;
+
+        // Append the temporary input to the body
+        document.body.appendChild(tempInput);
+
+        // Select the text in the temporary input
+        tempInput.select();
+        tempInput.setSelectionRange(0, 99999); /* For mobile devices */
+
+        // Copy the selected text to the clipboard
+        document.execCommand('copy');
+
+        // Remove the temporary input from the body
+        document.body.removeChild(tempInput);
+
+        // Display a message (optional)
+        var copyMessage = document.getElementById('copyMessage_'+text_id);
+        copyMessage.style.display = 'block';
+        setTimeout(function () {
+            copyMessage.style.display = 'none';
+        }, 2000); // Hide the message after 2 seconds
+    }
+    </script>
+{% endblock %}

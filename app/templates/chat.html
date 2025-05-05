@@ -1,0 +1,821 @@
+{% extends "chat_base.html" %}
+
+{% block title %}Chat{{ super()}}{% endblock %}
+
+{% block content %}
+	{% block page_content %}
+	<style type="text/css">
+		.call .content{
+		  background-color: green;
+		}
+		.date span span{
+			max-width: 180px;
+			justify-content: left;
+			width: 180px
+		}
+		#top{
+		  background: linear-gradient(to right, {{g_color.first}},{{g_color.first}},{{g_color.second}});
+		  max-width: 90%;
+		  margin-left: 5%;
+		  align-self: center;
+		}
+		#top .inside{
+		  color: #fff;
+		}
+
+		#top .inside .data h5 a{
+		  color: #fff;
+		}
+
+		#top .inside .dropdown .dropdown-menu button{
+		  color: #c0c0c0;
+		}
+
+		.chat .top .inside .status .material-icons.online{
+			color: #61ba00;
+		}
+		#typing-alert-{{user.id}}{
+			visibility: {{'visible' if user_is_typing else 'hidden'}};
+		}
+
+		.chat .content .container .message .text-main .text-group .text.friend p{
+			color: #ffffff;
+			font-family: Times New Roman;
+		}
+		.chat .content .container .message .text-main .text-group .text.me p{
+			color: #000000;
+			font-family: Times New Roman;
+		}
+
+		.chat .content .container .message .text-main .text-group .text.friend{
+		    max-width: 250px;
+		    justify-content: left;
+		    text-align: left;
+		    background: {{g_color.first}};
+		}
+		.chat .content .container .message .text-main .text-group .text.me{
+		    max-width: 300px;
+		    justify-content: left;
+		    text-align: left;
+		    background: {{g_color.second}};
+		}
+		.chat .content .container .message .text-main a{
+			color: #c0c0c0;
+		}
+		.chat .content .container .message .text-main span{
+			color: green;
+		}
+		.chat .content .container .message .text-main img{
+			width: 100%;
+		}
+		.chat .content .container .message .text-main .gallery-list{
+			padding: 15px;
+		}
+		.chat .content .container .message .text-main .gallery-list span{
+			color: #c0c0c0;
+		}
+		.data #status_text span{
+			float: left;
+		}
+		body{
+			padding: 0px;
+			background: {{g_color.first}};
+		}
+		.chat-bg{
+			background: linear-gradient(to right bottom, #c0c0c0, #c0c0c0, #c0c0c0,  {{g_color.first}});
+			}
+	</style>
+
+	<main>
+		<div class="layout">
+			<div class="main">
+				<div class="tab-content" id="nav-tabContent" style="margin-bottom: 0px; padding: 0px; font-family: Times New Roman;">
+					<!-- Start of Babble -->
+					<div class="babble tab-pane active show" id="list-chat" role="tabpanel" aria-labelledby="list-chat-list">
+						<!-- Start of Chat -->
+						<div class="chat chat-bg" id="chat1" style="max-height: 800px;margin: 0px; padding: 0px;">
+							<div class="top" id="top" style="max-width: 100%; padding-left: 0px; margin: 0px">
+								<div class="container">
+									<div class="col-md-12">
+										<div class="inside">
+											<div style="padding: 20px">
+												<!-- Chat Backspace-->
+												<a href="{{url_for('.message', username=current_user.username)}}">
+													<i class="material-icons" style="position: absolute; left: 0px; top: 10px; font-weight: bold; font-size: 25px; color: #fff;">keyboard_backspace</i>
+													<span id="messages_count" class="badge" style=" visibility: {% if current_user.new_messages_count() %} visible{%else%}hidden{% endif %}; left: -50px; top: -6px">{{ current_user.new_messages_count() }}</span>
+												</a>
+												<!-- Chat Backspace End-->
+											</div>
+
+
+											<a href="{{url_for('.profile', username=user.username) if current_user.is_moderator() else '#'}}"><img class="avatar-md" src="{{user.gravatar()}}" data-toggle="tooltip" data-placement="top" title="{{ user.username}}" alt="avatar"></a>
+											<div class="status" style="left: +45px">
+												<i id="status" class="material-icons {{'online' if user.is_active() or user.is_administrator() else 'offline'}}">fiber_manual_record</i>
+											</div>
+											<div class="data" style="width: 100%;">
+												<h5><a href="{{url_for('.profile', username=user.username) if current_user.is_administrator() else '#'}}">{{ user.name}} {{'(Admin)' if user.is_administrator() else ''}}</a></h5>
+												{% if user.is_active() or user.is_administrator()%}
+												<span style="" id="status_text">
+													{{('Active Now')}} 
+												</span>
+												<span id="status_time" style="position: absolute; left: 220px; top: 10px">
+													&nbsp;
+												</span>
+												{%else%}
+												<span style="" id="status_text">
+													{{('Inactive since')}} 
+												</span>
+												<span id="status_time" style="position: absolute; left: 220px; top: 10px">
+													&nbsp;{{ moment(user.last_seen).fromNow() }}
+												</span>
+												{%endif%}
+
+											</div>
+											<div>
+												<a href="" onclick="scrollDown()">
+				                                    <!--Reload chat-->
+				                                    {%set unread_count = current_user.return_messages_with(user).filter_by(read=False, sender=user).count() %}
+				                                    <button class="btn d-md-block" style="position: absolute; right: 6px; top: 0px;">
+				                                    	<i class="material-icons md-30" style="color: #fff">sync</i>
+				                                    	<span id="chat_msg_count" class="badge" style="visibility: {% if unread_count %} visible{%else%}hidden{% endif %};">{{ unread_count }}</span>
+				                                    </button>
+				                                </a>
+				                            </div>
+
+											<div class="dropdown">
+												<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons md-30">more_vert</i></button>
+												<div class="dropdown-menu dropdown-menu-right" style="min-width: 180px;">
+													<button class="dropdown-item connect" name="1"><i class="material-icons">phone_in_talk</i>Voice Call</button>
+													<button class="dropdown-item connect" name="1"><i class="material-icons">videocam</i>Video Call</button>
+													<hr>
+													<button class="dropdown-item"><i class="material-icons">clear</i>Clear History</button>
+													<button class="dropdown-item"><i class="material-icons">block</i>Block Contact</button>
+													<button class="dropdown-item"><i class="material-icons">delete</i>Delete Contact</button>
+												</div>
+											</div>
+										</div>
+										{%if current_user.is_authenticated and current_user.package_message and not request.cookies.get('hide_p_message')%}
+						                <div style="position: absolute;">
+						                    <!-- ads -->
+						                    {{ macros.ads(g_color, current_user, url_for('main.hide_p_message', next=request.url), 'I Agree', current_user.package_message_html|safe)}}
+						                </div>
+						                {%endif%}
+									</div>
+								</div>
+							</div>
+							<div id="flashContainer">
+								{% for message in get_flashed_messages() %}
+				                <div class="alert alert-warning">
+				                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+				                    {{ message|safe }}
+				                </div>
+				                {% endfor %}
+							</div>
+
+							<div class="content" id="content" style="width: 100%; height: 100%;">
+								<div class="container" id="pageContainer" onclick="remove_typing_alert()" style="max-width: 100%; min-height: 409px; max-height:409px; padding: 0px; margin: 0px">
+									<div id="messagesContainer" class="col-md-12">
+										<!-- Pagination -->
+							            {% if pagination %}
+							                {{macros.pagination_widget(pagination, request.endpoint, username=user.username)}}
+							            {% endif %}
+
+										{% for msg in messages%}
+										{%set prev_msg = messages[messages.index(msg)-1]%}
+										{%if prev_msg.timestamp.day != msg.timestamp.day %}
+											{%if (msg.timestamp.year == datetime.utcnow().year and msg.timestamp.month==datetime.utcnow().month and msg.timestamp.day == datetime.utcnow().day) %}
+											<div class="date">
+												<hr>
+												<span style="float: center;">Today</span>
+												<hr>
+											</div>
+											{%elif (msg.timestamp.year == datetime.utcnow().year and msg.timestamp.month==datetime.utcnow().month) and (datetime.utcnow().day - msg.timestamp.day) == 1%}
+											<div class="date">
+												<hr>
+												<span style="float: center;">Yesterday</span>
+												<hr>
+											</div>
+											{%else%}
+											<div class="date">
+												<hr>
+												<span style="float: center;">{{ moment(msg.timestamp).format('ll')}}</span>
+												<hr>
+											</div>
+											{%endif%}
+										{% endif%}
+
+										{%if msg.sender != current_user%}
+										<div class="message" style="padding-right: 30px;">
+											<img class="avatar-md" src="{{msg.sender.gravatar()}}" data-toggle="tooltip" data-placement="top" title="{{ msg.sender.username}}" alt="avatar">
+											<div class="text-main">
+												{% if current_user.is_moderator()%}
+												<div class="dropdown">
+													<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons md-30" style="transform: rotate(90deg);">more_vert</i></button>
+													<div class="dropdown-menu dropdown-menu-right" style="min-width: 180px;">
+														<button class="dropdown-item" onclick="copyText('textToCopy_' + {{ msg.id }})" type="button">
+															<i class="material-icons">content_copy</i>Copy
+														</button>
+														<button onclick="{{'delete_message('+str(msg.id)+')'}}" type="button" class="dropdown-item">
+															<i class="material-icons">delete</i>Delete
+														</button>
+													</div>
+												</div>
+												{% endif%}
+												<div class="text-group">
+													<div class="text friend" style="overflow-wrap: break-word;">
+														{% if msg.body_html %}
+									                        <p id="">{{ msg.body_html| safe }}</p>
+									                    {% else %}
+									                        <p id="">{{ msg.body}}</p>
+									                    {% endif %}
+									                    <p id="copyMessage_textToCopy_{{msg.id}}" style="display:none;">Text copied!</p>
+									                    <p id="textToCopy_{{msg.id}}" style="display: none;">{{ msg.body}}</p>
+														{% if len(msg.file.all())%}
+														<div class="gallery-list d-flex justify-content-between flex-wrap">
+															{% for file in msg.file.all()%}
+						                                	{%if '.mp4' in file.url%}
+						                                		<video style="width: 100%" controls="" src="{{file.url}}"></video>
+						                                	{%elif '.mp3' in file.url%}
+						                                		<audio controls style="width: 100%;">
+															        <!-- Replace "path/to/your/audio.mp3" with the actual path or URL of your audio file -->
+															        <source src="{{file.url}}" type="audio/mp3">
+															        Your browser does not support the audio element.
+															    </audio>
+						                                	{%else%}
+							                                <a href="{{file.url}}">
+						                                		<img src="{{file.url}}" alt="file">
+							                                </a>
+						                                	{%endif%}
+															{%endfor%}
+							                            </div>
+							                            {%endif%}
+													</div>
+												</div>
+												<span>{{ moment(msg.timestamp).format('LT')}}</span>
+											</div>
+										</div>
+										{% else%}
+										<div class="message me">
+											<div class="text-main">
+												{% if current_user.is_moderator()%}
+												<div class="dropdown">
+													<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons md-30" style="transform: rotate(90deg);">more_vert</i></button>
+													<div class="dropdown-menu dropdown-menu-right" style="min-width: 180px;">
+														<button class="dropdown-item" onclick="copyText('textToCopy_' + {{ msg.id }})" type="button">
+															<i class="material-icons">content_copy</i>Copy
+														</button>
+														<button onclick="{{'delete_message('+str(msg.id)+')'}}" type="button" class="dropdown-item">
+															<i class="material-icons">delete</i>Delete
+														</button>
+													</div>
+												</div>
+												{% endif%}
+												<div class="text-group me">
+													<div class="text me" style="overflow-wrap: break-word;">
+
+														{% if msg.body_html %}
+									                        <p id="">{{ msg.body_html| safe }}</p>
+									                    {% else %}
+									                        <p id="">{{ msg.body}}</p>
+									                    {% endif %}
+									                    <p id="copyMessage_textToCopy_{{msg.id}}" style="display:none;">Text copied!</p>
+									                    <p id="textToCopy_{{msg.id}}" style="display: none;">{{ msg.body}}</p>
+														{% if len(msg.file.all())%}
+														<div class="gallery-list d-flex justify-content-between flex-wrap">
+															{% for file in msg.file.all()%}
+						                                	{%if '.mp4' in file.url%}
+						                                		<video style="width: 100%" controls="" src="{{file.url}}"></video>
+						                                	{%elif '.mp3' in file.url%}
+						                                		<audio controls style="width: 100%">
+															        <!-- Replace "path/to/your/audio.mp3" with the actual path or URL of your audio file -->
+															        <source src="{{file.url}}" type="audio/mp3">
+															        Your browser does not support the audio element.
+															    </audio>
+						                                	{%else%}
+							                                <a href="{{file.url}}">
+						                                		<img src="{{file.url}}" alt="file">
+							                                </a>
+						                                	{%endif%}
+															{%endfor%}
+							                            </div>
+							                            {%endif%}
+													</div>
+												</div>
+												<span style="position: absolute; right: 38px;">
+													{{ moment(msg.timestamp).format('LT')}}
+												</span>
+												<span>
+													{%if msg.read%}
+													<i class="material-icons" style="color: green; font-size: 23px; float: right;">done_all</i>
+													{%elif msg.delivered%}
+													<i id="sent-unread-msg-{{msg.id}}" class="material-icons" style="font-size: 23px; color: #000; float: right;">done_all</i>
+													{% elif msg.sent%}
+													<i id="sent-unread-msg-{{msg.id}}" class="material-icons" style="font-size: 23px; color: #000; float: right;">done</i>
+													{%endif%}
+												</span>
+											</div>
+										</div>
+										{% endif%}
+										{% endfor%}
+
+										{%if (current_user.is_administrator() or current_user.auto_reply)%}
+										<div id="AiDiv" class="message me">
+											<div class="text-main">
+												<div class="text-group me">
+													<div class="text me" style="overflow-wrap: break-word;">
+														<p id="suggestedMsgArea">{{suggested_msg|safe}}</p>
+														<hr>
+														<p id="copyMessage_suggestedMsgArea" style="display: none; border-bottom: 2px solid #000;padding: 4px">Suggestion Copied!!</p>
+														<button id="suggestBtn" onclick="suggestMessage()" style="background-color: #006600; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Suggest</button>
+														<button class="material-icons" id="copyBtn" onclick="copyText('suggestedMsgArea')" style="background-color: #006600; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">content_copy</button>
+														<button id="suggestSendBtn" onclick="sendSuggestedMessage()" style="background-color: #006600; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Send</button>
+													</div>
+												</div>
+												<span style="position: absolute; right: 38px;">
+													Use fAtherGPT AI !!
+												</span>
+											</div>
+										</div>
+										{%endif%}
+
+										<div class="message" id="typing-alert-{{user.id}}">
+											<img class="avatar-md" src="{{user.gravatar()}}" data-toggle="tooltip" data-placement="top" title="{{user.username}}" alt="avatar">
+											<div class="text-main">
+												<div class="text-group">
+													<div class="text typing">
+														<div class="wave">
+															<span class="dot"></span>
+															<span class="dot"></span>
+															<span class="dot"></span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="container" style="position: relative; max-width: 100%; margin: 0px; padding: 0px; bottom:-30px;">
+								<div class="col-md-12">
+									<div class="bottom" style="border-top: 2px solid #0c7c4c;">
+
+										<form id="chatForm" class="position-relative w-100" enctype="multipart/form-data" action="#" method="post" onsubmit="sendMessage(event); return false;">
+											{{ form.hidden_tag()}}
+											{{ form.message(id="text-box", placeholder="Start typing for reply...", onclick="alert_typing()", style="width: 100%; padding-left: 50px; padding-top: 25px; font-size: 15px; font-family: Times New Roman; padding-right: 70px; border-radius: 20px;")}}
+
+											<button class="btn emoticons"><i class="material-icons">insert_emoticon</i></button>
+											<button type="submit" class="btn send"><i class="material-icons">send</i></button>
+											{%if current_user.is_administrator()%}
+											<button type="submit" name="send_as_voice" id="send_as_voice" class="material-icons" onclick="setMessageType('voice')" value="False" style="position: absolute; right: 60px; top: 24px; font-size: 30px; border: 0px; background: transparent;">record_voice_over</button>
+											{%endif%}
+											<label class="material-icons" style="position: absolute; right: {{'100px' if current_user.is_administrator() else '60px'}}; top: 24px; font-size: 30px; border: 0px; background: transparent;">attach_file{{form.message_file(style="visibility:hidden;")}}</label>
+										</form>
+
+
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End of Chat -->
+						<!-- Start of Call -->
+						<div class="call" id="call1">
+							<div class="content" style="background-color: {{g_color.first}};">
+								<div class="container">
+									<div class="col-md-12">
+										<div class="inside">
+											<div class="panel" style="background-color: transparent;">
+												<div class="participant">
+													<img class="avatar-xxl" src="{{user.gravatar()}}" alt="avatar">
+													<span>Connecting {{user.name}}</span>
+												</div>
+												<div class="options">
+													<button class="btn option"><i class="material-icons md-30">mic</i></button>
+													<button class="btn option"><i class="material-icons md-30">videocam</i></button>
+													<button name="1" class="btn back option call-end"><i class="material-icons md-30">call_end</i></button>
+													<button class="btn option"><i class="material-icons md-30">person_add</i></button>
+													<button class="btn option"><i class="material-icons md-30">volume_up</i></button>
+												</div>
+												<button class="btn back" name="1"><i class="material-icons md-24">chat</i></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- End of Call -->
+					</div>
+					<!-- End of Babble -->
+				</div>
+			</div>
+		</div>
+	</main>
+	<div style="display: "></div>
+	{% endblock %}
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+	<!--
+	function copyText(text_id) {
+	    console.log('Text ID:', text_id); // Debugging statement
+	    // Get the text to copy using jQuery text() method
+	    var text = $('#' + text_id).text();
+	    console.log('Text to copy:', text); // Debugging statement
+
+	    // Create a temporary input element to copy the text
+	    var tempInput = document.createElement('textarea');
+	    tempInput.value = text;
+
+	    // Append the temporary input to the body
+	    document.body.appendChild(tempInput);
+
+	    // Select the text in the temporary input
+	    tempInput.select();
+	    tempInput.setSelectionRange(0, 99999); /* For mobile devices */
+
+	    // Copy the selected text to the clipboard
+	    document.execCommand('copy');
+
+	    // Remove the temporary input from the body
+	    document.body.removeChild(tempInput);
+
+	    // Display a message (optional)
+	    var copyMessage = document.getElementById('copyMessage_'+text_id);
+	    copyMessage.style.display = 'block';
+	    setTimeout(function () {
+	        copyMessage.style.display = 'none';
+	    }, 2000); // Hide the message after 2 seconds
+	}
+
+	function alert_typing() {
+		$.ajax("{{ url_for('main.add_typing_notification') }}?id={{user.id}}").done(function(data){
+			set_typing_notification(data);
+		});
+	}
+
+	function remove_typing_alert() {
+		$.ajax('{{ url_for("main.remove_typing_notification") }}?id={{user.id}}').done(function(data){
+			set_typing_notification(data);
+		});
+	}
+	
+	function delete_message(id){
+		$.ajax('{{ url_for("main.delete_msg") }}?id='+id).done();
+		updateChat();
+	}
+
+	function set_typing_notification(data) {
+		var typingElement=$('#typing-alert-'+'{{user.id}}');
+		for (var i = 0; i < data['typing'].length; i++) {
+			if (data['typing'][i] == {{user.id}}){
+				$('#typing-alert-'+data['typing'][i]).css('visibility','visible');
+				$('#typing-alert-'+data['typing'][i]).css('display','');
+			};
+		};
+
+		for (var i = 0; i < data['not_typing'].length; i++) {
+			if (data['not_typing'][i] == {{user.id}}){
+				$('#typing-alert-'+data['not_typing'][i]).css('display','none');
+				$('#typing-alert-'+data['not_typing'][i]).css('visibility','hidden');
+				//$('#typing-alert-'+data['not_typing'][i]).remove();
+			};
+		};
+		$('#messagesContainer').append(typingElement);
+	}
+	//-->
+
+    // ...
+    function set_chat_msg_count(n) {
+        $('#chat_msg_count').text(n);
+        $('#chat_msg_count').css('visibility', n ? 'visible' : 'hidden');
+    }
+
+	function update_status(status_report) {
+		// body...
+		$('#status').css('color', status_report['status_colour']);
+		$('#status_text').html(status_report['status_text']);
+		$('#status_time').html(status_report['status_time']);
+		//$('#status_time').css('visibility': 'hidden');
+		$(document).ready(function() {
+            flask_moment_render_all();
+        });
+	}
+
+	// Function to update the chat content
+    function updateChat() {
+        $.get("{{ url_for('main.update_chat', username=user.username, page=page) }}", function(data) {
+            // Assuming data is an array of new messages
+	        flasher(data.flash_messages);
+            if (data.off_page_messages.length) {
+	        	//location.reload(true)
+	            // Redirect to page=-1
+	            var newUrl = "{{ url_for('main.send_msg', username=user.username, page=-1) }}";
+	            window.location.href = newUrl;
+	        } else {
+	        	var chatMessagesContainer = $("#messagesContainer");
+		        var AiDiv = $("#AiDiv");
+				var typingElement=$('#typing-alert-'+'{{user.id}}');
+	        	var pagination = data.pagination_html
+	            // Assuming new messages
+	        	chatMessagesContainer.html('');
+	            chatMessagesContainer.append(pagination);
+	            appendNewMessages(data.messages);
+		        chatMessagesContainer.append(AiDiv);
+		        chatMessagesContainer.append(typingElement);
+
+		        // Check the role of the current user in the latest message
+	            var latestMessage = data.messages[data.messages.length - 1];
+	            var isCurrentUserReceiver = (latestMessage.receiver_id == {{ current_user.id }});
+
+	            // Show or hide AiDiv based on the role of the current user
+	            if (isCurrentUserReceiver) {
+	                AiDiv.css('visibility', 'visible');
+	                AiDiv.css('display', '');
+	            } else {
+	                AiDiv.css('visibility', 'hidden');
+	                AiDiv.css('display', 'none');
+	            }
+	        }
+        });
+    }
+
+	function update_sent_unread_messages(msg_list){
+		for (var mn =0; mn < msg_list.length; mn++){
+			$('#sent-unread-msg-'+msg_list[mn]['id']).text(msg_list[mn]['report']);
+			$('#sent-unread-msg-'+msg_list[mn]['id']).css('color', msg_list[mn]['colour']);
+		}
+	}
+
+	let messageType = 'text'; // Default message type
+
+	function setMessageType(type) {
+	    messageType = type; // Update message type based on the button clicked
+	}
+
+	function sendMessage(event) {
+	    event.preventDefault();
+
+	    var formData = new FormData(document.getElementById('chatForm'));
+	    formData.append('message_type', messageType); // Add message type to the form data
+	    var chatForm = document.getElementById('chatForm');
+	    chatForm.reset();
+	    remove_typing_alert();
+
+	    $.ajax({
+	        url: "{{ url_for('main.api_send_msg', username=user.username, page=page, per_page=per_page) }}",
+	        type: 'POST',
+	        data: formData,
+	        cache: false,
+	        contentType: false,
+	        processData: false,
+	        success: function (data) {
+	            flasher(data.flash_messages);
+	            if (data.off_page_messages.length) {
+	                // Redirect to page=-1
+	                var newUrl = "{{ url_for('main.send_msg', username=user.username, page=-1) }}";
+	                window.location.href = newUrl;
+	            } else {
+	                var myMessages = data.messages;
+	                // Append new messages
+	                appendNewMessages(myMessages);
+	                scrollDown();
+	            }
+	        },
+	        error: function (xhr, status, error) {
+	            console.error(error);
+	        }
+	    });
+
+	    updateChat();
+	}
+</script>
+
+<script type="text/javascript">
+	function scrollDown(){
+		// Animate scrolling to the bottom to show the latest message
+        var pageContainer = $("#content");
+	    var scrollToHeight = pageContainer.prop("scrollHeight");
+	    pageContainer.animate({ scrollTop: scrollToHeight }, 500);
+	}
+</script>
+
+<script type="text/javascript">
+
+    // Function to append new messages to the chat container
+    function appendNewMessages(messages) {
+	    var chatMessagesContainer = $("#messagesContainer");
+        messages.forEach(function(message) {
+            var messageElement = createMessageElement(message);
+            chatMessagesContainer.append(messageElement);
+        });
+    }
+
+    // Function to create a message element
+    function createMessageElement(message) {
+        // Customize this based on your message structure and styling
+        // Determine if the message is from the current user (sender) or the other user (receiver)
+	    var isSender = (message.sender_id == {{ current_user.id }});
+        var AiDiv = $("#AiDiv");
+
+        // Create a message element with the More Option button
+        var moreOptionButton = '<div class="dropdown">'+
+								'	<button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+								'		<i class="material-icons md-30" style="transform: rotate(90deg);">more_vert</i>'+
+								'	</button>'+
+								'	<div class="dropdown-menu dropdown-menu-right" style="min-width: 180px;">'+
+								'		<button onclick="copyText(\'textToCopy_'+message.id+'\')" type="button" class="dropdown-item">'+
+								'			<i class="material-icons">content_copy</i>Copy'+
+								'		</button>'+
+								'		<button onclick="delete_message('+message.id+')" type="button" class="dropdown-item">'+
+								'			<i class="material-icons">delete</i>Delete'+
+								'		</button>'+
+								'	</div>'+
+								'</div>'
+
+        // Create a message element with the delete button
+	    var deleteButton = '<button onclick="delete_message('+message.id+')" type="button" class="close" style="font-size: 17px; position: relative; right: 0px; top: 0px;">&times;</button>'
+
+	    // Append message content, sender information, etc. based on the sender/receiver
+	    if (isSender) {
+        	AiDiv.css('visibility','hidden');
+        	AiDiv.css('display','none');
+	    	if (message.read) {
+	            statusIcon = '<i class="material-icons" style="color: green; font-size: 23px; float: right;">done_all</i>';
+	        } else if (message.delivered) {
+	            statusIcon = '<i id="sent-unread-msg-' + message.id + '" class="material-icons" style="font-size: 23px; color: #000; float: right;">done_all</i>';
+	        } else if (message.sent) {
+	            statusIcon = '<i id="sent-unread-msg-' + message.id + '" class="material-icons" style="font-size: 23px; color: #000; float: right;">done</i>';
+	        }
+	        var messageElement = $("<div>").addClass("message me");
+	        messageElement.html(
+	        	'<div class="text-main">'+
+	        	{%if current_user.can(Permission.VEND_COUPONS)%}
+		        moreOptionButton +
+		        {%endif%}
+		        '<div class="text-group me">' +
+		        '<div class="text me" style="overflow-wrap: break-word;">' +
+		        getMessageContent(message) +
+		        '</div></div>' +
+		        '<span style="position: absolute; right: 38px;">' +
+		        moment(message.timestamp).format('LT') +
+		        '</span>' +
+		        '<span>' +
+		        statusIcon +
+		        '</span>' +
+		        '</div>');
+	    } else {
+        	AiDiv.css('display','');
+        	AiDiv.css('visibility','visible');
+	        var messageElement = $("<div>").addClass("message");
+	        messageElement.css("padding-right: 30px;");
+	        messageElement.html('<img class="avatar-md" src=' + message.dp + ' data-toggle="tooltip" data-placement="top" title="' + message.sender_name + '" alt="avatar">' +
+	            '<div class="text-main">' +
+	            {%if current_user.is_administrator()%}
+		        moreOptionButton +
+		        {%endif%}
+	            '<div class="text-group"><div class="text friend" style="overflow-wrap: break-word;">' +
+	            getMessageContent(message) +
+	            '</div></div><span>' +
+	            moment(message.timestamp).format('LT') +
+	            '</span></div>');
+	    }
+        return messageElement;
+    }
+
+    // Function to get message content including images, audio, etc.
+	function getMessageContent(message) {
+		if (message.body_html){
+			var content = message.body_html
+		}else{
+
+	    	var content = '<p>' + message.body + '</p>'
+		}
+
+		content+='<p id="copyMessage_'+'textToCopy_'+message.id+'" style="display:none;">Text copied!</p>'+
+		'<p id="textToCopy_'+message.id+'" style="display: none;">'+message.body+'</p>'
+		
+
+	    // Check for images, audio, etc., and append corresponding HTML
+	    if (message.files.length) {
+	        content += '<div class="gallery-list d-flex justify-content-between flex-wrap">';
+	        message.files.forEach(function (file) {
+	            content += '<div><center>';  // Wrap each file content in a <div>
+	            if (file.type == 'video') {
+	                content += '<video style="width: 100%" controls="" src="' + file.url + '"></video>';
+	            } else if (file.type == 'audio') {
+	                content += '<audio style="position:relative;left: -10px;border: 2px solid green;width:6000%;" controls>' +
+	                    '<source style="width: 100%;" src="' + file.url + '" type="audio/mp3">' +
+	                    'Your browser does not support the audio element.' +
+	                    '</audio>';
+	            } else {
+	                content += '<a href="' + file.url + '">' +
+	                    '<img width="100%"" src="' + file.url + '" alt="'+file.type+' file type">' +
+	                    '</a>';
+	            }
+	            content += '</center></div>';  // Close the <div> for each file
+	        });
+	        content += '</div>';
+	    }
+
+	    return content;
+	}
+
+	//flasher
+	function flasher(messages) {
+	    // Assuming you have a div with id 'flashMessages' to display flash messages
+	    var flashContainer = $("#flashContainer");
+
+	    // Iterate through messages and display them in the flash container
+	    messages.forEach(function(message) {
+	    	// Split the message by comma
+			var parts = message.split(',');
+
+			// Get the last part after comma
+			var lastPart = parts[parts.length - 1];
+	        var flashMessage = $('<div class="alert alert-warning">'+
+				                    '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+				                    lastPart + 
+				                '</div>');
+	        flashContainer.append(flashMessage);
+
+	        // Automatically remove the flash message after a few seconds (e.g., 5000 milliseconds)
+	        setTimeout(function() {
+	            flashMessage.fadeOut(500, function() {
+	                $(this).remove();
+	            });
+	        }, 5000);
+	    });
+	}
+
+	// Function to flash off-page messages
+	function flashOffPageMessages(messages) {
+	    // Assuming you have a div with id 'flashMessages' to display flash messages
+	    var flashContainer = $("#flashContainer");
+
+	    // Iterate through messages and display them in the flash container
+	    messages.forEach(function(message) {
+	        var flashMessage = $('<div class="alert alert-warning">'+
+				                    '<button type="button" class="close" data-dismiss="alert">&times;</button>'+
+				                    message.body_html + 
+				                '</p></div>');
+	        flashContainer.append(flashMessage);
+
+	        // Automatically remove the flash message after a few seconds (e.g., 5000 milliseconds)
+	        setTimeout(function() {
+	            flashMessage.fadeOut(500, function() {
+	                $(this).remove();
+	            });
+	        }, 5000);
+	    });
+	}
+	// Function to fetch and display the suggested message
+	function suggestMessage() {
+
+	    // Make an AJAX request to the backend to get the suggested message
+	    $.ajax("{{url_for('main.ai_suggest_msg', username=user.username)}}").done(function(response){
+	            // Display the suggested message in the designated area (replace 'suggestedMsgArea' with the actual ID or class)
+	            $('#suggestedMsgArea').html(response.suggested_msg);
+			});
+	}
+
+	// Function to send the suggested message to the user
+    function sendSuggestedMessage() {
+        // Get the suggested message from the template (replace 'suggestedMsgArea' with the actual ID or class)
+        var suggestedMsg = $('#suggestedMsgArea').text();
+
+        // Check if the suggested message is not empty
+        if (suggestedMsg.trim() !== '') {
+            // Use AJAX or any method to send the suggested message to the backend
+            // You can replace the URL with the actual endpoint for sending messages
+            $.ajax({
+                type: 'POST',
+                url: "{{url_for('main.api_send_msg', username=user.username)}}",
+                data: { message: suggestedMsg },
+                success: function (data) {
+                    // Handle success, e.g., show a confirmation message
+                    console.log('Suggested message sent successfully:', data);
+                    if (data.off_page_messages.length) {
+			            //flashOffPageMessages(data.off_page_messages);
+			            // Redirect to page=-1
+			            var newUrl = "{{ url_for('main.send_msg', username=user.username, page=-1) }}";
+			            window.location.href = newUrl;
+			        } else {
+			            var myMessages = data.messages;
+			            // Create a new message element for your own message
+		            	appendNewMessages(myMessages);
+		            	scrollDown();
+			        }
+                },
+                error: function (error) {
+                    console.error('Error sending suggested message:', error.responseJSON.error);
+                }
+            });
+        }
+    }
+</script>
+
+<script type="text/javascript">
+	setInterval(updateChat, 30000);
+</script>
+{{ super() }}
+{% endblock%}

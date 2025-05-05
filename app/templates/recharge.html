@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Make Coin{{ super()}}{% endblock %}
+
+
+{% block page_content %}
+    <style type="text/css">
+        .form-group{
+            color: #fff;
+
+        }
+        .reg-form-area{
+            padding: 30px;
+        }
+        .contact-content .reg-form-area .form-group .form-control{
+            padding: 25px;
+            font-size: 15px;
+            color: green;
+            background: #fff;
+            border-radius: 15px;
+            text-decoration-color: #000;
+
+        }
+
+        .contact-content .reg-form-area .form-group #prize_and_charges{
+            background: green;
+            padding: 10px;
+             border-radius: 10px;
+        }
+    </style>                                               
+
+    <section class="contact-area"  style="background: #c0c0c0;">
+        <br><br><br>
+            
+        <div class="container">
+            <div class="">
+
+                <div class="">
+                    <div class="contact-content" style="background: linear-gradient(to bottom left, #343a40 65%, #fff 10%, #c0c0c0 100%); padding: 30px;">
+                        {% if g.web_data.payment_details%}
+                        <center>
+                            <div style="color: #fff">
+                                <div style="padding: 30px;border: 3px solid powderblue;max-width: 70%">{{g.web_data.payment_details_html|safe}}</div>
+                                <i><strong><b class="material-icons">info</b> Note:</strong> <span id="paymentNote">Transfer the exact {{'₦'+str(naira_amount) if naira_amount else 'budgeted amount'}} to the payment details above for the {{'$%.0f'|format(g.web_data.convert_naira_to_coin(naira_amount) if naira_amount else 0)}} coin you want to purchase and also, make sure to upload your payment receipt on the form below to avoid error on your purchase.</span></i>
+                            </div>
+                        </center>
+                        <br>
+                        <br>
+                        <!--Form Area -->
+                        <center>
+                            <div class="">
+                                <div align="left" class="reg-form-area wow fadeInUp" data-wow-delay="500ms" style="border-radius: 30px; background: #fd7e14; background-image: linear-gradient(to bottom left, #fd7e14 45%, #343a40 10%, #fd7e14 100%); border: 2px solid #343a40;">
+                                    <h4 align="left" style="color: #fff; font-family: Tekton Pro;">
+                                        Coin Recharge
+                                        <hr/>
+                                    </h4><br/>
+                                        <div align="center" style="max-width: 100%">
+                                            <span class="btn coinLabel" id="coinLabel" style="font-size: 18px;padding: 20px, 10px; background: green; color: #eddd9e; font-weight: bolder;">₦{{'%.0f'|format(naira_amount or 0)}} for ${{'%.0f'|format(g.web_data.convert_naira_to_coin(naira_amount) if naira_amount else 0)}} Coins</span>
+                                        </div>
+                                        <br>
+                                    <!--{{ wtf.quick_form(form)}}-->
+                                    <form action="{{request.url}}" method="post" class="form" role="form" enctype="multipart/form-data">
+                                        {% for field in form %}
+                                            {%if 'csrf' in field.name%}
+                                                {{ field()}}
+                                            {%elif field.name == 'submit'%}
+                                                {{ field(class="btn btn-secondary")}}
+                                            {% else%}
+                                            <div class="form-group  required">{{field.label()}}
+                                                {{ field(style="color: #000; width: 100%; border-radius: 20px; padding: 15px; border: 0px;", placeholder='Enter Coin Amount')}}
+                                                {%if field.errors%}
+                                                    <ul class="errors">
+                                                        {%for error in field.errors%}
+                                                        <li style="color: #fff;">{{error|safe}}</li>
+                                                        {%endfor%}
+                                                    </ul>
+                                                        
+                                                {%endif%}
+                                            </div>
+                                            {% endif%}
+                                        {% endfor%}
+
+                                    </form>
+                                </div>
+                            </div>
+                        </center>
+                        <!--form end-->
+                        {%else%}
+                        <center>
+                          <br>
+                          <p><i class="material-icons">info</i> Payment details not available for now, please try again sooner!!</p>
+                          <br>
+                        </center>
+                        {%endif%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- content ends -->
+    
+    <!-- Scripts -->
+    <script type="text/javascript">
+        var count = 0
+        $(document).ready(function () {
+            $('#naira_amount').on('input', function () {
+                var naira_amount = $(this).val();
+
+                if (!naira_amount) {
+                    updateCoinLabel('<p style="color:red;">Please enter a valid amount.</p>');
+                    return;
+                }
+
+                // Show loading state
+                updateCoinLabel('<p>₦'+naira_amount+'Loading...</p>');
+
+                $.ajax({
+                    url: "{{url_for('.naira_to_coin', _external=True)}}?naira_amount=" + naira_amount,
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.coin_amount) {
+                            updateCoinLabel('<p style="color:#eddd9e;font-size:18px;">'+data.coin_amount+'</p>');
+                            updatePaymentNote(data.payment_note)
+                        } else {
+                            updateCoinLabel('<p>No result found!</p>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error: ', error);
+                        updateCoinLabel('<p style="color:red;">An error occurred on getting ₦'+naira_amount+'. Please try again later.</p>');
+                    }
+                });
+            });
+
+            function updateCoinLabel(content) {
+                var coinLabel = $('#coinLabel');
+                coinLabel.html(content);
+            }
+
+            function updatePaymentNote(note) {
+                var paymentNote = $('#paymentNote');
+                paymentNote.html(note);
+            }
+        });
+    </script>
+
+{% endblock %}

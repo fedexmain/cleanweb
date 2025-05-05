@@ -1,0 +1,216 @@
+{%  if not posts or posts == []%}
+<div class="no-content" align="center">
+    <span class="btn-like">No Post</span><br><br><br>
+    <a  href="#Search"><span class="btn-like" style="padding: 40px">Find Post</span></a>
+</div>
+{%else%}
+<div class="" style="">
+    {% for post in posts %}
+    <div class="">
+        <div id="post{{post.id}}" class="single-blog-post wow fadeInDown" align="left" data-wow-delay="300ms" style="background-color: {{web_data.themes.third}};border-radius: 20px; border: 4px solid {{web_data.themes.forth}};">
+
+            <style type="text/css">
+                .pad{
+                    padding: 15px
+                }
+            </style>
+            <div class="pad">
+                <a class="post-title" href="{{ url_for('.profile', username=post.author.username) if not post.author.is_administrator() else url_for('.post', id=post.id)+'#post'+str(post.id) }}">
+                    <div class="" style="width: 70px; height: 70px;  float: left;" >
+                        <img src="{{post.author.gravatar() if not post.author.is_administrator() else url_for('static', filename='logo.png')}}" alt="{{ post.author.username}} picture" style="border-radius: 50%; border: 3px solid #a5afb7; height: 100%; width: 100%">
+                    </div>
+                    <span style="font-family: Times; font-size: 14px; font-weight: bolder; padding-left: 20px; color: {{web_data.themes.first}}">
+                        {{post.author.username }}
+                        <span style="font-size: 13px;padding: 10px;float: right;">{{moment(post.timestamp).fromNow()}}</span>
+                        &nbsp;
+                    </span>
+                    <hr>
+                </a>
+
+                <span style="float: right;">
+                    {%if not post.author.is_administrator()%}
+                    <span class="btn-primary" style="border: 2px solid {{web_data.themes.forth}};padding: 5px;border-radius: 40%;font-weight: bolder;">
+                        {{post.get_point_per_like()}}P / like
+                    </span>
+                    <span class="material-icons">toll</span>
+                    <span class="btn-primary" style="border: 2px solid {{web_data.themes.forth}};padding: 5px;border-radius: 40%;font-weight: bolder;">
+                        {{post.reward_points}} P
+                    </span>
+                    {%else%}
+                    <span class="material-icons">toll</span>
+                    <span style="border: 2px solid {{web_data.themes.forth}};padding: 5px;background: {{web_data.themes.first}}; color: {{web_data.themes.second}};border-radius: 40%;font-weight: bolder;">
+                        ADMIN
+                    </span>
+                    {%endif%}
+                </span>
+                <br>
+                <hr>
+            </div>
+            <style type="text/css">
+                .post-content{
+                    word-break: break-all;
+                    overflow-wrap: break-word;
+                    font-size: 15px;
+                }
+            </style>
+
+            {% if post.recipes.count() == 1%}
+            {% set file = post.recipes.first()%}
+            <div class="" style="width: 100%">
+                {%if '.mp4' in file.url%}
+                <video width="100%" style="width: 100%" src="{{file.url}}" controls=""></video>
+                {%else%}
+                <img src="{{ file.url}}" style="width: 100%;border-radius: 10px">
+                {%endif%}
+            </div>
+            {% endif%}
+
+            {% if post.recipes.count() > 1%}
+            <div class="row col-12">
+                {% for file in post.recipes.all()%}
+                <div class="col-md-4">
+                    {%if '.mp4' in file.url%}
+                    <video width="100%" style="width: 100%" src="{{file.url}}" controls=""></video>
+                    {%else%}
+                    <img src="{{ file.url}}" style="width: 20%;border-radius: 10px">
+                    {%endif%}
+                </div>
+                {% endfor%}
+            </div>
+            {% endif%}
+
+            {%if post.recipes.count()%}
+            <center>
+                <div style="padding: 5px;background: {{web_data.themes.first}};width: 100%;border-radius: 0px;color: {{web_data.themes.forth}};font-weight: bold;font-size: 12px;"><marquee>{{post.body}}</marquee></div>
+            </center>
+            {%else%}
+            <div class="pad post-content">
+                <p align="left" style=" font-family: Times;padding-top: 2px;color: {{web_data.themes.first}}">
+                    {% if request.endpoint != 'main.post'%}
+                        {% set max_char = 50%}
+                        {% if post.body_html%} 
+                            {{ post.body_html[:max_char]| safe }} 
+                            {% if len(post.body_html) > max_char%}
+                            ...<a href="{{ url_for('.post', id=post.id) }}">See more</a>
+                            {% endif%}
+                        {% else %} 
+                            {{ post.body[:max_char]}} 
+                            {% if len(post.body) > max_char%}
+                            ...<a href="{{ url_for('.post', id=post.id) }}">See more</a>
+                            {% endif%}
+                        {% endif %}
+                            
+                    {% else%}
+                        {% if post.body_html %} 
+                            {{ post.body_html| safe }} 
+                        {% else %} 
+                            {{ post.body}} 
+                        {% endif %}
+                    {% endif%}
+                </p>
+            </div>
+            {%endif%}
+            <hr>
+            <style type="text/css">
+                .post-footer span{
+                    padding: 1px;
+                    padding-bottom: 0px;
+                }
+                .post-footer .comment{
+                    color: {{web_data.themes.first}};
+                }
+                .post-footer a b{
+                    font-style: bold;
+                    font-size: 13px;
+                }
+                .post-footer .dropdown-content{
+                    padding-left: 0px;
+                    background: {{web_data.themes.third}};
+                    width: 200px;
+                    color: {{web_data.themes.first}}
+                }
+                .post-footer .dropdown-content a{
+                    color: {{web_data.themes.first}}
+                }
+            </style>
+            <div class="pad post-footer" style="padding-left: 20px" align="left">
+                {{ macros.share_button(sharing_url, title, text) }}
+                <a href="{{url_for('.like_post', post_id=post.id, next=request.url+'#post'+str(post.id))}}">
+                    <span style="color: {{web_data.themes.first if not current_user in post.likers else web_data.themes.forth}};" class="material-icons" title="like">thumb_up</span>
+                    <b>{{post.likes.count()}}</b>
+                </a>
+                &nbsp;
+                <a href="{{ url_for('.post', id=post.id) }}#comments">
+                    <span class="material-icons comment" title="Comment">comment</span>
+                    <b>{{ post.comments.count() }}</b>
+                </a>
+                &nbsp;
+                {%if current_user != post.author and not current_user.is_connected_with(post.author)%}
+                <a href="{{ url_for('.connect_hooker', username=post.author.username, next=request.url+'#post'+str(post.id)) }}" style="float: right;">
+                    <span class="btn-primary" style="padding: 5px;width: 40px;font-size: 8px" title="Connect">Connect</span>
+                </a>
+                &nbsp;
+                {%endif%}
+                <div style="border-right: 2px solid {{web_data.themes.first}};float: left;">
+                    <span class="dropdown">
+                      <span class="dropdown-trigger material-icons">more</span>
+                      <div class="dropdown-content" style="top: -200px;position: absolute;">
+                        <!-- Dropdown content goes here -->
+                        <ul>
+                            {% if current_user == post.author%}
+                            <li>
+                                <a href="{{ url_for('.edit_post', id=post.id) }}">
+                                    <span class="material-icons" title="Edit">edit</span>Edit
+                                </a>
+                            </li>
+                            {%endif%}
+                            {% if current_user.is_administrator() and current_user != post.author %}
+                            <li>
+                                <a href="{{ url_for('.edit_post', id=post.id) }}"><span class="material-icons">edit</span> Edit[ADMIN]</a>
+                            </li>
+                            <hr>
+                            {%if not post.is_news%}
+                            <li>
+                                <a href="{{ url_for('.make_post_as_news', id=post.id) }}"><span class="">OnNews</span> </a>
+                            </li>
+                            {%else%}
+                            <li>
+                                <a href="{{ url_for('.make_post_as_news', id=post.id) }}"><span class="">OffNews</span> </a>
+                            </li>
+                            {% endif %}
+                            <hr>
+                            {% endif %}
+                            
+                            <hr>
+                            {%set sharing_url = url_for('.post', id=post.id)%}
+                            {%set title = post.author.username+' New Post'%}
+                            {%set text = post.body%}
+                            {{ macros.social_media_share(sharing_url, title, text)}}
+                            <hr>
+                            {%if current_user == post.author or current_user.is_administrator()%}
+                            <li>
+                                <a style="color: red" href="{{url_for('.delete_post', post_id=post.id)}}?next={{request.url}}#post{{post.id}}"><span class="material-icons">delete</span> Delete</a>
+                            </li>
+                            <hr>
+                            {%endif%}
+                            <li>
+                                <a href="#"><span class="material-icons">cancel</span> Hide</a>
+                            </li>
+                        </ul>
+                      </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {%if post.comments.count() and not 'main.post' in request.endpoint%}
+    <div style="padding-left: 20px">
+        {{macros.list_comments([post.comments.all()[-1]],current_user,moment,web_data.themes)}}    
+    </div>
+    {%endif%}
+    <br>
+    <br>
+    <br>
+    {%endfor%}
+</div>
+{%endif%}

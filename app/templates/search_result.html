@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Search{{ super()}}{% endblock %}
+
+{% block page_content %}
+<br/><br/><br/><br/><br/>
+<br/><br/>
+
+{%  if FRs != []%}
+<h1>People</h1>
+	{% include '_people.html' %}
+{%endif%}
+
+{%  if posts != []%}
+<h1>Post</h1>
+	{% include '_posts.html' %}
+{%endif%}
+
+{%  if FRs == [] and posts == []%}
+<div class="no-content" align="center">
+    <span class="btn-like" style="padding: 40px">Search Not found</span>
+</div>
+{% endif%}
+{% endblock %}

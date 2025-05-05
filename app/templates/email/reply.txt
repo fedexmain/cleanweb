@@ -1,0 +1,10 @@
+Dear {{ user.name.split(' ')[0] }},
+
+You have a new message!
+
+To reply to your message please visit {{ url_for('.send_msg', username=current_user.username, page=-1, _external=True) }}
+
+Sincerely,
+The {{web_data.name}} Team.
+
+Note: replies to this email address are not monitored.

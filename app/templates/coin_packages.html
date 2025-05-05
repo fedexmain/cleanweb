@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}Coin Packages{{ super()}}{% endblock %}
+
+{% block page_content %}
+    <div class="container py-5">
+        <h1 class="text-center mb-4">Coin Packages</h1>
+        <table class="table table-striped table-bordered shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>&#8358; Price</th>
+                    <th>$ Coin</th>
+                    {%if current_user.is_administrator()%}
+                    <th>&#8358; Rate</th>
+                    {%endif%}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for package in packages %}
+                {% if package.limited %}
+                <tr>
+                    <td>{{ package.name }}</td>
+                    <td>&#8358;{{ '%.1f'|format(package.naira_amount) }}</td>
+                    <td>${{ '%.1f'|format(package.dollar_amount) }}</td>
+                    {%if current_user.is_administrator()%}
+                    <td>{{ package.naira_rate }}</td>
+                    {%endif%}
+                    <td>
+                        <a href="{{ url_for('.buy_coins', package_id=package.id, next=next_url, _external=True) }}">
+                            <button class="btn btn-success" style="font-size: 16px;width: 90px;">Buy</button>
+                        </a>
+                        {%if current_user.is_administrator()%}
+                        <a href="{{ url_for('.edit_coin_package', package_id=package.id, _external=True) }}">
+                            <button class="btn btn-secondary" style="width: 90px;">Edit<i class="material-icons" style="font-size: 16px;">edit</i></button>
+                        </a>
+                        &nbsp;
+                        <a href="{{ url_for('.delete_coin_package', package_id=package.id, _external=True) }}">
+                            <button class="btn btn-danger" style="width: 90px;">Delete<i class="material-icons" style="font-size: 16px;">delete</i></button>
+                        </a>
+                        {%endif%}
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {%if current_user.can(Permission.MODERATE_COMMENTS)%}
+        {%if naira_amount and current_user.is_administrator()%}
+        <a href="{{ url_for('.recharge', naira_amount=naira_amount, next=next_url, _external=True) }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Get Budget ${{'%.0f'|format(g.web_data.convert_naira_to_coin(naira_amount))}}Coin with ₦{{naira_amount}}
+        </a>
+        {%endif%}
+        <a href="{{url_for('.load_coin', _external=True)}}"><button class="btn btn-success" style="background: #eddd9e;color: green;">Load Coin Code</button></a>
+        {%endif%}
+        {%if current_user.is_administrator()%}
+        <a href="{{ url_for('.add_coin_package', _external=True) }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Add New Coin Package
+        </a>
+        {%endif%}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{%endblock%}

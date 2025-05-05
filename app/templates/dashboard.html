@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}DashBoard{{ super()}}{% endblock %}
+
+
+{% block page_content %}
+    <style type="text/css">
+        .form-group{
+            color: #fff;
+
+        }
+        .reg-form-area{
+            padding: 10px;
+        }
+        .contact-content .reg-form-area .form-group .form-control{
+            padding: 25px;
+            font-size: 15px;
+            color: green;
+            background: #fff;
+            border-radius: 15px;
+            text-decoration-color: #000;
+
+        }
+
+        .contact-content .reg-form-area .form-group #prize_and_charges{
+            background: green;
+            padding: 10px;
+             border-radius: 10px;
+        }
+        td,th{
+            padding: 5px;
+            font-weight: bolder;
+            font-size: 12px;
+        }
+        .tab-bg{
+            padding: 20px; 
+            padding-bottom: 20px; 
+            color: #fff;
+            background: {{web_data.themes.first}}; 
+        }
+    </style>                                               
+
+    <section  style="background: #c0c0c0;">
+        <br><br><br><br><br><br>
+        <div class="container">
+            {%if current_user.is_administrator()%}
+            <div class="tab-bg">
+                <center>
+                    <h4 align="left" style="color: #fff; font-family: Tekton Pro;">
+                        ADMINISTRATOR
+                    </h4>
+                    <hr/>
+                    <table cellspacing="5" cellpadding="5" border="1" width="100%">
+                        <tr>
+                            <th>N/s</th><th width="30%">Fullname</th><th width="10%">Username</th><th>Balance</th><th>Clients</th>
+                        </tr>
+                        {%if not administrators%}
+                        <tr>
+                            <td colspan="6" align="center"><i class="icon-warning"></i> No Admin on Board.</td>
+                        </tr>
+                        {%else%}
+                        {%for u in administrators%}
+                            <tr>
+                                <td>
+                                    {{moderators.index(u)+1}} 
+                                    
+                                </td>
+                                <td>
+                                    <i class="material-icons" style="position: relative; color: {{'#fd7e14' if u.is_active() else '#fff'}};">face</i>
+                                    <a style="padding: 5px;" href="{{url_for('.profile', username=u.username, _external=True)}}">
+                                        {{u.name}}
+                                    </a><br>
+                                    {%if current_user.is_administrator()%}
+                                    <a class="btn-danger" style="background: red;padding: 2px;float: right;" href="{{url_for('.delete_user', id=u.id, next=request.url, _external=True)}}">Delete</a>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    <i class="material-icons" style="position: relative; color: {{'#fd7e14' if u.is_active() else '#fff'}};">face</i>
+                                    <a style="padding: 5px;" href="{{url_for('.profile', username=u.username, _external=True)}}">
+                                        {{u.username}}
+                                    </a>
+                                </td>
+                                <td>${{'%.1f'|format(u.coin)}}</td>
+                                <td>{{User.query.filter_by(referral_id=u.referring_id).count()}}</td>
+                            </tr>
+                        {%endfor%}
+                        {%endif%}
+
+
+                    </table>
+                </center><br>
+            </div><br>
+            {%endif%}
+
+            {%if current_user.can(Permission.MODERATE_COMMENTS)%}
+            <div class="tab-bg">
+                <center>
+                    <h4 align="left" style="color: #fff; font-family: Tekton Pro;">
+                        MODERATORS
+                    </h4>
+                    <hr/>
+                    <table cellspacing="5" cellpadding="5" border="1" width="100%">
+                        <tr>
+                            <th>N/s</th><th width="30%">Fullname</th><th width="10%">Username</th><th>Balance</th><th>Clients</th>
+                        </tr>
+                        {%if not moderators%}
+                        <tr>
+                            <td colspan="6" align="center"><i class="icon-warning"></i> No Moderators on Board.</td>
+                        </tr>
+                        {%else%}
+                        {%for u in moderators%}
+                            <tr>
+                                <td>
+                                    {{moderators.index(u)+1}} 
+                                    
+                                </td>
+                                <td>
+                                    <i class="material-icons" style="position: relative; color: {{'#fd7e14' if u.is_active() else '#fff'}};">face</i>
+                                    <a style="padding: 5px;" href="{{url_for('.profile', username=u.username, _external=True)}}">
+                                        {{u.name}}
+                                    </a><br>
+                                    {%if current_user.is_administrator()%}
+                                    <a class="btn-danger" style="background: red;padding: 2px;float: right;" href="{{url_for('.delete_user', id=u.id, next=request.url, _external=True)}}">Delete</a>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    <i class="material-icons" style="position: relative; color: {{'#fd7e14' if u.is_active() else '#fff'}};">face</i>
+                                    <a style="padding: 5px;" href="{{url_for('.profile', username=u.username, _external=True)}}">
+                                        {{u.username}}
+                                    </a>
+                                </td>
+                                <td>${{'%.1f'|format(u.coin)}}</td>
+                                <td>{{User.query.filter_by(referral_id=u.referring_id).count()}}</td>
+                            </tr>
+                        {%endfor%}
+                        {%endif%}
+
+
+                    </table>
+                </center><br>
+            </div><br>
+            {%endif%}
+
+            <div class="tab-bg">
+                <center>
+                    <h4 align="left" style="color: #fff; font-family: Tekton Pro;">
+                        VENDORS
+                    </h4>
+                    <hr/>
+                    <table cellspacing="5" cellpadding="5" border="1" width="100%">
+                        <tr>
+                            <th>N/s</th><th width="30%">Fullname</th><th width="10%">Username</th><th>Balance</th><th>Clients</th>
+                        </tr>
+                        {%if vendors == [] %}
+                        <tr>
+                            <td colspan="6" align="center"><i class="icon-warning"></i> No Vendors on Board.</td>
+                        </tr>
+                        {%else%}
+                        {%for u in vendors%}
+                            <tr>
+                                <td>
+                                    {{vendors.index(u)+1}} 
+                                </td>
+                                <td>
+                                    <i class="material-icons" style="position: relative; color: {{'#fd7e14' if u.is_active() else '#fff'}};">face</i>
+                                    <a style="padding: 5px;" href="{{url_for('.profile', username=u.username, _external=True)}}">
+                                        {{u.name}}
+                                    </a><br>
+                                    {%if current_user.is_administrator()%}
+                                    <a class="btn-danger" style="background: red;padding: 2px;float: right;" href="{{url_for('.delete_user', id=u.id, next=request.url, _external=True)}}">Delete</a>
+                                    {%endif%}
+                                </td>
+                                <td>
+                                    <i class="material-icons" style="position: relative; color: {{'#fd7e14' if u.is_active() else '#fff'}};">face</i>
+                                    <a style="padding: 5px;" href="{{url_for('.profile', username=u.username, _external=True)}}">
+                                        {{u.username}}
+                                    </a>
+                                </td>
+                                <td>${{'%.1f'|format(u.coin)}}</td>
+                                <td>{{User.query.filter_by(referral_id=u.referring_id).count()}}</td>
+                            </tr>
+                        {%endfor%}
+                        {%endif%}
+
+
+                    </table>
+                </center><br>
+            </div><br>
+
+            <div class="clients-tab tab-bg">
+                <center>
+                    <h4 align="left" style="color: #fff; font-family: Tekton Pro;">
+                        ALL Clients &nbsp;&nbsp;&nbsp;{%if current_user.is_administrator()%}<a class="btn btn-secondary" href="{{url_for('.generate_users', count=10, next=request.url, _external=True)}}">Generate</a> {%endif%}
+                        <hr/>
+                    </h4>
+                    <table cellspacing="5" cellpadding="5" border="1" width="100%">
+                        <tr>
+                            <th>N/s</th><th width="40%">Fullname</th><th>Username</th><th>Balance</th><th>Has Package</th>
+                        </tr>
+                        {%set role = Role.query.filter_by(name='User').first()%}
+
+                        {%set clients = User.query.filter_by(role=role).all() if current_user.is_administrator() else User.query.filter_by(role=role, referral_id=current_user.referring_id).all()%}
+
+                        {%for client in clients%}
+                        <tr>
+                            <td>
+                                {{clients.index(client)+1}}
+                            </td>
+                            <td>
+                                <i class="material-icons" style="position: relative; color: {{'#fd7e14' if client.is_active() else '#fff'}};">face</i>
+                                <a style="padding: 5px;" href="{{url_for('.profile', username=client.username, _external=True)}}#pricing">
+                                    {{client.name|capitalize}}
+                                </a><br>
+                                <a class="btn-danger" style="background: red;padding: 2px;float: right;" href="{{url_for('.delete_user', id=client.id, next=request.url, _external=True)}}">Delete</a>
+                            </td>
+                            <td>
+                                <a style="padding: 5px;" href="{{url_for('.profile', username=client.username, _external=True)}}#pricing">
+                                    {{client.username|capitalize}}
+                                </a>
+                            </td>
+                            <td><span style="color: green;">${{'%.1f'|format(client.coin)}}</span><span style="color: yellow;float: right;">${{'%.1f'|format(client.fake_coin)}}</span></td>
+                            <td><i class="material-icons">{{'done_all' if client.packages.count() else 'warning' }}</i> {{'Yes' if client.packages.count() else 'No' }}</td>
+                        </tr>
+                        {%endfor%}
+                        {%if clients == []%}
+                        <tr>
+                            <td colspan="6" align="center"><i class="icon-warning"></i> No Clients available!</td>
+                        </tr>
+                        {%endif%}
+                    </table>
+                </center><br>
+            </div><br>
+        </div>
+    </section>
+    <!-- content ends -->
+{% endblock %}

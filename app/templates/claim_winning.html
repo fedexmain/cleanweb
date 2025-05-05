@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- You can use Open Graph tags to customize link previews.
+    Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+    <meta property="og:url"           content="{{request.url}}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="{{g.celebrity.username if g.celebrity else 'Celebrity'}} {{ web_data.name}}" />
+    <meta property="og:description"   content="I honour my fans with the opportunity to take advantage of the internet to turn their everyday social media activities into a toolbox for making passive income daily... for all users to stand a chance to secure financial status." />
+    {%if g.celebrity%}
+    <meta property="og:image"         content="{{ g.celebrity.logo.first().url if g.celebrity.logo.first() else url_for('static', filename=web_data.generate_logo()) }}" />
+    <link rel="icon" type="text/css" href="{{ g.celebrity.logo.first().url if g.celebrity.logo.first() else url_for('static', filename=web_data.generate_logo()) }}">
+    <link rel="shortcut icon" type="text/css" href="{{ g.celebrity.logo.first().url if g.celebrity.logo.first() else url_for('static', filename=web_data.generate_logo()) }}">
+    {% else%}
+    <meta property="og:image"         content="{{url_for('static', filename=web_data.generate_logo())}}" />
+    <link rel="icon" type="text/css" href="{{url_for('static', filename=web_data.generate_logo())}}">
+    <link rel="shortcut icon" type="text/css" href="{{url_for('static', filename=web_data.generate_logo())}}">
+    {% endif%}
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Claim Your Profile</title>
+    <link href="/static/dist/css/swipe.min.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #ececec;
+            font-family: 'Arial', sans-serif;
+        }
+        .profile-container {
+            max-width: 700px;
+            margin: 3rem auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.85);
+            position: relative;
+            text-align: center;
+        }
+        .profile-round-image {
+            width: 120px; 
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid #4CAF50;
+        }
+        .profile-image {
+            width: 100%;
+            height: 530px;
+            object-fit: cover;
+            border-bottom: 5px solid #4CAF50;
+        }
+        .profile-details {
+            padding: 2rem;
+            background-color: #fafafa;
+            padding-bottom: 78px;
+        }
+        .profile-details h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333333;
+        }
+        .profile-details .balance {
+            font-size: 3rem;
+            color: #4CAF50;
+            font-weight: bold;
+            background-color: #e7f7e9;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        .profile-details p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        .claim-form-overlay {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 2rem;
+            border-top: 2px solid #ddd;
+            position: absolute;
+            bottom: 80px;
+            padding: 40px;
+            width: 100%;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0.8;
+        }
+        
+        .claim-form-overlay label {
+            font-weight: bold;
+            color: #555;
+        }
+        .claim-form-overlay .form-control {
+            border-radius: 5px;
+        }
+        .claim-button {
+            background-color: #4CAF50;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            opacity: 1;
+        }
+        .claim-button:hover {
+            background-color: #45a049;
+        }
+        .claim-button.disabled, .claim-button.disabled:hover {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .special-note {
+            font-size: 1rem;
+            color: #888;
+            margin-top: 1.5rem;
+        }
+        .countdown-timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FF5733;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+      
+    <!-- Winner's Profile Details -->
+    <div class="profile-details">
+		{% for message in get_flashed_messages() %}
+		<div class="alert alert-warning">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  {{ message|safe }}
+		</div>
+		{% endfor %}
+
+        <img src="{{ winning.image_url }}" alt="Winner Image" class="profile-round-image">
+        <h2>{{ winning.name }}</h2>
+        <h3 class="balance">${{ winning.amount }}</h3>
+        <p>You’ve won a unique opportunity prize worth of ${{winning.amount}}! Claim your winning profile with just $500 to join {{winning.celebrity.name}} elite community of fans and friends. We’re thrilled to welcome you onboard.</p>
+        
+        <!-- Countdown Timer Display -->
+        {%set exp_lab = "Prize expire in"%}
+        <div class="countdown-timer" id="countdown-timer">{{exp_lab}}: Loading...</div>
+        <br>
+        {%if current_user.can(Permission.MODERATE_COMMENTS)%}
+        <a href="{{ url_for('auth.edit_winning', winning_id=winning.id) }}" class="btn btn-primary"><i class="material-icons">edit</i> Edit Winning</a>
+
+        <button class="btn-danger" onclick="delete_winning()" type="button">
+			<i class="material-icons">delete</i> Delete
+		</button>
+
+        {%endif%}
+    </div>
+    {%if not current_user.is_authenticated%}
+    <!-- Winner's Image -->
+    <img src="{{ winning.image_url }}" alt="Winner Image" class="profile-image">
+
+    <!-- Claim Form Overlay -->
+    <div class="claim-form-overlay">
+        <h4>Claim Your Exclusive Winning</h4>
+        <br>
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="form-group">
+                <label for="username">Choose Your Username:</label>
+                {{ form.username(class="form-control", placeholder="Your unique handle name") }}
+                {% if form.username.errors %}
+                    <small class="text-danger">{{ form.username.errors[0] |safe}}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                {{ form.email(class="form-control", placeholder="Your email for updates") }}
+                {% if form.email.errors %}
+                    <small class="text-danger">{{ form.email.errors[0] |safe}}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="mobile_number">Mobile Number:</label>
+                {{ form.mobile_number(class="form-control", placeholder="Your contact number") }}
+                {% if form.mobile_number.errors %}
+                    <small class="text-danger">{{ form.mobile_number.errors[0] |safe}}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password:</label>
+                {{ form.password(class="form-control", placeholder="Enter your password") }}
+                {% if form.password.errors %}
+                    <small class="text-danger">{{ form.password.errors[0] |safe}}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="password2">Confirm Password:</label>
+                {{ form.password2(class="form-control", placeholder="Confirm your password") }}
+                {% if form.password2.errors %}
+                    <small class="text-danger">{{ form.password2.errors[0] |safe}}</small>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn claim-button btn-block" id="claim-button">{{ form.submit.label.text }}</button>
+        </form>
+    </div>
+    {%endif%}
+
+    <p class="special-note">This is your chance to officially join the inner circle. Complete your profile to gain exclusive access to updates and interactions!</p>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+	function delete_winning() {
+	    $.ajax({
+            url: "{{url_for('auth.delete_winning', winning_id=winning.id)}}",
+            type: 'DELETE',
+            success: function(response) {
+                console.log(response.success);  // Success message
+	            var newUrl = "{{ url_for('main.profile', username=current_user.username) }}";
+	            window.location.href = "{{request.url}}"//newUrl;
+            },
+            error: function(xhr) {
+                console.error('Failed to delete winning:', xhr.responseText);  // Error message
+            }
+        });
+	}
+
+    // JavaScript Countdown Timer
+    const expirationTime = new Date("{{ expiration_time }}").getTime();
+    const claimButton = document.getElementById("claim-button");
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = expirationTime - now;
+
+        // Calculate days, hours, minutes, and seconds left
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Display the result in the countdown-timer element
+        document.getElementById("countdown-timer").innerHTML = 
+            `{{exp_lab}}: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+        // If the countdown is over, show expiration message and disable claim button
+        if (timeLeft < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("countdown-timer").innerHTML = "Expired";
+            claimButton.disabled = true;
+            claimButton.classList.add("disabled");
+            claimButton.innerText = "Expired";
+             // Make AJAX call to delete the winning entry
+            delete_winning();
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+{%  if FRs == [] or (len(FRs) ==1 and FRs[0] == user)%}	
+	<hr style="background: #c0c0c0">
+	<p style="padding: 15px">No Content to display</p>
+	<hr style="background: #c0c0c0">
+	<br>
+
+	<br>
+	<br>
+{%else%}
+<table id="follow_table" class="table table-hover">
+
+    {% for follow_user in FRs[(page-1)*per_page: page*per_page]%}
+	    {% if follow_user != user %}
+	    <tr>
+	        <td>
+	            {{macros.display_user(follow_user, current_user=current_user)}}
+	            <!-- Mutual Friend table data-->
+	        	{% if current_user != follow_user and len(current_user.get_mutual_followed_with(follow_user)) %}
+	            	<span style="color: {{g_color.second}};">{{len(current_user.get_mutual_followed_with(follow_user))}}mutual RM</span>
+	            {% endif%}
+	        </td>
+	        
+	        <td>
+	        {%if current_user != follow_user and current_user.is_following(follow_user)%}
+	        	<a class="btn btn-danger" href="{{ url_for('.unfollow', username = follow_user.username, next=request.url) }}#friends">
+	                Following
+	            </a>
+	            
+	        {% elif current_user != follow_user and not current_user.is_following(follow_user)%}
+	        	<a class="btn btn-primary" href="{{ url_for('.follow', username = follow_user.username, next=request.url) }}#friends">
+	                Follow
+	            </a>
+	        {% endif%}
+	        </td>
+	        
+	    </tr>
+	    {% endif %}
+    {% endfor %}
+</table>
+<hr style="background:#c0c0c0">
+<br>
+<br>
+<br>
+{% endif%}

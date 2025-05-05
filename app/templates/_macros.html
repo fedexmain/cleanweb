@@ -1,0 +1,486 @@
+{% macro list_comments(comments,current_user,moment,themes)%}
+{% for comment in comments %}
+<div id="comment{{comment.id}}" class="single-blog-post mb-50 wow fadeInUp" data-wow-delay="300ms"  style="padding: 10px;overflow-wrap: break-word;">
+    <div>
+        <a class="post-title" href="{{ url_for('.profile', username=comment.author.username) }}">
+            <div class="" style="width: 40px; height: 40px;  float: left;" >
+                <img src="{{comment.author.gravatar()}}" alt="{{ comment.author.username}} picture" style="border-radius: 50%; border: 3px solid #a5afb7; height: 100%; width: 100%">
+            </div>
+            <span style="font-family: Times; font-size: 16px; font-weight: bolder; padding-left: 20px; color: #fff">
+            {{comment.author.username }}
+            </span>
+            <span style="padding-left: 15px">
+                {{moment(comment.timestamp).fromNow()}}
+            </span>
+        </a>
+    </div>
+
+    <div class="" style="font-size: 18px; padding-left: 80px; color: {{themes.second}}">
+        {% if comment.disabled %}
+        <p><i>This comment has been disabled by a moderator.</i></p>
+        {% endif %}
+        {% if moderate or not comment.disabled %}
+            {% if comment.body_html %}
+                {{ comment.body_html | safe }}
+            {% else %}
+                {{ comment.body }}
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% if moderate %}
+        <br>
+        {% if comment.disabled %}
+        <a class="btn btn-default btn-xs" href="{{ url_for('.moderate_enable',
+        id=comment.id, page=page) }}">Enable</a>
+        {% else %}
+        <a class="btn btn-danger btn-xs" href="{{ url_for('.moderate_disable', id=comment.id, page=page) }}">Disable</a>
+        {% endif %}
+    {% endif %}
+    <style type="text/css">
+        .post-footer span{
+            padding: 1px;
+            padding-bottom: 0px;
+            font-size: 15px;
+        }
+        .post-footer .comment{
+            color: {{themes.first}};
+        }
+        .post-footer a b{
+            font-style: bold;
+            font-size: 13px;
+        }
+        .comment.post-footer .dropdown-content{
+            padding-left: 0px;
+            background: {{themes.third}};
+        }
+    </style>
+    <hr>
+    <div class="comment post-footer" style="padding-left: 50px;" align="left">
+        {%if current_user.is_authenticated%}
+        <a style="color: {{themes.second if not current_user in comment.likers else themes.forth}};" href="{{url_for('.like_comment', comment_id=comment.id)}}?next={{request.url}}#comment{{comment.id}}">
+            <span class="material-icons" title="like">thumb_up</span><b>{{comment.likes.count()}}</b>
+        </a>
+        &nbsp;
+        <a style="color: {{themes.second if not current_user in comment.dislikers else themes.forth}};" href="{{url_for('.dislike_comment', comment_id=comment.id)}}?next={{request.url}}#comment{{comment.id}}">
+            <span class="material-icons" title="dislike">thumb_down</span><b>{{comment.dislikes.count()}}</b>
+        </a>
+        &nbsp;
+        {%endif%}
+        <a href="{{url_for('main.post', id=comment.id)}}#comment-box">
+            <span class="">
+                <span class="material-icons" title="Reply">reply</span>
+            </span>
+        </a>
+        {%if current_user == comment.author or current_user.is_administrator()%}
+        &nbsp;
+        <a href="{{url_for('.delete_comment', comment_id=comment.id)}}?next={{request.url}}#comment{{comment.id}}">
+            <span style="font-size: 20px;color: red;" class="material-icons" title="Delete">delete</span>
+        </a>
+        {%endif%}
+    </div>
+</div>
+{%endfor%}
+{%endmacro%}
+
+{% macro pagination_widget(pagination, hash_ref, endpoint=request.endpoint) %}
+	{% if not '#' in hash_ref %}
+	{% set hash_ref = '#'+hash_ref%}
+	{% endif %}
+<div class="academy-pagination-area" style="align-content: center;" align="center">
+	<ul class="pagination" style="size: 900px;">
+		<li{% if not pagination.has_prev %} class="disabled"{% endif %}>
+			<a href="{% if pagination.has_prev %}{{ url_for(endpoint, page = pagination.page - 1, **kwargs) }}{% else %}#{% endif %}">
+			&laquo;
+			</a>
+		</li>
+
+		{% for p in pagination.iter_pages() %}
+			{% if p %}
+
+				{% if p == pagination.page %}
+				<li class="active">
+					<a href="{{ url_for(endpoint, page = p, **kwargs) }}{{hash_ref}}">{{ p }}</a>
+				</li>
+				{% else %}
+				<li>
+					<a href="{{ url_for(endpoint, page = p, **kwargs) }}{{hash_ref}}">{{ p }}</a>
+				</li>
+				{% endif %}
+
+			{% else %}
+			<li class="disabled"><a href="#">&hellip;</a></li>
+			{% endif %}
+
+		{% endfor %}
+		<li {% if not pagination.has_next %} class="disabled"{% endif %}>
+			<a href="{% if pagination.has_next %}{{ url_for(endpoint, page = pagination.page + 1, **kwargs) }}{% else %}#{% endif %}">
+			&raquo;
+			</a>
+		</li>
+	</ul>
+</div>
+{% endmacro %}
+
+{% macro post_form_phase(current_user, wall_owner, form, themes, form_url='#') %}
+<!-- Make Post Area -->
+<form action="{{form_url}}" method="post" class="form" enctype="multipart/form-data" role="form">
+<div class="col-12" style="border: 2px solid {{themes.second}}; border-radius: 25px;">
+
+    <div align="left" style="height: 27px;">
+    	{{form.csrf_token()}}
+    	{{form.privacy.label()}}
+       {{form.privacy()}}
+    </div>
+
+    <div class="row" style="padding: 10px;">
+        <div class="" style="width: 60px; height: 60px; border-radius: 50%; border: 3px solid #a5afb7;" >
+            <img src="{{current_user.gravatar()}}" alt="{{ current_user.username}} picture" style="border-radius: 50%; height: 100%; width: 100%">
+        </div>
+        
+        <div class="" style="width: 60%; padding-left: 10px;">
+            {{ form.body(style="border: 2px solid #a5afb7; padding: 4px; width: 100%; color: {{themes.first}}; background: #fff; border-radius: 30px;", placeholder="  What's on your mind{}?..".format(" on %s's timeline"%wall_owner.name if wall_owner != current_user else ''), cols="40", rows="2")}}
+
+        </div>
+        <div style="width: 48px; padding-left: 20px;">
+        	{{ form.submit(style=" border: 2px solid #a5afb7; font-weight: bold; padding: 10px; border-radius: 10px")}}
+        </div>
+        
+    </div>
+    <div align="left" class="form-group required">
+        {%if current_user.is_administrator()%}
+        {%for error in form.video.errors%}
+        <label style="color: red;">{{error}}</label>
+        {%endfor%}
+        {{ form.video(class='icon-fax', style="visibility: hidden; width: 22px; height: 5px; position: absolute; bottom: +10px;")}}<b class='icon-fax' style="padding-left: 20px;"> {{ form.video.label(class="control-label")}}</b>
+        &nbsp;&nbsp;&nbsp;
+        {%endif%}
+        {{ form.images(style="visibility: hidden; width: 22px; height: 15px; position: absolute; bottom: +10px;")}}<b class='icon-fax' style="padding-left: 20px;"> {{ form.images.label(class="control-label")}}</b>
+    </div>
+
+</div>
+</form>
+{% endmacro %}
+
+{% macro tiny_pagination(items, item_count, page, per_page, endpoint=request.endpoint)%}
+
+	<table id="follow_table">
+		{% if page > 0 and page < item_count/per_page %}
+		<tr>
+			<td colspan="3">
+				<a href="{{url_for(endpoint, page=page+1, **kwargs)}}{{hash_ref}}"><span>&raquo;See more next</span></a>
+			</td>
+		</tr>
+		{% endif%}
+
+		{% if page > 1%}
+		<tr><td colspan="3"><a href="{{url_for(endpoint, page=page-1, **kwargs)}}{{hash_ref}}"><span>&raquo;See previous</span></a></td></tr>
+		{% elif page == -1%}
+		<tr><td colspan="3"><a href="{{url_for(endpoint, page=item_count//per_page-1 if item_count%per_page == 0 else item_count//per_page, **kwargs)}}{{hash_ref}}"><span>&raquo;See previous</span></a></td></tr>
+		{% endif%}
+
+		{% if page == -1 or per_page*page >= item_count and item_count > per_page%}
+		<tr><td colspan="3"><a href="{{url_for(endpoint, page=1, **kwargs)}}{{hash_ref}}"><span>&raquo;Back to start</span></a></td></tr>
+		{% endif%}
+	</table>
+{% endmacro%}
+
+{%macro search()%}
+<!-- search Widget -->
+<div class="search-bar">
+    <form action="{{ url_for('main.search_result')}}" method="get">
+        <input type="search" style="width: 100%;float: left;height: 35px" name="search" id="Search" placeholder="Search" required="">
+        <button type="submit" style="position: absolute;right: 0px;"><i class="material-icons">search</i></button>
+    </form>
+</div>
+<!-- search end -->
+{% endmacro%}
+
+{% macro ads(themes, current_user, url, click_here_word)%}
+<div id='ADs' class="alert alert-warning" style="top: +200px; background-color: {{themes()}}; width: 60%">
+    <button type="button" class="close" data-dismiss="alert" style="font-size: +30px;">&times;</button>
+    <table>
+        <tr>
+            <td width="70%">
+                <div >
+                    <img src="{{ current_user.gravatar()}}" alt="">
+                </div>
+            </td>
+            <td width="30%">
+                <div style="padding: 15px; color: {{themes()}}; font-size: 18px;"><label>GreenUpdateApp</label></div>
+            </td>
+        </tr>
+    </table>
+    <div>
+        
+        <div align="center" style="color: {{themes()}}; width: 100%; font-size: 20px; border-radius: 5px; border: 5px solid {{themes()}}; background-color: {{themes()}};"> 
+            <a href="http://free.facebook.com" style="color: {{themes()}};">
+            >>>Click here to install<<<</a>
+        </div>
+    </div>
+</div>
+{% endmacro%}
+
+{% macro display_user(user,current_user=None)%}
+<div>
+    <a class="" href="{{ url_for('.profile', username=user.username) }}">
+        <div class="" style="width: 40px; height: 40px;  float: left;" >
+            <img src="{{user.gravatar()}}" alt="{{ user.username}} picture" style="border-radius: 50%; border: 3px solid #a5afb7; height: 100%; width: 100%">
+        </div>
+        <span style="font-family: Times; font-size: 16px; font-weight: bolder; padding-left: 20px; color: #fff">
+        {{'You' if user == current_user else user.username }}
+        </span>
+    </a>
+</div>
+{% endmacro%}
+
+{% macro share_button_css()%}
+<style type="text/css">
+    html {
+        box-sizing: border-box;
+    }
+
+    *, *::before, *::after {
+      box-sizing: inherit;
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      font-family: -apple-system,BlinkMacSystemFont,San Francisco,Helvetica Neue,Helvetica,Ubuntu,Roboto,Noto,Segoe UI,Arial,sans-serif;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 7px;
+    }
+
+    button, .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: auto;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      color: #777;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: 2px;
+      text-transform: capitalize;
+      text-decoration: none;
+      white-space: nowrap;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      cursor: pointer;
+    }
+
+    button:hover, .button:hover {
+      border-color: #cdd;
+    }
+
+    .share-button, .copy-link {
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+
+    .share-button, .share-dialog {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .share-dialog {
+      display: none;
+      width: 95%;
+      max-width: 500px;
+      box-shadow: 0 8px 16px rgba(0,0,0,.15);
+      z-index: -1;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 4px;
+      background-color: #fff;
+    }
+
+    .share-dialog.is-open {
+      display: block;
+      z-index: 2;
+    }
+
+
+    .targets {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .close-button {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+    }
+
+    .close-button svg {
+      margin-right: 0;
+    }
+
+    .link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      border-radius: 4px;
+      background-color: #eee;
+    }
+
+    .pen-url {
+      margin-right: 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+</style>
+{%endmacro%}
+
+{% macro facebook_share(sharing_url)%}
+<!-- Load Facebook SDK for JavaScript -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+var js, fjs = d.getElementsByTagName(s)[0];
+if (d.getElementById(id)) return;
+js = d.createElement(s); js.id = id;
+js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<!-- Your share button code -->
+<div class="fb-share-button" 
+data-href="{{sharing_url}}" 
+data-layout="button_count">
+</div>
+
+{%endmacro%}
+
+{% macro share_button(sharing_url, title, text) %}
+<span class="share-button" style="cursor: pointer;" onclick="sharePost('{{ sharing_url }}', '{{ title }}', '{{ text }}')">
+    <span class="material-icons">share</span>Share
+</span>
+
+<script>
+function sharePost(postUrl, postTitle, postText) {
+  var shareData = {
+    title: postTitle,
+    text: postText,
+    url: postUrl
+  };
+
+  if (navigator.share) {
+    // Use the Web Share API if available
+    navigator.share(shareData)
+      .then(() => {
+        console.log('Post shared successfully');
+      })
+      .catch((error) => {
+        console.error('Error sharing post:', error);
+      });
+  } else if (navigator.canShare && navigator.canShare(shareData)) {
+    // Fallback for iOS devices
+    navigator.canShare(shareData)
+      .then(() => {
+        navigator.share(shareData)
+          .then(() => {
+            console.log('Post shared successfully');
+          })
+          .catch((error) => {
+            console.error('Error sharing post:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error checking share compatibility:', error);
+      });
+  } else {
+    // Fallback for unsupported browsers
+    alert('Sharing is not supported on this device.');
+  }
+}
+</script>
+{% endmacro %}
+
+
+{% macro social_media_share(sharing_url, title, text) %}
+  <li>  
+    <a href="https://www.facebook.com/sharer.php?u={{ sharing_url }}&quote={{ text }}" target="_blank" rel="noopener noreferrer">Facebook</a>
+  </li>
+  <li>
+    <a href="https://twitter.com/intent/tweet?url={{ sharing_url }}&text={{ text }}" target="_blank" rel="noopener noreferrer">Twitter</a>
+  </li>
+  <li>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ sharing_url }}&title={{ title }}&summary={{ text }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  </li>
+  <li>
+    <a href="https://pinterest.com/pin/create/button/?url={{ sharing_url }}&description={{ text }}" target="_blank" rel="noopener noreferrer">Pinterest</a>
+  </li>
+  <li>
+    <a href="whatsapp://send?text={{ sharing_url + '\n\n' + title + '\n\n' + text }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+  </li>
+
+  <script>
+    function trackSharing(platform) {
+      var shareWindow = window.open('', 'shareWindow', 'width=600,height=400');
+      
+      if (shareWindow) {
+        // The share window is successfully opened
+        console.log('Sharing on ' + platform + ' started');
+        
+        var interval = setInterval(function() {
+          if (shareWindow.closed) {
+            // The share window is closed, sharing is completed
+            console.log('Sharing on ' + platform + ' completed');
+            clearInterval(interval);
+          }
+        }, 1000);
+      } else {
+        // The share window couldn't be opened
+        console.log('Failed to open share window on ' + platform);
+      }
+    }
+    </script>
+{% endmacro %}
+
+
+
+{%macro share_button_javascript(title, sharing_url, text)%}
+<script type="text/javascript">
+  const shareButton = document.querySelector('.share-button');
+  const shareDialog = document.querySelector('.share-dialog');
+  const closeButton = document.querySelector('.close-button');
+  shareButton.addEventListener('click', event => {
+    if (navigator.share) { 
+     navigator.share({
+        title: '{{title}}',
+        url: '{{sharing_url}}',
+        text: '{{text}}',
+        description: '{{text}}'
+      }).then(() => {
+        console.log('Thanks for sharing!');
+      })
+      .catch(console.error);
+      } else {
+          shareDialog.classList.add('is-open');
+      }
+  });
+
+  closeButton.addEventListener('click', event => {
+    shareDialog.classList.remove('is-open');
+  });
+</script>
+{%endmacro%}

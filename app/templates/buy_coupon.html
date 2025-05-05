@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Buy Coupon{{ super()}}{% endblock %}
+
+
+{% block page_content %}
+    <div class="site-blocks-cover overlay" style="background-image: url('/static/pictures/images5.jpg');" data-aos="fade" id="home-section">
+
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+
+          
+          <div class="col-md-10 mt-lg-5 text-center">
+            <div class="single-text owl-carousel">
+              <div class="slide">
+                <h1 class="text-uppercase" data-aos="fade-up">welcome to {{web_dict.name}}</h1>
+                <p class="mb-5 desc"  data-aos="fade-up" data-aos-delay="100">The right affiliated channel that honour every user with {{package_types[0].profit_percentage}} extra profit off all investing packages subscribed for...</p>
+                <div data-aos="fade-up" data-aos-delay="100">
+                </div>
+              </div>
+
+              <div class="slide">
+                <h1 class="text-uppercase" data-aos="fade-up">welcome to {{web_dict.name}}</h1>
+                <p class="mb-5 desc"  data-aos="fade-up" data-aos-delay="100">...the best investment company to serve you with the fastest effortless financial growing knowledge stat</p>
+              </div>
+
+              <div class="slide">
+                <h1 class="text-uppercase" data-aos="fade-up">welcome to {{web_dict.name}}</h1>
+                <p class="mb-5 desc"  data-aos="fade-up" data-aos-delay="100">24/7 at your service for free!!</p>
+              </div>
+
+            </div>
+          </div>
+            
+        </div>
+      </div>
+
+      <a href="#team-section" class="mouse smoothscroll">
+        <span class="mouse-icon">
+          <span class="mouse-wheel"></span>
+        </span>
+      </a>
+    </div>
+
+    <section class="site-section border-bottom" id="team-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-8 text-center">
+            <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">Meet Our {{'Moderators' if 'coin' in request.endpoint else 'Vendors'}}</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">This are the legitimate {{'Moderators' if 'coin' in request.endpoint else 'Vendors'}} validated for all {{'coin distribution and vending coin code that will b remitted into vendors account immediately and many more' if 'coin' in request.endpoint else 'package coupon code purchasing'}} service.</p>
+          </div>
+        </div>
+        {% if vendors == [] %}
+        <center>
+          <h1 align="center" style="color: red;">
+            <i class="icon-warning"></i> {{'Moderators' if 'coin' in request.endpoint else 'Vendors'}} Not Available Now, Please try again later!!!
+          </h1>
+        </center>
+        <div class="row">
+          {%endif%}
+          {%for vendor in vendors%}
+          <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="">
+            <div class="team-member">
+              <figure>
+                {%set market = ('Vending Coin Code' if 'coin' in request.endpoint else 'Coupon Code') %}
+
+                {%set msg = 'I WANT TO BUY %s %s!'%(web_dict.name, market) %}
+                <ul class="social">
+                  <li><a href="https://wa.me/{{vendor.mobile_number}}?text={{msg}}"><span class="icon-whatsapp"></span></a></li>
+                </ul>
+                <a href="https://wa.me/{{vendor.mobile_number}}?text={{msg}}">
+                  <img src="/static/pictures/images5.jpg" alt="Image" class="img-fluid">
+                </a>
+              </figure>
+              <div class="p-3">
+                <h3>{{vendor.username}}</h3>
+                <span class="position">{{vendor.name}}</span>
+              </div>
+            </div>
+          </div>
+          {%endfor%}          
+        </div>
+      </div>
+    </section>
+{%endblock%}

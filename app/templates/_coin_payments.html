@@ -1,0 +1,50 @@
+{% for payment in payments %}
+<div class="{{'col-md-4' if request.endpoint == 'main.verify_payments' else 'col-12'}}" style="border: 2px solid #eddd9e; width: 50%;padding: 15px;border-radius: 13px;">
+    <p style="font-weight: bolder;font-size: 19px"><u>{{ payment.coin_package.name }}</u></p>
+    <center>
+        {%if check == 'all'%}
+        <h4>{{ payment.get_status() }}</h4>
+        {%endif%}
+        <div style="width: 90%">
+            <img src="{{ url_for('static', filename=payment.receipt.replace('/static/',''), _external=True) }}" alt="Receipt Image" style="width:100%;height:200px;"/>
+        </div>
+        <br>
+    </center>
+    <div align="left">
+        <p><b>Status:</b> {{payment.get_status()}}</p>
+        <p><b>Coin:</b> ${{ payment.coin_package.dollar_amount }}</p>
+        <p><b>Price:</b> ₦{{ payment.amount }}</p>
+        <p><b>Coin Details:</b> {{ payment.details }}</p>
+        <b>Submitted {{ moment(payment.timestamp).calendar() }}</b>
+    </div>
+    <br>
+    {%if current_user.is_administrator()%}
+    <div class="" style="width: 100%">
+        {% if not payment.verified and not payment.rejected%}
+        <div class="" style="width: 33%; display: inline-block;">
+            <form action="{{url_for('.verify_payments', next=request.url, _external=True)}}" method="POST">
+                <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                <input type="hidden" name="action" value="verify">
+                <button class="btn btn-primary" style="background: green;" type="submit" >Verify</button>
+            </form>
+        </div>
+
+        <div class="" style="width: 33%; display: inline-block;">
+            <form action="{{url_for('.verify_payments', next=request.url, _external=True)}}" method="POST" style="display: inline;">
+                <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                <input type="hidden" name="action" value="reject">
+                <button class="btn-secondary" type="submit">Reject</button>
+            </form>
+        </div>
+        {% endif %}
+        <div class="" style="width: 33%; display: inline-block;">
+            <form action="{{url_for('.verify_payments', next=request.url, _external=True)}}" method="POST">
+                <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                <input type="hidden" name="action" value="delete">
+                <button class="btn-secondary" style="background: red;" type="submit" >Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{%endfor%}

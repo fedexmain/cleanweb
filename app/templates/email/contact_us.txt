@@ -1,0 +1,7 @@
+{{form.fname.data+' '+form.lname.data}} was trying to contact us with their mail which is {{form.email.data}}
+Click <a href="{{url_for('.profile', username=current_user.username, _external=True)}}">here</a> the link/button below to confirm {{current_user.name.split(' ')[0]}}'s cashout request to be remitted on the account details table below!
+<br/>
+<a href="mailto://{{form.email.data}}">{{form.email.data}}</a>
+<br/>
+The {{web_data.name}} Team.<br>
+Note: replies to this email address are not monitored.

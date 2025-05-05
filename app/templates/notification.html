@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Notification{{ super()}}{% endblock %}
+
+
+{% block page_content %} 
+
+<!-- ##### Notification Area Start ##### -->
+<br><br><br><br>
+<br><br><br><br>
+<div class="testimonials-area section-padding-100 bg-img bg-overlay" style="background-color: ;">
+    <div class="container">
+    	{% if notification[(page-1)*per_page: page*per_page] == []%}
+        <!-- Single notification Area -->
+        <div class="">
+            <div class="mb-100 wow fadeInRight" data-wow-delay="400ms">
+                
+                <div class="no-content">
+                    <center><span style="color: #fff;">No Notification</span></center>
+                </div>
+            </div>
+        </div>
+        {% else%}
+        <div style="width: 100%;" align="left">
+        	<!-- Notifications -->
+            {% for n in notification[(page-1)*per_page: page*per_page] %}
+            {% set data = n.get_data()%}
+            <a href="{{ url_for('.read_notifications', Nid=n.id, redir=data.get('url')) }}">
+                <div class="single-blog-post wow fadeInUp" data-wow-delay="300ms" style="border-radius: 5px; background-color: {{web_data.themes.forth if not n.read else '#fff'}}; padding: 2px;">
+
+                    <div align="left" class="post-title" style="color: {{web_data.themes.first}}">
+                        <!-- Notification heading-->
+                        <h5> 
+                            <span class="material_icons">{{n.name}}</span>
+                        </h5><!-- Notification heading end-->
+
+                        {% if data.get('body')%}
+                        <hr>
+                        <p style="padding-left: 8px;">
+                            {{data.get('body')[:50]}}...
+                        </p>
+                        {% endif%}
+                    </div>
+                    
+                </div>
+            </a>
+            <hr >
+            {%endfor%}
+
+        	<!-- Pagination -->
+            {% if len(notification) %}
+            	{{macros.tiny_pagination(notification, len(notification), page, per_page) }}
+            {% endif %}
+            
+        </div>
+        {% endif%}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Message Notification</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #e6ffe6;
+			padding: 20px;
+		}
+		.container {
+			max-width: 600px;
+			margin: 0 auto;
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.1);
+		}
+		h1 {
+			font-size: 24px;
+			margin-top: 0;
+			margin-bottom: 20px;
+			color: green;
+		}
+		.preview {
+			margin-bottom: 20px;
+			padding: 10px;
+			border-radius: 5px;
+			background-color: #f2f2f2;
+			border: 1px solid #ccc;
+		}
+		button {
+			background-color: #006600;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+		a {
+			color: #006600;
+			text-decoration: none;
+		}
+		.header {
+			background-color: #009900;
+			padding: 10px;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+			text-align: center;
+			color: #fff;
+			font-size: 20px;
+			font-weight: bold;
+		}
+		.footer {
+			background-color: #009900;
+			padding: 10px;
+			border-bottom-left-radius: 5px;
+			border-bottom-right-radius: 5px;
+			text-align: center;
+			color: #fff;
+			font-size: 14px;
+		}
+		.footer a {
+			color: #fff;
+			font-weight: bold;
+		}
+		.message-body {
+			padding: 20px;
+			border-radius: 5px;
+			background-color: #fff;
+			border: 1px solid #ccc;
+			margin-top: 20px;
+			margin-bottom: 20px;
+		}
+		.message-body p {
+			margin-top: 0;
+			margin-bottom: 10px;
+			line-height: 1.5;
+		}
+		.message-body p:last-child {
+			margin-bottom: 0;
+		}
+	</style>
+</head>
+<body style="font-family: Arial, sans-serif; background: linear-gradient(to bottom left, #343a40 65%, #fff 10%, #c0c0c0 100%); padding: 20px;">
+
+	<div class="container" style="max-width: 90%; margin: 0 auto; background-image: linear-gradient(to bottom right, #343a40 5%, #343a40 5%, #fff 10%,#fff,#fff 80%, #343a40, #343a40); padding: 20px; border-radius: 5px; box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.1);">
+		{%set logo_url = message.sender.gravatar(_external=True)%}
+		{%if message.receiver.can(Permission.MODERATE_COMMENTS) and not message.sender.can(Permission.MODERATE_COMMENTS)%}
+		<a href="{{ logo_url or url_for('.send_msg', username=message.sender.username, page=-1, _external=True) }}" >
+		<span style="display: block; max-width: 200px; margin-bottom: 20px;">
+			
+			<img src="{{logo_url}}" alt="{{message.sender.username}} picture" style="width: 50%; height: 100px; border-radius: 50%; border: 2px solid green; float: left;">
+		</span>
+		</a>
+		{%endif%}
+
+		<center><h3 style="border-bottom: 6px double {{g_color.first}}; padding-left: 20px;">{{web_data.name}}</h3></center>
+
+		<br>
+		<b style="font-size: 10px; margin-top: 0; margin-bottom: 20px; color: green;">Dear {{ message.receiver.name.split(' ')[0] }},You have a new message from {{message.sender.name if message.receiver.can(Permission.MODERATE_COMMENTS) else message.receiver.celebrity.username}} on  {%if message.receiver.can(Permission.MODERATE_COMMENTS) and not message.sender.can(Permission.MODERATE_COMMENTS)%}All Celebrity website expecting you to be {{message.sender.celebrity.username if message.sender.celebrity else 'Unknown Celebrity'}} {%else%} {{web_data.name}} Website{%endif%}!</b>
+
+		<div class="preview" style="margin-bottom: 20px; padding: 10px; border-radius: 5px; background-color: #f2f2f2; border: 1px solid #ccc;">
+			<p><strong>Message Preview:</strong></p>
+            <!-- Place Message Files-->
+			{% if len(message.file.all())%}
+			<div class="gallery-list d-flex justify-content-between flex-wrap">
+				{% for file in message.file.all()%}
+            	{%if '.mp4' in file.url%}
+            		<video style="width: 100%" controls="False" autoplay="" src="{{url_for('static', filename=file.url.replace('/static/',''), _external=True)}}"></video>
+            	{%else%}
+                <a href="{{url_for('static', filename=file.url.replace('/static/',''), _external=True)}}" style="display: block; margin-bottom: 10px;">
+            		<img style="opacity: 0.8" src="{{url_for('static', filename=file.url.replace('/static/',''), _external=True)}}" alt="file" style="width: 100%;">
+                </a>
+            	{%endif%}
+				{%endfor%}
+            </div>
+            {%endif%}
+            <!-- Place Message-->
+			{%if message.body_html%}
+				{{message.body_html|safe}}
+			{%else%}
+				<p>{{ message.body}}</p>
+			{%endif%}
+			{%if user.is_administrator() or user.auto_reply%}
+			<hr>
+			<a href="{{ url_for('.send_msg', username=message.sender.username, auto_reply='direct', page=-1, _external=True) }}"><button style="background-color: #006600; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">AutoReply</button></a>
+			<a href="{{ url_for('.send_msg', username=message.sender.username, auto_reply='predict', page=-1, _external=True) }}"><button style="background-color: #006600; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">SuggestReply</button></a>
+			{%endif%}
+		</div>
+		<p style="margin-bottom: 10px;">To reply to this message, please click the button below:</p>
+		<p style="margin-top: 0; margin-bottom: 10px;">
+			<a href="{{ url_for('.send_msg', username=message.sender.username, page=-1, _external=True) }}" style="text-decoration: none;">
+				<button style="background-color: #006600; color: #fff; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer;">Reply</button>
+			</a>
+		</p>
+		<p style="margin-bottom: 10px;">Alternatively, you can view all of your messages on {{web_data.name}} by clicking <a href="{{ url_for('.message', _external=True) }}" style="color: #006600; text-decoration: none;">here</a>.</p>
+		<p style="margin-bottom: 0;">Sincerely,<br>The {{web_data.name}} Team.</p>
+		<p style="margin-top: 0;"><em>Note: replies to this email address are not monitored.</em></p>
+		</div>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{web_data.name}} - Coin Payment Details{% endblock %}
+
+{% block content %}
+<style type="text/css">
+	.filter_nav a button{
+		border-radius: 9px;
+		padding: 4px;
+		padding-right: 6px;
+		padding-left: 6px;
+		background: #eddd9e;
+		color: #000;
+	}
+</style>
+	
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="padding: 20px;">
+	<br>
+	<center>
+		<h1><u>{{payment.coin_package.name |upper()}} {{ 'Payment'|upper()}}</u></h1>
+	</center>
+	<br>
+	<div class="row">
+		{%set payments = [payment]%}
+        {%include '_coin_payments.html'%}
+	</div>
+</div>
+{% endblock %}

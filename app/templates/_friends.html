@@ -1,0 +1,53 @@
+{%  if FRs == []%}	
+	<div class="no-content" align="center">
+        
+        {%  if current_user == user%}
+        <a  href="#Search"><span class="btn-like" style="padding: 40px">Find friend</span></a>
+        {% else%}
+        <span class="btn-like">No friends!</span><br><br><br>
+        {% endif%}
+    </div>
+{%else%}
+<table id="follow_table" class="table table-hover followers">
+
+    {% for friend_req in FRs%}
+	    {% if friend_req.user != user %}
+	    <tr>
+	    	<td class="col-12">
+                <div class="col-md-6" style="padding-bottom: 10px;">
+                    <a href="{{ url_for('.user2', username=friend_req.user.username) }}">
+		                <img class="img-rounded" src="{{ friend_req.user.gravatar(size=32) }}">
+		                <span style="color: #000">{{'You' if friend_req.user == current_user else friend_req.user.name }}</span> &nbsp;{% if friend_req.user.is_online()%}<i class="active_user">&nbsp;&nbsp;&nbsp;</i>{% endif%}
+		            </a>
+                </div>
+                
+                <div class="col-12">
+                	{% if current_user.is_authenticated and current_user != friend_req.user and current_user.mutual_friends_count_with(friend_req.user)%}
+	            	<span style="color: #000">{{current_user.mutual_friends_count_with(friend_req.user)}} mutual friends</span>
+	            	{% endif%}
+                </div>
+
+                <div class="col-md-6">
+                    {%if current_user == user%}
+			        	{% if friend_req.user.username%}
+			        	<a class="btn btn-danger" href="{{ url_for('.unfriend', username = friend_req.user.username, next=request.url) }}#friends">
+			                Unfriend
+			            </a>
+			            {%endif%}
+			        {% elif current_user.is_authenticated and current_user != friend_req.user and not current_user.is_a_friend_to(friend_req.user)%}
+			        	<a class="btn-like" href="{{ url_for('.add_friend', username = friend_req.user.username, next=request.url) }}#friends">
+			                Add friend
+			            </a>
+			        {% endif%}
+                </div>
+                
+                <div class="col-12" style="float: left">
+                    {{ moment(friend_req.timestamp).fromNow() }}
+                </div>
+
+            </td>
+	    </tr>
+	    {% endif %}
+    {% endfor %}
+</table>
+{% endif%}

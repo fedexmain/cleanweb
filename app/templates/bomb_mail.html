@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{form_title}}{{ super()}}{% endblock %}
+
+
+{% block page_content %}
+<style type="text/css">
+  #submit{
+    background: #fff;
+  }
+</style>
+    <div class="site-section cta-big-image" id="about-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-8 text-center">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">Random Generated Mass Mailing</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">We honour our users with the opportunity to take advantage of the internet to turn our everyday social media activities into a toolbox for making passive income daily... for all users to stand a chance to secure their tomorrow financial status.</p>
+          </div>
+        </div>
+        <div class="row">
+          <br>
+          <br>
+          <br>
+          <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+            <figure class="circle-bg" style="top:+150px;">
+            </figure>
+          </div>
+          {%if len(details)%}
+          <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
+            <table cellpadding="2" cellspacing="5" style="border: 3px solid white;padding: 10px;width: 100%">
+              <tr>
+                <th>Name</th>
+                <th>Mails</th>
+              </tr>
+              {%for name in details%}
+              <tr style="border-top: 2px solid white; padding: 5px;">
+                <td style="padding: 10px"><h3 class="text-white mb-4">{{name}}</h3></td>
+                <td style="border-left: 2px solid white;font-size: 15px;font-weight: bolder;">{{details[name]}}</td>
+              </tr>
+              {%endfor%}
+            </table>
+          </div>
+          {%endif%}
+          <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
+            <style type="text/css">
+              form .form-group input{
+                color:green;
+                font-weight: bolder;
+                font-style: italic;
+                font-size: 13px;
+              }
+            </style>
+            {{wtf.quick_form(form)}}
+          </div>
+        </div>    
+        
+      </div>  
+    </div>
+{%endblock%}

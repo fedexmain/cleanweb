@@ -1,0 +1,14 @@
+<h1>Submit Payment</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <label>Coin Package:</label>
+    {{ form.coin_package() }}
+    
+    <br>
+    <label>Upload Payment Receipt:</label>
+    {{ form.receipt() }}
+    
+    <br>
+    {{ form.submit() }}
+</form>

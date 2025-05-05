@@ -1,0 +1,6 @@
+Dear {{ current_user.name.split(' ')[0] }},
+Your withdrawal request of ${{form.amount.data}} with {{mode}} mode of payment as been placed for processing to meet up within specified cashout request duration included on {{web_data.name}} <a href="{{url_for('.terms_and_conditions', _external=True)}}">T&Cs</a> before you get your vending coin remitted into your local bank or wallets!
+<br/>
+Sincerely,<br/>
+The {{web_data.name}} Team.<br>
+Note: replies to this email address are not monitored.

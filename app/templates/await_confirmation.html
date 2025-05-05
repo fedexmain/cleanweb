@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{web_data.name}} - Await Payment Confirmation{% endblock %}
+
+{% block page_content %}
+<style type="text/css">
+    .filter_nav a button{
+        border-radius: 9px;
+        padding: 4px;
+        padding-right: 6px;
+        padding-left: 6px;
+        background: #eddd9e;
+        color: #000;
+    }
+</style>
+    
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="padding: 20px;">
+    <br>
+    <center>
+        <h1><u>{{('Wait for %s coin package Payment Verification'%payment.coin_package.name)|upper()}}</u></h1>
+    </center>
+    <br>
+    <div class="row">
+        {%set payments = [payment]%}
+        {%include '_coin_payments.html'%}
+        <i><strong>Note:</strong>You will be redirected from this page, once your payment is confirmed.</i>
+    </div>
+</div>
+<script>
+    // Poll the server every 5 seconds to check for payment confirmation
+    function checkConfirmation() {
+        $.ajax({
+            url: "{{ url_for('.await_confirmation', payment_id=payment.id, api_call='true', _external=True, next=next_url) }}",
+            method: "GET",
+            success: function(data) {
+                if (data.verified) {
+                    window.location.href = "{{next_url}}";
+                }
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    setInterval(checkConfirmation, 5000); // Check every 5 seconds
+</script>
+{% endblock %}

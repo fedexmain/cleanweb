@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Confirmation</title>
+</head>
+<body>
+	<div>
+		Dear Admin,
+		{{ user.name.split(' ')[0] }} just registered on {{web_data.name}}!
+		To check his/her account please click on the botton bellow:
+		<a href="{{ url_for('main.profile', username=user.username, _external=True) }}"><button>Confirm</button></a> <br/>
+		Sincerely,<br/>
+		The {{web_data.name}} Team.<br>
+		Note: replies to this email address are not monitored.
+	</div>
+</body>
+</html>

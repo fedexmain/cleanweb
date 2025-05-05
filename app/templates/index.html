@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Track {{ super()}}{% endblock %}
+
+
+{% block page_content %}
+{%if current_user.is_administrator()%}
+<div style="">
+  {%for trk in tracking_list%}
+  <h3 style="padding: 10px; background: #666">
+    <span>Created since: {{moment(trk.timestamp).fromNow()}}</span> with tracking number ({{trk.tracking_number}}) which has {{'no history!' if not trk.histories.count() else str(trk.histories.count()) + ' history'}} <a href="{{url_for('.fedex_tracking_result', tracking_number=trk.tracking_number, _external=True)}}">>>Track Here<<<</a>
+  </h3>
+  {%endfor%}
+</div>
+{%endif%}
+{%endblock%}

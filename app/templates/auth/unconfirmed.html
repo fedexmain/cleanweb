@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Unconfirmed{{ super()}}{% endblock %}
+
+{% block page_content %}
+	<br/><br/>
+	<br/><br/>
+	<br/><br/>
+	<center>
+		<div>
+			{% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %}
+		</div>
+		<style type="text/css">
+			h1, a{
+				color: green;
+			}
+			h4{
+				color: red;
+			}
+		</style>
+		<div align="left">
+			<center><h1>Hello, {{current_user.name}}!</h1>
+			<h4>Your account is yet to be confirmed.</h4>
+			<p>Before you can access this site, your account need to be confirmed. Check your mail inbox, you should have received a mail with a confirmation link.</p>
+			<p>Need another confirmation mail? <a style="text-decoration: none;"  href="{{ url_for('auth.resend_confirmation') }}">Click here</a></p></center>
+		</div>
+	</center>
+	<br/><br/><br/>
+		
+{% endblock %}

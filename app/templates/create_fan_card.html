@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{{ super()}}{% endblock %}
+
+
+{% block page_content %}
+<style type="text/css">
+    #submit{
+        padding: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        background: #000;
+        color: #fff;
+    }
+    .help-block{
+        color: red;
+    }
+</style>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div style="background: #fff;">
+    <center>
+        <h1>{{title}}</h1>
+        <hr>
+        {{wtf.quick_form(form)}}
+    </center>
+</div>
+{%endblock%}

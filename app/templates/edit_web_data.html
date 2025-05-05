@@ -1,0 +1,207 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{web_data.name}} - Edit Web Data{% endblock %}
+
+{% block page_content %}
+<style type="text/css">
+    /* Add this to your custom CSS file */
+    .card {
+        animation: fadeIn 0.8s ease-in-out;
+        transition: all 0.3s;
+    }
+
+    .card:hover {
+        transform: scale(1.09);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        padding: 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+</style>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow-lg border-0 rounded-lg" style="padding: 40px;">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center my-3" style="padding: 30px;">Edit WebData: {{ web_data.name }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{request.url}}">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="form-group">
+                            <label for="name">{{ form.name.label }}</label>
+                            {{ form.name(class_='form-control', placeholder="Enter WebData Name") }}
+                            {% if form.name.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.name.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="name_abbreviation">{{ form.name_abbreviation.label }}</label>
+                            {{ form.name_abbreviation(class_='form-control', placeholder="Enter Abbreviation") }}
+                            {% if form.name_abbreviation.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.name_abbreviation.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="logo">{{ form.logo.label }}</label>
+                            {{ form.logo(class_='form-control', placeholder="Enter Logo URL") }}
+                            {% if form.logo.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.logo.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="logo">{{ form.payment_details.label }}</label>
+                            {{ form.payment_details(class_='form-control', placeholder="Enter Payment Details") }}
+                            {% if form.payment_details.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.payment_details.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="email">{{ form.email.label }}</label>
+                            {{ form.email(class_='form-control', placeholder="Enter Contact Email") }}
+                            {% if form.email.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.email.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="exchange_rate">{{ form.exchange_rate.label }}</label>
+                            {{ form.exchange_rate(class_='form-control', placeholder="Enter Exchange Rate") }}
+                            {% if form.exchange_rate.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.exchange_rate.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <h5 class="mt-4">Post and Reward Data</h5>
+
+                        <div class="form-group mt-3">
+                            <label for="free_post_per_day">{{ form.free_post_per_day.label }}</label>
+                            {{ form.free_post_per_day(class_='form-control', placeholder="Enter Free Posts per Day") }}
+                            {% if form.free_post_per_day.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.free_post_per_day.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="post_fee">{{ form.post_fee.label }}</label>
+                            {{ form.post_fee(class_='form-control', placeholder="Enter Post Fee") }}
+                            {% if form.post_fee.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.post_fee.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="connection_fee">{{ form.connection_fee.label }}</label>
+                            {{ form.connection_fee(class_='form-control', placeholder="Enter Connection Fee") }}
+                            {% if form.connection_fee.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.connection_fee.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="usps_track_fee">{{ form.usps_track_fee.label }}</label>
+                            {{ form.usps_track_fee(class_='form-control', placeholder="Enter USPS Track Fee") }}
+                            {% if form.usps_track_fee.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.usps_track_fee.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="usps_track_history_fee">{{ form.usps_track_history_fee.label }}</label>
+                            {{ form.usps_track_history_fee(class_='form-control', placeholder="Enter USPS Track History Fee") }}
+                            {% if form.usps_track_history_fee.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.usps_track_history_fee.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="page_fee">{{ form.page_fee.label }}</label>
+                            {{ form.page_fee(class_='form-control', placeholder="Enter Page Fee") }}
+                            {% if form.page_fee.errors %}
+                                <div class="text-danger">
+                                    {% for error in form.page_fee.errors %}
+                                        <small>{{ error }}</small><br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-4 w-100">Update WebData</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{{ url_for('.index') }}" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

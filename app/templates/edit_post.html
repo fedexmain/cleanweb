@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{web_data.name}} - Edit Post{% endblock %}
+
+
+{% block page_content %}
+<br><br><br><br><br><br>
+	<div class="page-header">
+		<h1>Edit Post</h1>
+	</div>
+	<div>
+		{{ macros.post_form_phase(current_user, current_user, form, web_data.themes) }}
+	</div>
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}

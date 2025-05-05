@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Edit Profile{{ super()}}{% endblock %}
+
+
+{% block page_content %}
+    <style type="text/css">
+        .form-group{
+            color: #fff;
+
+        }
+        .reg-form-area{
+            padding: 30px;
+        }
+        .contact-content .reg-form-area .form-group .form-control{
+            padding: 25px;
+            font-size: 15px;
+            color: green;
+            background: #fff;
+            border-radius: 15px;
+            text-decoration-color: #000;
+
+        }
+
+        .contact-content .reg-form-area .form-group #prize_and_charges{
+            background: green;
+            padding: 10px;
+             border-radius: 10px;
+        }
+    </style>                                               
+
+    <section class="contact-area"  style="background: #c0c0c0;">
+        <br><br><br>
+            
+        <div class="container">
+            <div class="">
+
+                <div class="">
+                    <div class="contact-content" style="background: linear-gradient(to bottom left, #343a40 65%, #fff 10%, #c0c0c0 100%); padding: 30px;">
+                        
+                        <!-- Registration Form Area -->
+                        <center>
+                            <div class="">
+                                <div align="left" class="reg-form-area wow fadeInUp" data-wow-delay="500ms" style="border-radius: 30px; background: #fd7e14; background-image: linear-gradient(to bottom left, #fd7e14 45%, #343a40 10%, #fd7e14 100%); border: 2px solid #343a40;">
+                                    <h4 align="left" style="color: #fff; font-family: Tekton Pro;">
+                                        Profile Edit Form{{'[ADMIN]' if request.endpoint == 'main.admin_edit_profile' else ''}}
+                                        <hr/>
+                                    </h4><br/>
+                                    <!--{{ wtf.quick_form(form)}}-->
+                                    <form action="{{request.url}}" method="post" class="form" role="form">
+                                        {% for field in form %}
+                                            {%if 'csrf' in field.name%}
+                                                {{ field()}}
+                                            {%elif field.name == 'submit'%}
+                                                {{ field(class="btn btn-secondary")}}
+                                            {%elif field.name == 'email'%}
+                                            <div class="form-group  required">{{field.label()}}
+                                                {{ field(class="form-controll", required="", type="email", style="color: #000; width: 100%; border-radius: 20px; padding: 15px; border: 0px solid green;")}}
+                                                {%if field.errors%}
+                                                    <ul class="errors">
+                                                        {%for error in field.errors%}
+                                                        <li style="color: red;">{{error}}</li>
+                                                        {%endfor%}
+                                                    </ul>
+                                                        
+                                                {%endif%}
+                                            </div>
+                                            {%elif field.name in 'confirmed,validated'%}
+                                            <div class="form-group  required">{{field.label()}}
+                                                {{ field(class="")}}
+                                            </div>
+                                            {% else%}
+                                            <div class="form-group  required">{{field.label()}}
+                                                {{ field(style="color: #000; width: 100%; border-radius: 20px; padding: 15px; border: 0px;")}}
+                                                {%if field.errors%}
+                                                    <ul class="errors">
+                                                        {%for error in field.errors%}
+                                                        <li style="color: #ff;">{{error|safe}}</li>
+                                                        {%endfor%}
+                                                    </ul>
+                                                        
+                                                {%endif%}
+                                            </div>
+                                            {% endif%}
+                                        {% endfor%}
+
+                                    </form>
+                                </div>
+                            </div>
+                        </center>
+                        <!-Registration form end-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- content ends -->
+{% endblock %}

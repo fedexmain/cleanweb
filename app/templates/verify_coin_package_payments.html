@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}{{web_data.name}} - List of Payments{% endblock %}
+
+{% block page_content %}
+<style type="text/css">
+	.filter_nav a button{
+		border-radius: 9px;
+		padding: 4px;
+		padding-right: 6px;
+		padding-left: 6px;
+		background: #eddd9e;
+		color: #000;
+	}
+</style>
+	
+<br>
+<br>
+<br>
+<br>
+<div style="padding: 20px;">
+	<br>
+	<center>
+		<h1><u>{{check |upper()}} {{ 'Payments'|upper()}}</u></h1>
+		<br>
+		<div class="filter_nav">
+			<a href="{{url_for(request.endpoint, check='all', _external=True)}}" style="border: 2px solid #eddd9e;padding: 10px;display: {{'none' if check== 'all' else ''}}" class="btn btn-primary"><button> All</button> </a>
+			<a href="{{url_for(request.endpoint, check='verified', _external=True)}}" style="border: 2px solid #eddd9e;padding: 10px;display: {{'none' if check== 'verified' else ''}}" class="btn btn-primary"><button> Verified</button> </a>
+			<a href="{{url_for(request.endpoint, check='rejected', _external=True)}}" style="border: 2px solid #eddd9e;padding: 10px;display: {{'none' if check== 'rejected' else ''}}" class="btn btn-primary"><button> Rejected</button> </a>
+			<a href="{{url_for(request.endpoint, check='unverified', _external=True)}}" style="border: 2px solid #eddd9e;padding: 10px;display: {{'none' if check== 'unverified' else ''}}" class="btn btn-primary"><button> Unverified</button> </a>
+		</div>
+	</center>
+	<br>
+	{% if not len(payments) %}
+	<br>
+	<div>
+		<center> <p><i class="material-icons" style="color: yellow">warning</i> &nbsp;No {{check if not check.lower() == 'all' else ''}} payment at the moment!!</p></center>
+	</div>
+	{% else %}
+	<div class="row">
+        {%include '_coin_payments.html'%}
+	</div>
+	{% endif %}
+</div>
+{% endblock %}

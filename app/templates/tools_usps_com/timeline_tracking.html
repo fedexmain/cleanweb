@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracking Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            background-color: #e6f4e6;
+            padding: 15px;
+            border-left: 5px solid green;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            color: #2e7d32;
+            margin: 0;
+            font-size: 18px;
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            border-left: 2px solid #1976d2;
+        }
+        .timeline-item {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .timeline-item:before {
+            content: "";
+            width: 13px;
+            height: 13px;
+            background-color: #1976d2;
+            border-radius: 50%;
+            position: absolute;
+            left: -27px;
+            top: -5px;
+        }
+        .delivered:before{
+            background-color: green;
+        }
+        .timeline-item h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #1976d2;
+        }
+        .timeline-item p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .timeline-item .time {
+            font-size: 12px;
+            color: #999;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <h2>Latest Update</h2>
+            <p>Your item was delivered in or at the mailbox at 11:46 am on September 20, 2024 in RACINE, WI 53402.</p>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="timeline">
+            <div class="timeline-item delivered">
+                <h3>Delivered</h3>
+                <p>Delivered, In/At Mailbox<br>RACINE, WI 53402</p>
+                <p class="time">September 20, 2024, 11:46 AM</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Arrived at Post Office</h3>
+                <p>RACINE, WI 53404</p>
+                <p class="time">September 20, 2024, 6:11 AM</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Departed USPS Regional Facility</h3>
+                <p>OAK CREEK WI DISTRIBUTION CENTER</p>
+                <p class="time">September 20, 2024, 4:08 AM</p>
+            </div>
+            <div class="timeline-item">
+                <h3>Arrived at USPS Regional Facility</h3>
+                <p>OAK CREEK WI DISTRIBUTION CENTER</p>
+                <p class="time">September 19, 2024, 3:52 PM</p>
+            </div>
+            <div class="timeline-item">
+                <h3>In Transit to Next Facility</h3>
+                <p class="time">September 19, 2024, 3:01 PM</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Get More Out of USPS Tracking</p>
+        </div>
+    </div>
+
+</body>
+</html>
