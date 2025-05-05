@@ -49,6 +49,7 @@ a_year  = a_month * 12    # 1day * 30 = 30days = 1month e.i, it is the same as (
 cookies_elapse_time=a_month
 
 web_data=None
+
 @main.before_request
 def before_request():
 	global web_data
