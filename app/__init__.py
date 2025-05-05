@@ -38,7 +38,9 @@ post_videos = UploadSet('postVideos', ('mp4'))
 message_files = UploadSet('MessageFiles', IMAGES+AUDIO+DOCUMENTS+tuple('mp4'))
 
 
-def create_app(config_name):
+def create_app(config_name=None):
+	if not config_name or not isinstance(config_name, str):
+		config_name = os.getenv('FLASK_CONFIG') or 'default'
 	app = Flask(__name__)
 	app.config.from_object(config[config_name])
 	config[config_name].init_app(app)
